@@ -1,13 +1,12 @@
-import logo from './logo.svg';
 import './App.css';
+import React from 'react';
 
-import Statistics from './Statistics/Statistics';
+import Video from './Video/video';
 
 function App() {
   return (
     <div className="App">
-
-      <Statistics />
+      <Video/>
     </div>
   );
 }
