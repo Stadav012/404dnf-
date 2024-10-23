@@ -5,15 +5,19 @@ import ImageUpload from './upload_image/ImageUpload';
 
 import Statistics from './Statistics/Statistics';
 
+import { ThemeProvider } from "@/components/theme-provider"
+
 function App() {
   return (
+  <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
     <div className="App">
-      <Sidebar/>
-      <Statistics />
-      <ImageUpload/>
+        <Sidebar/>
+        <Statistics />
 
-      <Button variant="ghost">Click me</Button>
+        <Button variant="outline">Click me</Button>
+        <ImageUpload />
     </div>
+    </ThemeProvider>
   );
 }
 
