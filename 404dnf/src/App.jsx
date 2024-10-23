@@ -21,18 +21,19 @@ function App() {
   ];
 
   return (
-  <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-    <div className="App">
-        <Sidebar/>
-        <Section heading="Awards" pills={awards} />
-        <Section heading="Smart Locker" pills={lockers} />
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <div className="App">
+        <Sidebar />
 
-        <Button variant="outline">Click me</Button>
-        <ImageUpload />
-
-        <Sections />
+          <Button variant="outline">Click me</Button>
+          <ImageUpload />
         <Statistics />
-    </div>
+        
+        <div className='sections'>
+          <Section heading="Awards" pills={awards} />
+          <Section heading="Smart Locker" pills={lockers} />
+        </div>
+      </div>
     </ThemeProvider>
   );
 }
