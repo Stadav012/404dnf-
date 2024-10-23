@@ -1,16 +1,18 @@
-
-import React, { useState } from 'react';
 import './ImageUpload.css'
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button"; // Adjust the path as necessary
 
 const ImageUpload = () => {
     const [selectedImage, setSelectedImage] = useState(null);
+    const [imageName, setImageName] = useState("");
 
     const handleImageChange = (event) => {
-        const file = event.target.files[0];
+        const file = event.target.files[0]; // Get the selected file
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setSelectedImage(reader.result); // Set the image as base64 string
+                setSelectedImage(reader.result); // Set the selected image
+                setImageName(file.name); // Set the image name
             };
             reader.readAsDataURL(file); // Read the file as a data URL
         }
@@ -18,13 +20,27 @@ const ImageUpload = () => {
 
     return (
         <div className="image-upload">
-             <h1>Upload Image</h1>
-             <p>JPEG or PNG under 10MB</p>
-            <div className='choose-img'><input type="file" accept="image/*" onChange={handleImageChange} /></div>
+            <h1>Upload Image</h1>
+            <p>JPEG or PNG under 10MB</p>
+            <div className='choose-img'>
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    style={{ display: "none" }} // Hide the input befor image selection
+                    id="file-input"
+                />
+                <Button
+                    variant="secondary"
+                    size="default"
+                    onClick={() => document.getElementById("file-input").click()} // Trigger file input click
+                >
+                    Choose Image
+                </Button>
+            </div>
             {selectedImage && (
                 <div className="image-preview">
-                    <h3>Image Preview:</h3>
-                    <img src={selectedImage} alt="Selected" style={{ maxWidth: '100%', maxHeight: '300px' }} />
+                    <p>{imageName}</p> {/* Display the name of the selected image */}
                 </div>
             )}
         </div>
@@ -32,6 +48,3 @@ const ImageUpload = () => {
 };
 
 export default ImageUpload;
-
-// npm install tailwindcss postcss autoprefixer
-// npm install react-ripples
