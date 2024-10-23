@@ -22,9 +22,8 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className="App">
         <Sidebar />
-
+      <div className="App">
           <Button variant="outline">Click me</Button>
           <ImageUpload />
         <Statistics />
