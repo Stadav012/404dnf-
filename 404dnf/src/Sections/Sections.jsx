@@ -34,23 +34,23 @@ const Section = ({ heading, pills }) => {
 };
 
 // usage of the Section component
-const App = () => {
-  const awards = [
-    { label: 'Top Contributor', description: 'You have helped 100 users find their lost items.' },
-    { label: 'Best Finder', description: 'You have found 50 lost items.' }
-  ];
+// const App = () => {
+//   const awards = [
+//     { label: 'Top Contributor', description: 'You have helped 100 users find their lost items.' },
+//     { label: 'Best Finder', description: 'You have found 50 lost items.' }
+//   ];
 
-  const lockers = [
-    { label: 'View available lockers', description: 'Locker number: 12' },
-    { label: 'View available lockers', description: 'Locker number: 12' }
-  ];
+//   const lockers = [
+//     { label: 'View available lockers', description: 'Locker number: 12' },
+//     { label: 'View available lockers', description: 'Locker number: 12' }
+//   ];
 
-  return (
-    <div>
-      <Section heading="Awards" pills={awards} />
-      <Section heading="Smart Locker" pills={lockers} />
-    </div>
-  );
-};
+//   return (
+//     <div>
+//       <Section heading="Awards" pills={awards} />
+//       <Section heading="Smart Locker" pills={lockers} />
+//     </div>
+//   );
+// };
 
-export default Sections;
+export default Section;
