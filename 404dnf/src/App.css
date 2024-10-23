@@ -1,7 +1,7 @@
 .App {
   display: flex;
   text-align: center;
-  flex-direction: column;
+  /* flex-direction: column; */
   gap: 1rem;
 }
 
