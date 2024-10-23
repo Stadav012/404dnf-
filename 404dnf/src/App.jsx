@@ -22,8 +22,10 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <Sidebar />
       <div className="App">
+        <Sidebar />
+        
+        <div className='content'>
           <Button variant="outline">Click me</Button>
           <ImageUpload />
         <Statistics />
@@ -31,6 +33,7 @@ function App() {
         <div className='sections'>
           <Section heading="Awards" pills={awards} />
           <Section heading="Smart Locker" pills={lockers} />
+          </div>
         </div>
       </div>
     </ThemeProvider>
