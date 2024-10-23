@@ -1,0 +1,60 @@
+.sidebar {
+    width: 18%; 
+    background-color: white; 
+    padding: 10px; 
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    box-shadow: 1px 1px 1px rgb(37, 37, 37, 0.1);
+    border-radius: 10px;
+}
+
+.sidebar h2 {
+    text-align: left; 
+    margin-bottom: 20px; /* Space below the logo */
+}
+
+.sidebar ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove default padding */
+}
+
+.sidebar li {
+    margin: 15px 0; /* Margin between list items */
+    display: flex;
+    transition:background-color 0.3s;
+    border-radius: 10px;
+    /* background-color: aqua; */
+}
+.sidebar li:hover{
+    background-color: orange;
+}
+
+.ripple-container {
+    display: flex; 
+    width: 100%; /* Full width of the parent li */
+    cursor: pointer; /* Change cursor to pointer */
+    margin-left: 10%;
+    /* background-color: #333; */
+    font-size: 1rem; 
+}
+
+.ripple-container a {
+    display: flex; /* Use flex to align items */
+    justify-content: flex-start;
+    padding: 10px; /* Padding for clickable area */
+    text-decoration: none; /* Remove underline */
+    color: #333; /* Text color */
+    transition: background-color 0.3s; /* Smooth background color transition */
+    border-radius: 10px;
+}
+
+/* Change background color on hover */
+.ripple-container a:hover {
+    background-color: rgb(239, 157, 3, 0.5); /* Change background on hover */
+}
+
+.sidebar a i {
+    margin-right: 10px; 
+}
