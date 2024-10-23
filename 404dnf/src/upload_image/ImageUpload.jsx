@@ -1,6 +1,6 @@
 import './ImageUpload.css'
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button"; // Adjust the path as necessary
+import { Button } from "@/components/ui/button"; 
 
 const ImageUpload = () => {
     const [selectedImage, setSelectedImage] = useState(null);

@@ -3,11 +3,11 @@ import { Button } from "@/components/ui/button"
 import Sidebar from './sidebar/Sidebar';
 import ImageUpload from './upload_image/ImageUpload';
 
-import Statistics from './Statistics/Statistics';
-
 import { ThemeProvider } from "@/components/theme-provider"
 
 import Section from './Sections/Sections';
+
+import Statistics from './Statistics/Statistics';
 
 function App() {
   const awards = [
@@ -26,9 +26,12 @@ function App() {
         <Sidebar />
         
         <div className='content'>
-          <Button variant="outline">Click me</Button>
           <ImageUpload />
-        <Statistics />
+
+          <div className='stats'>
+            <Statistics title="Total Items Found" stats="100" />
+            <Statistics title="Total Items Lost" stats="30" />
+          </div>
         
         <div className='sections'>
           <Section heading="Awards" pills={awards} />

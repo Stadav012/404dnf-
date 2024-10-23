@@ -1,8 +1,11 @@
 import "./statistics.css"
 
-function Statistics() {
+function Statistics({title, stats}) {
     return (
-        <h1>My stats</h1>
+        <div className="statistics">
+            <h2>{title}</h2>
+            <p>{stats}</p>
+        </div>
     )
 }
 

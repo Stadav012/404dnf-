@@ -18,3 +18,8 @@
   padding-top: 3rem;
   align-items: left;
 }
+
+.stats {
+  display: flex;
+  gap: 1rem;
+}
