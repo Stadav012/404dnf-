@@ -1,5 +1,5 @@
-import logo from './logo.svg';
 import './App.css';
+import { Button } from "@/components/ui/button"
 import Sidebar from './sidebar/Sidebar';
 import ImageUpload from './upload_image/ImageUpload';
 
@@ -11,6 +11,8 @@ function App() {
       <Sidebar/>
       <Statistics />
       <ImageUpload/>
+
+      <Button variant="ghost">Click me</Button>
     </div>
   );
 }
