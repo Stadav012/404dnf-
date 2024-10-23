@@ -1,13 +1,14 @@
 import './App.css';
 import { Button } from "@/components/ui/button"
 import Sidebar from './sidebar/Sidebar';
-import ImageUpload from './upload_image/ImageUpload';
 
 import { ThemeProvider } from "@/components/theme-provider"
 
 import Section from './Sections/Sections';
 
 import Statistics from './Statistics/Statistics';
+
+import Video from './Video/video';
 
 function App() {
   const awards = [
@@ -26,7 +27,7 @@ function App() {
         <Sidebar />
         
         <div className='content'>
-          <ImageUpload />
+          <Video />
 
           <div className='stats'>
             <Statistics title="Total Items Found" stats="100" />
