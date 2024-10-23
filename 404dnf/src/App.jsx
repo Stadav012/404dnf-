@@ -10,6 +10,8 @@ import Statistics from './Statistics/Statistics';
 
 import Video from './Video/video';
 
+import ImageUpload from './upload_image/ImageUpload';
+
 function App() {
   const awards = [
     { label: 'Top Contributor', description: 'You have helped 100 users find their lost items.' },
@@ -25,8 +27,10 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <div className="App">
         <Sidebar />
+       
         
         <div className='content'>
+        <ImageUpload/>
           <Video />
 
           <div className='stats'>
@@ -38,6 +42,8 @@ function App() {
           <Section heading="Awards" pills={awards} />
           <Section heading="Smart Locker" pills={lockers} />
           </div>
+
+          
         </div>
       </div>
     </ThemeProvider>
