@@ -1,6 +1,4 @@
-import logo from './logo.svg';
 import './App.css';
-import Sidebar from './sidebar/Sidebar';
 
 import Statistics from './Statistics/Statistics';
 
@@ -9,6 +7,8 @@ function App() {
     <div className="App">
       <Sidebar/>
       <Statistics />
+
+      <Button variant="ghost">Click me</Button>
     </div>
   );
 }
