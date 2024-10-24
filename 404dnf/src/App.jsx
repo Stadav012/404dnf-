@@ -30,7 +30,7 @@ function App() {
        
         
         <div className='content'>
-        <ImageUpload/>
+        {/* <ImageUpload/> */}
           <Video />
 
           <div className='stats'>

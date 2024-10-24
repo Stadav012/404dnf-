@@ -1,5 +1,5 @@
 import React from 'react';
-import './sections.css';
+import './Sections.css';
 
 // pill component
 const Pill = ({ label, description }) => {
@@ -19,7 +19,7 @@ const Pill = ({ label, description }) => {
 const Section = ({ heading, pills }) => {
   return (
     <div className="section">
-      <h4>{heading}</h4>
+      <h2>{heading}</h2>
       <div className="pill-container">
         {pills.map((pill, index) => (
           <Pill 
