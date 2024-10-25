@@ -1,10 +1,12 @@
 import React from 'react';
 import './Sections.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 // pill component
-const Pill = ({ label, description }) => {
+const Pill = ({ label, description, icon }) => {
   return (
     <div className="pill">
+      <i className={`fa fa-${icon} pill-icon`}></i>
       <div className="pill-label">
         {label}
       </div>

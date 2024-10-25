@@ -1,7 +1,7 @@
 import './App.css';
 import { Button } from "@/components/ui/button"
 import Sidebar from './sidebar/Sidebar';
-
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import { ThemeProvider } from "@/components/theme-provider"
 
 import Section from './Sections/Sections';
@@ -14,13 +14,13 @@ import ImageUpload from './upload_image/ImageUpload';
 
 function App() {
   const awards = [
-    { label: 'Top Contributor', description: 'You have helped 100 users find their lost items.' },
-    { label: 'Best Finder', description: 'You have found 50 lost items.' }
+    { label: 'Top Contributor', description: 'You have helped 100 users find their lost items.', icon: 'trophy' },
+    { label: 'Best Finder', description: 'You have found 50 lost items.', icon: 'medal' }
   ];
 
   const lockers = [
-    { label: 'View available lockers', description: 'Locker number: 12' },
-    { label: 'View available lockers', description: 'Locker number: 12' }
+    { label: 'View available lockers', description: 'Locker number: 12', icon: 'bars' },
+    { label: 'View available lockers', description: 'Locker number: 12', icon: 'phone' }
   ];
 
   return (
@@ -30,7 +30,7 @@ function App() {
        
         
         <div className='content'>
-        {/* <ImageUpload/> */}
+        {/* <ImageUpload/> */}       {/* I believe this was meant for testing, I removed to run a few tests*/}
           <Video />
 
           <div className='stats'>
