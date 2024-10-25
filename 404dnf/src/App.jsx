@@ -1,13 +1,16 @@
 import './App.css';
 import { Button } from "@/components/ui/button"
 import Sidebar from './sidebar/Sidebar';
-import ImageUpload from './upload_image/ImageUpload';
-
-import Statistics from './Statistics/Statistics';
 
 import { ThemeProvider } from "@/components/theme-provider"
 
 import Section from './Sections/Sections';
+
+import Statistics from './Statistics/Statistics';
+
+import Video from './Video/video';
+
+import ImageUpload from './upload_image/ImageUpload';
 
 function App() {
   const awards = [
@@ -24,16 +27,23 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <div className="App">
         <Sidebar />
+       
         
         <div className='content'>
-          <Button variant="outline">Click me</Button>
-          <ImageUpload />
-        <Statistics />
+        {/* <ImageUpload/> */}
+          <Video />
+
+          <div className='stats'>
+            <Statistics title="Total Items Found" stats="100" />
+            <Statistics title="Total Items Lost" stats="30" />
+          </div>
         
         <div className='sections'>
           <Section heading="Awards" pills={awards} />
           <Section heading="Smart Locker" pills={lockers} />
           </div>
+
+          
         </div>
       </div>
     </ThemeProvider>
