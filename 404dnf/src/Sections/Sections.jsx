@@ -6,13 +6,19 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 const Pill = ({ label, description, icon }) => {
   return (
     <div className="pill">
-      <i className={`fa fa-${icon} pill-icon`}></i>
-      <div className="pill-label">
-        {label}
+      <div className="pill-icon">
+      <i className={`fa fa-${icon}`} aria-hidden="true"></i>
       </div>
-      <div className="pill-description">
-        {description}
+      <div className="pill-content">
+        <div className="pill-label">
+          {label}
+        </div>
+        {/* <i className="fas fa-exclamation-triangle"></i> */}
+        <div className="pill-description">
+          {description}
+        </div>
       </div>
+      
     </div>
   );
 };
@@ -28,6 +34,7 @@ const Section = ({ heading, pills }) => {
             key={index}
             label={pill.label}
             description={pill.description}
+            icon={pill.icon}
           />
         ))}
       </div>
