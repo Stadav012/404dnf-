@@ -53,3 +53,12 @@ body{
     color: #333;
   }
   
+  .sections h2 {
+    color: #1C140D;
+    font-feature-settings: 'dlig' on;
+    /* font-family: "Spline Sans"; */
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.5rem; 
+}

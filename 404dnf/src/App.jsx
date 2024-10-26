@@ -20,7 +20,7 @@ function App() {
 
   const lockers = [
     { label: 'View available lockers', description: 'Locker number: 12', icon: 'bars' },
-    { label: 'View available lockers', description: 'Locker number: 12', icon: 'medal' }
+    { label: 'View available lockers', description: 'Locker number: 12', icon: 'compass' }
   ];
 
   return (
