@@ -1,5 +1,6 @@
 import "./statistics.css"
 
+
 function Statistics({title, stats}) {
     return (
         <div className="statistics">

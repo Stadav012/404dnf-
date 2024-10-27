@@ -1,6 +1,10 @@
 import React from 'react';
 import './Sections.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+"use client";
+import { motion } from "framer-motion";
+import {Highlight } from "@/components/ui/hero-highlight";
+
 
 // pill component
 const Pill = ({ label, description, icon }) => {
@@ -9,20 +13,37 @@ const Pill = ({ label, description, icon }) => {
       <div className="pill-icon">
       <i className={`fa fa-${icon}`} aria-hidden="true"></i>
       </div>
-      <div className="pill-content">
+      <motion.div
+        initial={{
+          opacity: 0,
+          y: 20,
+        }}
+        animate={{
+          opacity: 1,
+          y: [20, -5, 0],
+        }}
+        transition={{
+          duration: 0.5,
+          ease: [0.4, 0.0, 0.2, 1],
+        }}
+        className="pill-content">
+        <Highlight>
         <div className="pill-label">
           {label}
         </div>
+        </Highlight>
         {/* <i className="fas fa-exclamation-triangle"></i> */}
         <div className="pill-description">
           {description}
         </div>
-      </div>
+      </motion.div>
       
     </div>
   );
 };
 
+      
+       
 // Awards/Smartlockers or any additional headings
 const Section = ({ heading, pills }) => {
   return (
