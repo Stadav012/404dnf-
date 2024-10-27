@@ -37,7 +37,7 @@
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 2rem;
-  flex-direction: column;
+  z-index: 10;
 }
 
 @media (min-width: 768px) {

@@ -13,6 +13,7 @@ import { SparklesCore } from "@/components/ui/sparkles";
 
 
 
+
 <div className="">
       {/* Radial gradient for the container to give a faded look */}
       <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
@@ -39,12 +40,10 @@ function App() {
         <Sidebar />
         
         <div className='content'>
-          <BentoGrid className="max-w-5xl mx-auto md:auto-rows-[30rem] gap-y-24 p-5">
+          <BentoGrid className="max-w-5xl mx-auto md:auto-rows-[30rem] gap-y-44 p-5">
            
             {/* Video Item */}
             <BentoGridItem
-              title="Item Overview Video"
-              description="Watch an overview of all features."
               header={
                 <div>
                  <Spotlight
@@ -56,7 +55,7 @@ function App() {
                     <h1 className="md:text-4xl text-2xl lg:text-4xl font-bold text-center text-white relative z-20">
                       Welcome Rajesh
                     </h1>
-                    <div className="w-[25rem] h-30 relative">
+                    <div className="w-[40rem] h-30 relative">
                       {/* Gradients */}
                       <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-[2px] w-3/4 blur-sm" />
                       <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-px w-3/4" />
@@ -80,46 +79,73 @@ function App() {
                 </div>
                 
               }
-              className="md:col-span-2 h-[35rem]"
-              icon={<IconClipboardCopy className="h-4 w-4 text-neutral-500" />}
+              className="md:col-span-5 h-[40rem]"
               />
             
-
-            
-
-            {/* Awards Item */}
+            {/* Combined Awards and Smart Locker Access Item */}
             <BentoGridItem
-              title="Awards"
-              description="Achievements and recognitions."
+              className="md:col-span-5 h-[35rem]"
               header={
-                <HeroHighlight>
-                  <Section heading="Awards" pills={awards} />
-                </HeroHighlight>
+                <div className="flex flex-col md:flex-row gap-4 h-full">
+                  
+                  {/* Awards Section */}
+                  <div className="flex-1">
+                    <BentoGridItem
+                      title="Awards"
+                      description="Achievements and recognitions."
+                      header={
+                        <HeroHighlight>
+                          <Section heading="Awards" pills={awards} />
+                        </HeroHighlight>
+                      }
+                      className="h-full"
+                      icon={<IconTrophy className="h-4 w-4 text-neutral-500" />}
+                    />
+                  </div>
+
+                  {/* Smart Locker Access Section */}
+                  <div className="flex-1">
+                    <BentoGridItem
+                      title="Smart Locker Access"
+                      description="Access to smart locker details."
+                      header={
+                        <HeroHighlight>
+                          <Section heading="Smart Locker" pills={lockers} />
+                        </HeroHighlight>
+                      }
+                      className="h-full"
+                      icon={<IconBox className="h-4 w-4 text-neutral-500" />}
+                    />
+                  </div>
+
+                </div>
               }
-              className="md:col-span-1 h-[35rem]"
-              icon={<IconTrophy className="h-4 w-4 text-neutral-500" />}
             />
 
-            {/* Smart Locker Access Item */}
-            <BentoGridItem
-              title="Smart Locker Access"
-              description="Access to smart locker details."
-              header={<Section heading="Smart Locker" pills={lockers} />}
-              className="md:col-span-1 h-[35rem]"
-              icon={<IconBox className="h-4 w-4 text-neutral-500" />}
-            />
-            
-          {/* Statistics Overview Item */}
+                        {/* Statistics Overview Item */}
           <BentoGridItem
             title="Statistics Overview"
             description="Statistics of items found and lost."
-            header={
-              <div className='stats'>
-                <Statistics title="Total Items Found" stats="100" />
-                <Statistics title="Total Items Lost" stats="30" />
-              </div>
+              header={
+                <div>
+                  <div className="absolute">
+                    <SparklesCore
+                      id="tsparticlesfullpage"
+                      background="transparent"
+                      minSize={0.6}
+                      maxSize={1.4}
+                      particleDensity={100}
+                      className="w-full h-full"
+                      particleColor="#FFFFFF"
+                    />
+                  </div>
+                  <div className='stats'>
+                    <Statistics title="Total Items Found" stats="100" />
+                    <Statistics title="Total Items Lost" stats="30" />
+                    </div>
+                </div>
             }
-            className="md:col-span-2 h-[35rem]"
+            className="md:col-span-5 h-[18rem]"
             icon={<IconTrophy className="h-4 w-4 text-neutral-500" />}
             />
           </BentoGrid>

@@ -13,7 +13,7 @@
 }
 
 .statistics > h2 {
-    color: #1C140D;
+    color: #fff;
     font-feature-settings: 'dlig' on;
     font-family: "Spline Sans";
     font-size: 1rem;
@@ -23,7 +23,7 @@
 }
 
 .statistics > p {
-    color: #1C140D;
+    color: #dfd8d1;
     font-feature-settings: 'dlig' on;
     font-family: "Spline Sans";
     font-size: 1.5rem;
