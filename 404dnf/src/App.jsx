@@ -40,7 +40,7 @@ function App() {
         <Sidebar />
         
         <div className='content'>
-          <BentoGrid className="max-w-5xl mx-auto md:auto-rows-[30rem] gap-y-44 p-5">
+          <BentoGrid className="max-w-5xl mx-auto md:auto-rows-[30rem] gap-y-24 p-5">
            
             {/* Video Item */}
             <BentoGridItem
@@ -79,7 +79,7 @@ function App() {
                 </div>
                 
               }
-              className="md:col-span-5 h-[40rem]"
+              className="md:col-span-5 h-[33rem]"
               />
             
             {/* Combined Awards and Smart Locker Access Item */}
