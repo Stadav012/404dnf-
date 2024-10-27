@@ -4,6 +4,10 @@
   flex-wrap: wrap;
 }
 
+body {
+  background-color: #383534;
+}
+
 /* Sidebar adjustment for smaller screens */
 .sidebar {
   width: 100%;
