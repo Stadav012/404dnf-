@@ -8,9 +8,17 @@ import Section from './Sections/Sections';
 
 import Statistics from './Statistics/Statistics';
 
+// import { LampVideo } from '@/components/ui/lamp';
+
+import { BackgroundBeamsWithCollision } from '@/components/ui/background-beams-with-collision';
+
 import Video from './Video/video';
 
-import ImageUpload from './upload_image/ImageUpload';
+import { LampContainer } from "@/components/ui/lamp";
+
+
+
+
 
 function App() {
   const awards = [
@@ -27,21 +35,23 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <div className="App">
         <Sidebar />
-       
         
         <div className='content'>
         {/* <ImageUpload/> */}       {/* I believe this was meant for testing, I removed to run a few tests*/}
           <Video />
+            {/* <LampVideo className="lamp-video"/> */}
 
           <div className='stats'>
             <Statistics title="Total Items Found" stats="100" />
             <Statistics title="Total Items Lost" stats="30" />
           </div>
-        
-        <div className='sections'>
-          <Section heading="Awards" pills={awards} />
-          <Section heading="Smart Locker" pills={lockers} />
+
+  
+          <div className='sections z-20'>
+            <Section heading="Awards" pills={awards} />
+              <Section heading="Smart Locker" pills={lockers} />
           </div>
+          
 
           
         </div>

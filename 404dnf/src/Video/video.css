@@ -6,10 +6,10 @@
   
   /* Video player element */
   video {
-    width: 84%;
+    width: 100%;
     height: auto;
     margin-bottom: 40px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3); 
+    box-shadow: 0px 4px 15px rgba(233, 72, 3, 0.3); 
     border-radius: 10px;
   }
   
