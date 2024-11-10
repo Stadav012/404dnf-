@@ -50,10 +50,10 @@ function Dashboard() {
       <BentoGridItem
         header={
           <div>
-            {/* <Spotlight
+            <Spotlight
               className="-top-5 left-0 md:left-60 md:-top-20"
               fill="#F58327"
-            /> */}
+            />
             <Video />
             <div>
               <h1 className="md:text-4xl text-2xl lg:text-4xl font-bold text-center text-white relative z-20">

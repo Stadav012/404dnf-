@@ -5,8 +5,8 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 
-export const Signup = () => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+export function Signup() {
+  const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form submitted");
   };
@@ -19,7 +19,6 @@ export const Signup = () => {
         Login to aceternity if you can because we don&apos;t have a login flow
         yet
       </p>
-
       <form className="my-8" onSubmit={handleSubmit}>
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
@@ -83,7 +82,7 @@ export const Signup = () => {
       </form>
     </div>
   );
-};
+}
 
 const BottomGradient = () => {
   return (
@@ -94,13 +93,7 @@ const BottomGradient = () => {
   );
 };
 
-const LabelInputContainer = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
+const LabelInputContainer = ({ children, className }) => {
   return (
     <div className={cn("flex flex-col space-y-2 w-full", className)}>
       {children}
