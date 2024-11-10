@@ -15,7 +15,7 @@ function Submit() {
         <div className="submit">
             {/* Conditional rendering of message after submit */}
             {submitted ? (
-                <p>Form Submitted!</p>
+                <p>Form Successfully Submitted!</p>
             ) : (
                 <button className="btn" onClick={handleSubmit}>
                     Submit
