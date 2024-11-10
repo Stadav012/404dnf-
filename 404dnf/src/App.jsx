@@ -10,6 +10,7 @@ import { IconClipboardCopy, IconTrophy, IconBox } from "@tabler/icons-react";
 import { HeroHighlight } from "@/components/ui/hero-highlight";
 import { Spotlight } from "@/components/ui/spotlight";
 import { SparklesCore } from "@/components/ui/sparkles";
+import Submit from './Submit/submit';
 // import ImageUpload from './upload_image/ImageUpload';
 
 
@@ -40,6 +41,7 @@ function App() {
       <div className="App">
         <Sidebar />
         {/* <ImageUpload /> */}
+        <Submit />
         
 
         
