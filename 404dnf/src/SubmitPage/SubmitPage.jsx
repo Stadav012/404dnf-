@@ -8,7 +8,7 @@ import Submit from '../Submit/submit';
 
 const SubmitPage = () => {
     return(
-        <div class="content">
+        <div class="submit-page-content">
             <form action="">
                 <h2>Submit found item</h2>
                 <p>Please fill in the details you found</p>

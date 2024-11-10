@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App"; // Main layout component
 import Dashboard from "./Dashboard"; // Import your individual pages
 import ReportLost from "./ReportLostnFound/ReportLost";
-import Submit from "./Submit/submit";
+import SubmitPage from "./SubmitPage/SubmitPage";
 import { SignupPage } from "./UserAuthPages/SignUpFlow/SignupPage";
 // Import additional page components as needed
 
@@ -15,7 +15,7 @@ ReactDOM.render(
       <Route path="/" element={<App />}>
         <Route index element={<Dashboard />} />
         <Route path="report-lost" element={<ReportLost />} />
-        <Route path="submit-found" element={<Submit />} />
+        <Route path="submit-found" element={<SubmitPage />} />
         <Route path="signup" element={<SignupPage />} />
         {/* Add more routes here */}
       </Route>
