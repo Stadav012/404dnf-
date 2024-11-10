@@ -42,11 +42,7 @@ function App() {
       <div className="App">
         <Sidebar />
         {/* <ImageUpload /> */}
-<<<<<<< HEAD
-        <Submit />
-=======
         <SubmitPage />
->>>>>>> af22592abfcfa506c4a2c62652a0157ed4e6dc6e
         
 
         
