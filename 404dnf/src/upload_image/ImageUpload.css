@@ -88,7 +88,7 @@
   /* Desktop (>=1024px) */
   @media (min-width: 1024px) {
     .image-upload {
-      width: 60%; /* Further increase width on desktop */
+      width: 100%; /* Further increase width on desktop */
       padding: 40px;
     }
   
