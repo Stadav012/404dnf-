@@ -1,128 +1,70 @@
-
-import React, { useState } from 'react';
-import './Sidebar.css'; // Import the CSS file for styling
-import Ripples from 'react-ripples';
+// Sidebar.js
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Ripples from "react-ripples";
+import "./Sidebar.css";
 
 const Sidebar = () => {
-    const [isOpen, setIsOpen] = useState(true); // State to manage sidebar visibility
+  const [isOpen, setIsOpen] = useState(true);
 
-    const toggleSidebar = () => {
-        setIsOpen(!isOpen); // Toggle the sidebar state
-    };
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
 
-    return (
-        <div className={`sidebar-container ${isOpen ? 'open' : 'closed'}`} >
-            <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
-                {/* <h2>404DNF</h2> */}
+  return (
+    <div className={`sidebar-container ${isOpen ? "open" : "closed"}`}>
+      <div className={`sidebar ${isOpen ? "open" : "closed"}`}>
+        <ul>
+          <li>
+            <Ripples color="rgba(118, 80, 10, 0.5)">
+              <Link to="/">
+                <i className="fas fa-home"></i>
+                <span className="sidebar-text">{isOpen && " Dashboard"}</span>
+              </Link>
+            </Ripples>
+          </li>
+          <li>
+            <Ripples color="rgba(255, 0, 0, 0.5)">
+              <Link to="/report-lost">
+                <i className="fas fa-exclamation-triangle"></i>
+                <span className="sidebar-text">{isOpen && " Report Lost"}</span>
+              </Link>
+            </Ripples>
+          </li>
+          <li>
+            <Ripples color="rgba(255, 0, 0, 0.5)">
+              <Link to="/submit-found">
+                <i className="fas fa-check-circle"></i>
+                <span className="sidebar-text">
+                  {isOpen && " Submit Found"}
+                </span>
+              </Link>
+            </Ripples>
+          </li>
+          {/* Add more links as needed */}
+          <li>
+            <Ripples color="rgba(255, 0, 0, 0.5)">
+              <Link to="/signup">
+                <i className="fas fa-check-circle"></i>
+                <span className="sidebar-text">{isOpen && " Logout"}</span>
+              </Link>
+            </Ripples>
+          </li>
+        </ul>
+      </div>
 
-                <ul>
-                    {/** Example of a menu item with icons */}
-                    {isOpen && <li>
-                        <div className="ripple-container">
-                            <Ripples color="rgba(118, 80, 10, 0.5)">
-                            {isOpen && <a href="#dashboard">
-                                    <i className="fas fa-home"></i>
-                                    <span className='sidebar-text'>{isOpen && " Dashboard"}</span>
-                                </a>}
-                            </Ripples>
-                        </div>
-                    </li>}
-                    {/* Repeat for other items... */}
-                    {isOpen &&<li>
-                        <div className="ripple-container">
-                        {isOpen && <Ripples color="rgba(255, 0, 0, 0.5)">
-                                <a href="#profile">
-                                    <i className="fas fa-exclamation-triangle"></i>
-                                    <span className='sidebar-text'>{isOpen && " Report Lost"}</span>
-                                </a>
-                            </Ripples>}
-                        </div>
-                    </li>}
-
-                    {isOpen &&<li>
-                        <div className="ripple-container">
-                        {isOpen && <Ripples color="rgba(255, 0, 0, 0.5)">
-                                <a href="#profile">
-                                <i className="fas fa-check-circle"></i>
-                                    <span className='sidebar-text'>{isOpen && " Submit Found"}</span>
-                                </a>
-                            </Ripples>}
-                        </div>
-                    </li>}
-
-                    {isOpen &&<li>
-                        <div className="ripple-container">
-                        {isOpen && <Ripples color="rgba(255, 0, 0, 0.5)">
-                                <a href="#profile">
-                                <i className="fas fa-file-alt"></i>
-                                    <span className='sidebar-text'>{isOpen && " Claims"}</span>
-                                </a>
-                            </Ripples>}
-                        </div>
-                    </li>}
-
-
-
-
-                    {isOpen &&<li>
-                        <div className="ripple-container">
-                        {isOpen && <Ripples color="rgba(255, 0, 0, 0.5)">
-                                <a href="#profile">
-                                <i className="fas fa-box"></i>
-                                    <span className='sidebar-text'>{isOpen && " Smart Locker"}</span>
-                                </a>
-                            </Ripples>}
-                        </div>
-                    </li>}
-
-
-                    {isOpen &&<li>
-                        <div className="ripple-container">
-                        {isOpen && <Ripples color="rgba(255, 0, 0, 0.5)">
-                                <a href="#profile">
-                                <i className="fas fa-inbox"></i>
-                                    <span className='sidebar-text'>{isOpen && " Inbox"}</span>
-                                </a>
-                            </Ripples>}
-                        </div>
-                    </li>}
-
-
-                    {isOpen &&<li>
-                        <div className="ripple-container">
-                        {isOpen && <Ripples color="rgba(255, 0, 0, 0.5)">
-                                <a href="#profile">
-                                <i className="fas fa-cog"></i>
-                                    <span className='sidebar-text'>{isOpen && " Settings"}</span>
-                                </a>
-                            </Ripples>}
-                        </div>
-                    </li>}
-
-                    {isOpen &&<li>
-                        <div className="ripple-container">
-                        {isOpen && <Ripples color="rgba(255, 0, 0, 0.5)">
-                                <a href="#profile">
-                                <i className="fas fa-sign-out-alt"></i>
-                                    <span className='sidebar-text'>{isOpen && " Log out"}</span>
-                                </a>
-                            </Ripples>}
-                        </div>
-                    </li>}
-
-                </ul>
-            </div>
-
-            {/* Menu icon */}
-            <div className='menu-icon-container'>
-                <Ripples color="rgba(220, 220, 220, 0.5)">
-                    <button className="menu-icon" onClick={toggleSidebar}>
-                        <i className={`fas ${isOpen ? 'fa-angle-left' : 'fa-angle-right'}`}></i>
-                    </button>
-                </Ripples>
-            </div>
-        </div>
-    );
+      {/* Toggle Button */}
+      <div className="menu-icon-container">
+        <Ripples color="rgba(220, 220, 220, 0.5)">
+          <button className="menu-icon" onClick={toggleSidebar}>
+            <i
+              className={`fas ${isOpen ? "fa-angle-left" : "fa-angle-right"}`}
+            ></i>
+          </button>
+        </Ripples>
+      </div>
+    </div>
+  );
 };
 
 export default Sidebar;
