@@ -1,5 +1,7 @@
 import React from "react";
 import ImageUpload from "../upload_image/ImageUpload";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import "./SubmitPage.css";
 // import ImageUpload from '../upload_image/ImageUpload';
 import Submit from "../Submit/submit";
@@ -12,7 +14,7 @@ const SubmitPage = () => {
         <h2>Submit found item</h2>
         <p>Please fill in the details you found</p>
 
-        <input type="text" id="item-name" placeholder="Item name" />
+        <Input type="text" id="item-name" placeholder="Item name" />
 
         <div id="image-upload">
           <h3>Upload image</h3>
@@ -27,7 +29,10 @@ const SubmitPage = () => {
         {/* add the additional information text */}
         <div id="additional-info">
           <h3>Additional information</h3>
-          <input type="text" placeholder="Add additional information" />
+          <Textarea
+            id="additional-info-text"
+            placeholder="Add additional information"
+          />
         </div>
         <div id="submit-btn">
           <button>Submit</button>

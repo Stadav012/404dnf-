@@ -1,102 +1,97 @@
-
 /* Center and style the main container */
 .submit-page-content {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    margin-left: 22%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-left: 22%;
 }
 
 form {
-    
-    background-color: #f8f9fa;
-    padding: 20px;
-    /* border: 2px solid #ddd; */
-    /* border-radius: 10px; */
-    max-width: 600px;
-    width: 100%;
-    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
-
+  background-color: #f8f9fa;
+  padding: 20px;
+  /* border: 2px solid #ddd; */
+  /* border-radius: 10px; */
+  max-width: 600px;
+  width: 100%;
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
 }
 
 /* Headings */
 form h2 {
-    /* font-size: 1.5rem; */
-    /* color: #333; */
-    margin-bottom: 10px;
-    /* text-align: center; */
-    color: #1C140D;
-    font-feature-settings: 'dlig' on;
-    font-family: "Spline Sans";
-    font-size: 22px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 28px; /* 127.273% */
-    align-self: stretch;
+  /* font-size: 1.5rem; */
+  /* color: #333; */
+  margin-bottom: 10px;
+  /* text-align: center; */
+  color: #1c140d;
+  font-feature-settings: "dlig" on;
+  font-family: "Spline Sans";
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px; /* 127.273% */
+  align-self: stretch;
 }
 
 form p {
-    font-size: 1rem;
-    color: #666;
-    /* text-align: center; */
-    margin-bottom: 20px;
+  font-size: 1rem;
+  color: #666;
+  /* text-align: center; */
+  margin-bottom: 20px;
 }
 
 h3 {
-    margin-bottom: 10px;
-    color: #1C140D;
-    font-feature-settings: 'dlig' on;
-    font-family: "Spline Sans";
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 23px; /* 127.778% */
-    align-self: stretch;
+  margin-bottom: 10px;
+  color: #1c140d;
+  font-feature-settings: "dlig" on;
+  font-family: "Spline Sans";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 23px; /* 127.778% */
+  align-self: stretch;
 }
 
 input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    color: #1C140D;
-    
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  color: #1c140d;
 }
 
 #image-upload {
-    /* text-align: center; */
-    margin-bottom: 20px;
+  /* text-align: center; */
+  margin-bottom: 20px;
 }
 
 /* Categories Section */
 #item-category {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
 }
 
 /* Additional Info Section */
 #additional-info {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 #additional-info input[type="text"] {
-
-    display: flex;
-    min-height: 144px;
-    padding: 16px;
-    align-items: flex-start;
-    flex: 1 0 0;
-    align-self: stretch;
-    width: 70%;
-    border-radius: 12px;
-    background: #F5EDE8;
+  display: flex;
+  min-height: 144px;
+  padding: 16px;
+  align-items: flex-start;
+  flex: 1 0 0;
+  align-self: stretch;
+  width: 70%;
+  border-radius: 12px;
+  background: #f5ede8;
 }
 
 /* Button Styling */
@@ -115,100 +110,101 @@ input[type="text"] {
 button:hover {
     background-color: #0056b3;
 } */
-#submit-btn{
-    display: flex;
-    width: 70%;
-    max-width: 960px;
-    padding: 20px 0px;
-    flex-direction: column;
-    align-items: flex-start; 
+#submit-btn {
+  display: flex;
+  width: 70%;
+  max-width: 960px;
+  padding: 20px 0px;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 #submit-btn button {
-    display: flex;
-    width: 100%;
-    height: 48px;
-    min-width: 84px;
-    max-width: 480px;
-    padding: 0px 20px;
-    justify-content: center;
-    align-items: center;
-    border-radius: 12px;
-    background: #F58526;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  display: flex;
+  width: 100%;
+  height: 48px;
+  min-width: 84px;
+  max-width: 480px;
+  padding: 0px 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  background: #f58526;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 #submit-btn button:hover {
-    background-color: green;
+  background-color: green;
 }
 
+h3 {
+  color: #1c140d;
+  font-feature-settings: "dlig" on;
+  font-family: "Spline Sans";
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px; /* 127.273% */
 
-h3{
-    color: #1C140D;
-    font-feature-settings: 'dlig' on;
-    font-family: "Spline Sans";
-    font-size: 22px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 28px; /* 127.273% */
-
-    display: flex;
-    padding: 16px 16px 8px 16px;
-    flex-direction: column;
-    align-items: flex-start;
-    align-self: stretch;
+  display: flex;
+  padding: 16px 16px 8px 16px;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
 }
 
-#item-name{
-    display: flex;
-    height: 56px;
-    padding: 16px;
-    align-items: center;
-    align-self: stretch;
+#item-name {
+  display: flex;
+  height: 56px;
+  padding: 16px;
+  align-items: center;
+  align-self: stretch;
 
-    border-radius: 12px;
-    background: #F5EDE8;
-    width: 60%;
+  border-radius: 12px;
+  background: #f5ede8;
+  width: 60%;
+}
 
-    
+#additional-info-text {
+  border-radius: 12px;
+  background: #f5ede8;
 }
 
 /* Basic Reset */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-
 
 /* Responsive Design */
 @media (min-width: 768px) {
-    form h2 {
-        font-size: 1.8rem;
-    }
+  form h2 {
+    font-size: 1.8rem;
+  }
 
-    h3 {
-        font-size: 1.3rem;
-    }
+  h3 {
+    font-size: 1.3rem;
+  }
 
-    input[type="text"],
-    input[type="Add additional information"] {
-        font-size: 1.1rem;
-    }
+  input[type="text"],
+  input[type="Add additional information"] {
+    font-size: 1.1rem;
+  }
 
-    button {
-        font-size: 1.1rem;
-    }
+  button {
+    font-size: 1.1rem;
+  }
 }
 
 @media (min-width: 992px) {
-    form {
-        padding: 30px;
-        max-width: 700px;
-    }
+  form {
+    padding: 30px;
+    max-width: 700px;
+  }
 
-    form h2 {
-        font-size: 2rem;
-    }
+  form h2 {
+    font-size: 2rem;
+  }
 }
