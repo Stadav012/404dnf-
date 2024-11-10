@@ -5,6 +5,7 @@ import Sidebar from './sidebar/Sidebar';
 import Video from './Video/video';
 import Statistics from './Statistics/Statistics';
 import Section from './Sections/Sections';
+import SubmitPage from './SubmitPage/SubmitPage';
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { IconClipboardCopy, IconTrophy, IconBox } from "@tabler/icons-react";
 import { HeroHighlight } from "@/components/ui/hero-highlight";
@@ -41,7 +42,11 @@ function App() {
       <div className="App">
         <Sidebar />
         {/* <ImageUpload /> */}
+<<<<<<< HEAD
         <Submit />
+=======
+        <SubmitPage />
+>>>>>>> af22592abfcfa506c4a2c62652a0157ed4e6dc6e
         
 
         

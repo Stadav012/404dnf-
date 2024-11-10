@@ -1,0 +1,9 @@
+h2{
+    color: #1C140D;
+    font-feature-settings: 'dlig' on;
+    font-family: "Spline Sans";
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 28px; /* 127.273% */
+}
