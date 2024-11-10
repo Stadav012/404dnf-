@@ -42,6 +42,7 @@ function App() {
         <Sidebar />
         {/* <ImageUpload /> */}
         <SubmitPage />
+
         
 
         
@@ -162,6 +163,7 @@ function App() {
       </div>
     </ThemeProvider>
   );
+
 }
 
 export default App;
