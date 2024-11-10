@@ -8,9 +8,9 @@ function Video() {
 
   // List of video URLs from the public/videos folder
   const videos = [
-    '/videos/video1.mp4',
-    '/videos/video2.mp4',
-    '/videos/video3.mp4'
+    '/videos/sunny.mp4',
+    '/videos/butterfly.mp4',
+    
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0); // Track the current video index
