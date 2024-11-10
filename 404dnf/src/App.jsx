@@ -10,6 +10,7 @@ import { IconClipboardCopy, IconTrophy, IconBox } from "@tabler/icons-react";
 import { HeroHighlight } from "@/components/ui/hero-highlight";
 import { Spotlight } from "@/components/ui/spotlight";
 import { SparklesCore } from "@/components/ui/sparkles";
+// import ImageUpload from './upload_image/ImageUpload';
 
 
 
@@ -38,6 +39,9 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <div className="App">
         <Sidebar />
+        {/* <ImageUpload /> */}
+        
+
         
         <div className='content'>
           <BentoGrid className="max-w-5xl mx-auto md:auto-rows-[30rem] gap-y-24 p-5">
@@ -142,13 +146,16 @@ function App() {
                   <div className='stats'>
                     <Statistics title="Total Items Found" stats="100" />
                     <Statistics title="Total Items Lost" stats="30" />
+                    
                     </div>
+                    
                 </div>
             }
             className="md:col-span-5 h-[18rem]"
             icon={<IconTrophy className="h-4 w-4 text-neutral-500" />}
             />
           </BentoGrid>
+          
         </div>
       </div>
     </ThemeProvider>
