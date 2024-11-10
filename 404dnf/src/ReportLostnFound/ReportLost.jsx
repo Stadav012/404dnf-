@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-
+import { Textarea } from "@/components/ui/textarea"; // Import Textarea component
+import { Input } from "@/components/ui/input"; // Import Input component
 import "./ReportLost.css";
 import Sidebar from "../sidebar/Sidebar";
 import Submit from "../Submit/submit";
 import ImageUpload from "../upload_image/ImageUpload";
-
-
-
 
 const ReportLost = () => {
   const [formData, setFormData] = useState({
@@ -56,7 +54,7 @@ const ReportLost = () => {
           </select>
 
           <label htmlFor="description">Description</label>
-          <textarea
+          <Textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
@@ -64,7 +62,7 @@ const ReportLost = () => {
           />
 
           <label htmlFor="color">Color</label>
-          <input
+          <Input
             type="text"
             name="color"
             value={formData.color}
@@ -73,7 +71,7 @@ const ReportLost = () => {
           />
 
           <label htmlFor="size">Size (optional)</label>
-          <input
+          <Input
             type="text"
             name="size"
             value={formData.size}
@@ -82,7 +80,7 @@ const ReportLost = () => {
           />
 
           <label htmlFor="location">Where was it lost?</label>
-          <textarea
+          <Textarea
             name="location"
             value={formData.location}
             onChange={handleChange}
