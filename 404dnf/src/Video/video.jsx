@@ -8,7 +8,8 @@ function Video() {
 
   // List of video URLs from the public/videos folder
   const videos = [
-    '/videos/sunny.mp4'
+    '/videos/sunny.mp4',
+    '/videos/butterfly.mp4',
     
   ];
 
