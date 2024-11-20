@@ -50,6 +50,14 @@ const Sidebar = () => {
               </Link>
             </Ripples>
           </li>
+          <li>
+            <Ripples color="rgba(255, 0, 0, 0.5)">
+              <Link to="/admin">
+                <i className="fas fa-chart-line"></i>
+                <span className="sidebar-text">{isOpen && " Admin"}</span>
+              </Link>
+            </Ripples>
+          </li>
         </ul>
       </div>
 

@@ -3,7 +3,6 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import "./App.css";
 import Sidebar from "./sidebar/Sidebar";
-import { ThemeProvider } from "@/components/theme-provider";
 
 function App() {
   return (
@@ -14,7 +13,6 @@ function App() {
       </div>
     </div>
   );
-
 }
 
 export default App;

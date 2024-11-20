@@ -6,6 +6,9 @@
     }
   ],
   "compilerOptions": {
+    "target": "es5",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
