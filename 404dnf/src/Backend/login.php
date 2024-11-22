@@ -20,7 +20,7 @@ if($_SERVER["REQUEST METHOD"] == "POST"){
     }
 
     // to check if user exists in the database
-    $query = 'SELECT * FROM 404dnf WHERE username=?';
+    $query = 'SELECT * FROM users WHERE username=?';
     $stmt = $conn->prepare($query);
     $stmt->bind_param('s', $email);
     $stmt->execute();
