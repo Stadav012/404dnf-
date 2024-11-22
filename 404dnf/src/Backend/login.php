@@ -30,6 +30,22 @@ if($_SERVER["REQUEST METHOD"] == "POST"){
     if ($result->num_rows < 1){
         echo '<script> alert("User not recognized in database. Try signing up!"); </script>';
         header("Location: Create/signup.php");
+    } else {
+        // user exists, to verify passwords match and redirect them to appropriate page
+        $rows = $result->fetch_assoc();
+
+        // extracting values from the database, I am assuming only the two (password and username)
+        // since database is 404 rn
+        $user = $row['username'];
+        $user_pass = $row['password'];
+
+        // verifying password with hashed stored password
+        if(password_verify($pass, $user_pass)){
+            // redirecting based on role (as roles are implemented)
+            header("Location: Read/dashboard.php");
+        }
     }
+    $stmt->close();
 }
+$conn->close();
 ?>
