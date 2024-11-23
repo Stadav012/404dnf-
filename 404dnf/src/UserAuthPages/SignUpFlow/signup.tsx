@@ -11,6 +11,7 @@ export function AuthForm() {
     const [formData, setFormData] = useState({
         firstname: "",
         lastname: "",
+        username: "",
         email: "",
         password: "",
         comfirm_password: "",
@@ -45,6 +46,7 @@ export function AuthForm() {
             : {
                   action: "register",
                   firstname: formData.firstname,
+                  username: formData.username,
                   lastname: formData.lastname,
                   email: formData.email,
                   password: formData.password,
@@ -95,6 +97,19 @@ export function AuthForm() {
                             />
                         </LabelInputContainer>
                     </div>
+                )}
+                {!isLogin && (
+                    <LabelInputContainer>
+                        <Label htmlFor="username">Username</Label>
+                        <Input
+                            id="username"
+                            placeholder="tylerdurden"
+                            type="text"
+                            value={formData.username}
+                            onChange={handleChange}
+                            className="bg-white text-black"
+                        />
+                    </LabelInputContainer>
                 )}
                 <LabelInputContainer>
                     <Label htmlFor="email">Email Address</Label>
