@@ -7,6 +7,7 @@ import Dashboard from "./Dashboard"; // Import your individual pages
 import ReportLost from "./ReportLostnFound/ReportLost";
 import SubmitPage from "./SubmitPage/SubmitPage";
 import { SignupPage } from "./UserAuthPages/SignUpFlow/SignupPage";
+import Profile from "./Profile/Profile";
 
 import AdminLayout from "./Admin/AdminLayout";
 import AdminDashboard from "./Admin/pages/AdminDashboard";
@@ -26,7 +27,7 @@ root.render(
                 <Route index element={<Dashboard />} />
                 <Route path="report-lost" element={<ReportLost />} />
                 <Route path="submit-found" element={<SubmitPage />} />
-                {/* Add more routes here */}
+                <Route path="profile" element={<Profile />} />
             </Route>
             <Route path="/admin/*" element={<AdminLayout />}>
                 <Route index element={<AdminDashboard />} />

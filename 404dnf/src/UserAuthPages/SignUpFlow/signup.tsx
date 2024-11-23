@@ -133,17 +133,19 @@ export function AuthForm() {
                         className="bg-white text-black"
                     />
                 </LabelInputContainer>
-                <LabelInputContainer>
-                    <Label htmlFor="password">Comfirm Password</Label>
-                    <Input
-                        id="comfirm_password"
-                        placeholder="••••••••"
-                        type="password"
-                        value={formData.comfirm_password}
-                        onChange={handleChange}
-                        className="bg-white text-black"
-                    />
-                </LabelInputContainer>
+                {!isLogin && (
+                    <LabelInputContainer>
+                        <Label htmlFor="password">Comfirm Password</Label>
+                        <Input
+                            id="comfirm_password"
+                            placeholder="••••••••"
+                            type="password"
+                            value={formData.comfirm_password}
+                            onChange={handleChange}
+                            className="bg-white text-black"
+                        />
+                    </LabelInputContainer>
+                )}
                 <button
                     className="w-full py-2 px-4 rounded-lg bg-gradient-to-r from-orange-500 to-black hover:opacity-90 transition-opacity font-bold text-white"
                     type="submit"
