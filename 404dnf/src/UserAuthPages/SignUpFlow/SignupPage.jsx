@@ -1,12 +1,12 @@
 import React from "react";
-import { Signup } from "./signup";
+import { AuthForm } from "./signup";
 
 const SignupPage = () => {
-  return (
-    <div>
-      <Signup />
-    </div>
-  );
+    return (
+        <div>
+            <AuthForm />
+        </div>
+    );
 };
 
 export { SignupPage };

@@ -1,101 +1,156 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
+import axios from "axios";
 
-export function Signup() {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted");
-  };
-  return (
-    <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
-      <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
-        Welcome to 404dnf
-      </h2>
-      <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
-        Login to 404dnf if you can because we don&apos;t have a login flow yet
-      </p>
-      <form className="my-8" onSubmit={handleSubmit}>
-        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
-          <LabelInputContainer>
-            <Label htmlFor="firstname">First name</Label>
-            <Input id="firstname" placeholder="Tyler" type="text" />
-          </LabelInputContainer>
-          <LabelInputContainer>
-            <Label htmlFor="lastname">Last name</Label>
-            <Input id="lastname" placeholder="Durden" type="text" />
-          </LabelInputContainer>
+export function AuthForm() {
+    const [isLogin, setIsLogin] = useState(false);
+    const [formData, setFormData] = useState({
+        firstname: "",
+        lastname: "",
+        email: "",
+        password: "",
+    });
+    const [message, setMessage] = useState("");
+
+    const toggleForm = () => {
+        setIsLogin(!isLogin);
+        setMessage(""); // Reset message on toggle
+    };
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.id]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const endpoint = "http://localhost/auth.php";
+        const payload = isLogin
+            ? {
+                  action: "login",
+                  email: formData.email,
+                  password: formData.password,
+              }
+            : {
+                  action: "register",
+                  firstname: formData.firstname,
+                  lastname: formData.lastname,
+                  email: formData.email,
+                  password: formData.password,
+              };
+
+        try {
+            const response = await axios.post(endpoint, payload);
+            setMessage(response.data.message);
+        } catch (error) {
+            setMessage("Something went wrong. Please try again.");
+        }
+    };
+
+    return (
+        <div className="max-w-lg w-full mx-auto rounded-2xl p-6 shadow-2xl bg-gradient-to-br from-orange-600 via-orange-800 to-black text-white">
+            <h2 className="font-extrabold text-3xl text-center">
+                {isLogin ? "Welcome Back!" : "Join 404dnf"}
+            </h2>
+            <p className="text-center text-sm opacity-80 mt-2">
+                {isLogin
+                    ? "Login to your account and explore more."
+                    : "Signup and get started on your journey."}
+            </p>
+            <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
+                {!isLogin && (
+                    <div className="flex flex-col md:flex-row gap-4">
+                        <LabelInputContainer>
+                            <Label htmlFor="firstname">First Name</Label>
+                            <Input
+                                id="firstname"
+                                placeholder="Tyler"
+                                type="text"
+                                value={formData.firstname}
+                                onChange={handleChange}
+                                className="bg-white text-black"
+                            />
+                        </LabelInputContainer>
+                        <LabelInputContainer>
+                            <Label htmlFor="lastname">Last Name</Label>
+                            <Input
+                                id="lastname"
+                                placeholder="Durden"
+                                type="text"
+                                value={formData.lastname}
+                                onChange={handleChange}
+                                className="bg-white text-black"
+                            />
+                        </LabelInputContainer>
+                    </div>
+                )}
+                <LabelInputContainer>
+                    <Label htmlFor="email">Email Address</Label>
+                    <Input
+                        id="email"
+                        placeholder="example@domain.com"
+                        type="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="bg-white text-black"
+                    />
+                </LabelInputContainer>
+                <LabelInputContainer>
+                    <Label htmlFor="password">Password</Label>
+                    <Input
+                        id="password"
+                        placeholder="••••••••"
+                        type="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        className="bg-white text-black"
+                    />
+                </LabelInputContainer>
+                <button
+                    className="w-full py-2 px-4 rounded-lg bg-gradient-to-r from-orange-500 to-black hover:opacity-90 transition-opacity font-bold text-white"
+                    type="submit"
+                >
+                    {isLogin ? "Login" : "Sign Up"}
+                </button>
+            </form>
+            <div className="text-center mt-4">
+                <button
+                    className="text-orange-300 hover:underline"
+                    onClick={toggleForm}
+                >
+                    {isLogin ? "Switch to Signup" : "Switch to Login"}
+                </button>
+            </div>
+            {message && (
+                <p className="mt-4 text-center bg-red-100 text-red-600 p-2 rounded-md">
+                    {message}
+                </p>
+            )}
+            <div className="flex gap-4 mt-6">
+                <OAuthButton
+                    Icon={IconBrandGithub}
+                    text="Continue with GitHub"
+                />
+                <OAuthButton
+                    Icon={IconBrandGoogle}
+                    text="Continue with Google"
+                />
+            </div>
         </div>
-        <LabelInputContainer className="mb-4">
-          <Label htmlFor="email">Email Address</Label>
-          <Input id="email" placeholder="projectmayhem@fc.com" type="email" />
-        </LabelInputContainer>
-        <LabelInputContainer className="mb-4">
-          <Label htmlFor="password">Password</Label>
-          <Input id="password" placeholder="••••••••" type="password" />
-        </LabelInputContainer>
-        <LabelInputContainer className="mb-8">
-          <Label htmlFor="twitterpassword">Your twitter password</Label>
-          <Input
-            id="twitterpassword"
-            placeholder="••••••••"
-            type="twitterpassword"
-          />
-        </LabelInputContainer>
-
-        <button
-          className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
-          type="submit"
-        >
-          Sign up &rarr;
-          <BottomGradient />
-        </button>
-
-        <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
-
-        <div className="flex flex-col space-y-4">
-          <button
-            className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-            type="submit"
-          >
-            <IconBrandGithub className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-            <span className="text-neutral-700 dark:text-neutral-300 text-sm">
-              GitHub
-            </span>
-            <BottomGradient />
-          </button>
-          <button
-            className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-            type="submit"
-          >
-            <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-            <span className="text-neutral-700 dark:text-neutral-300 text-sm">
-              Google
-            </span>
-            <BottomGradient />
-          </button>
-        </div>
-      </form>
-    </div>
-  );
+    );
 }
 
-const BottomGradient = () => {
-  return (
-    <>
-      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
-    </>
-  );
-};
+const OAuthButton = ({ Icon, text }) => (
+    <button className="flex items-center gap-2 justify-center w-full py-2 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 hover:opacity-90 transition-opacity text-white">
+        <Icon className="w-5 h-5" />
+        <span>{text}</span>
+    </button>
+);
 
-const LabelInputContainer = ({ children, className }) => {
-  return (
-    <div className={cn("flex flex-col space-y-2 w-full", className)}>
-      {children}
-    </div>
-  );
+const LabelInputContainer = ({ children }) => {
+    return <div className="flex flex-col space-y-2">{children}</div>;
 };
