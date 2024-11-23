@@ -18,7 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
     $confirmPass = trim($_POST['confirmPass']);
-    $dashboard_feel = trim($_POST['feel_choice']);          // for customized dashboard experience. might be a radio button where user chooses from the available choices
+    $role = 'regular';
+    // $dashboard_feel = trim($_POST['feel_choice']);          // for customized dashboard experience. might be a radio button where user chooses from the available choices
 
     // ensuring no form fields are empty
     if (empty($fname) || empty($lname) || empty($email) || empty($password) || empty($confirmPass) || empty($dashboard_feel)){
@@ -43,9 +44,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
         // inserting data to the database, query to be adjusted to fit final database design
-        $qr = 'INSERT INTO users(fname, lname, email, password, dashboard_feel) VALUES (?,?,?,?,?)';
+        $qr = 'INSERT INTO users(fname, lname, email, password, role) VALUES (?,?,?,?,?)';
         $stmt->$conn->prepare($qr);
-        $stmt->bind_param('sssss', $fname, $lname, $email, $hashed_password, $dashboard_feel);
+        $stmt->bind_param('sssss', $fname, $lname, $email, $hashed_password, $role);
 
         // redirecting user to login if signing up has been completed, and back to signup otherwise
         if($stmt->execute()){
