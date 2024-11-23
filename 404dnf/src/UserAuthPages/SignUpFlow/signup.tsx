@@ -13,6 +13,7 @@ export function AuthForm() {
         lastname: "",
         email: "",
         password: "",
+        comfirm_password: "",
     });
     const [message, setMessage] = useState("");
 
@@ -28,6 +29,12 @@ export function AuthForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // only submit if passwords match
+        if (formData.password !== formData.comfirm_password) {
+            setMessage("Passwords do not match.");
+            return;
+        }
+
         const endpoint = "http://localhost/auth.php";
         const payload = isLogin
             ? {
@@ -41,6 +48,7 @@ export function AuthForm() {
                   lastname: formData.lastname,
                   email: formData.email,
                   password: formData.password,
+                  comfirm_password: formData.comfirm_password,
               };
 
         try {
@@ -110,6 +118,17 @@ export function AuthForm() {
                         className="bg-white text-black"
                     />
                 </LabelInputContainer>
+                <LabelInputContainer>
+                    <Label htmlFor="password">Comfirm Password</Label>
+                    <Input
+                        id="comfirm_password"
+                        placeholder="••••••••"
+                        type="password"
+                        value={formData.comfirm_password}
+                        onChange={handleChange}
+                        className="bg-white text-black"
+                    />
+                </LabelInputContainer>
                 <button
                     className="w-full py-2 px-4 rounded-lg bg-gradient-to-r from-orange-500 to-black hover:opacity-90 transition-opacity font-bold text-white"
                     type="submit"
@@ -119,7 +138,7 @@ export function AuthForm() {
             </form>
             <div className="text-center mt-4">
                 <button
-                    className="text-orange-300 hover:underline"
+                    className="flex items-center gap-2 justify-center w-full py-2 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 hover:opacity-90 transition-opacity text-white"
                     onClick={toggleForm}
                 >
                     {isLogin ? "Switch to Signup" : "Switch to Login"}

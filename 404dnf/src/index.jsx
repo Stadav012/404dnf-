@@ -13,26 +13,30 @@ import AdminDashboard from "./Admin/pages/AdminDashboard";
 import Users from "./Admin/pages/Users";
 import Claims from "./Admin/pages/Claims";
 
+import UserAuth from "./UserAuthPages/UserAuth";
+
 // Create the root element using ReactDOM.createRoot
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 // Render your app using the createRoot API
 root.render(
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<App />}>
-        <Route index element={<Dashboard />} />
-        <Route path="report-lost" element={<ReportLost />} />
-        <Route path="submit-found" element={<SubmitPage />} />
-        <Route path="signup" element={<SignupPage />} />
-        {/* Add more routes here */}
-      </Route>
-
-      <Route path="/admin/*" element={<AdminLayout />}>
-        <Route index element={<AdminDashboard />} />
-        <Route path="users" element={<Users />} />
-        <Route path="claims" element={<Claims />} />
-      </Route>
-    </Routes>
-  </BrowserRouter>
+    <BrowserRouter>
+        <Routes>
+            <Route path="/" element={<App />}>
+                <Route index element={<Dashboard />} />
+                <Route path="report-lost" element={<ReportLost />} />
+                <Route path="submit-found" element={<SubmitPage />} />
+                {/* Add more routes here */}
+            </Route>
+            <Route path="/admin/*" element={<AdminLayout />}>
+                <Route index element={<AdminDashboard />} />
+                <Route path="users" element={<Users />} />
+                <Route path="claims" element={<Claims />} />
+            </Route>
+            <Route path="/auth/*" element={<UserAuth />}>
+                <Route index element={<SignupPage />} />
+            </Route>
+            <Route path="*" element={<h1>404: Not Found</h1>} />
+        </Routes>
+    </BrowserRouter>
 );
