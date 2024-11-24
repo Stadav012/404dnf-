@@ -19,6 +19,7 @@ import Claims from "./Admin/pages/Claims";
 
 import UserAuth from "./UserAuthPages/UserAuth";
 import PrivateRoute from "./PrivateRoute"; // Import the PrivateRoute component
+import AdminRoute from "./AdminRoute"; // Import the AdminRoute component
 
 // A simple 404 component
 function NotFound() {
@@ -63,7 +64,7 @@ root.render(
                 {/* Admin Layout */}
                 <Route
                     path="/admin/*"
-                    element={<PrivateRoute element={<AdminLayout />} />}
+                    element={<AdminRoute element={<AdminLayout />} />}
                 >
                     <Route index element={<AdminDashboard />} />
                     <Route path="users" element={<Users />} />
