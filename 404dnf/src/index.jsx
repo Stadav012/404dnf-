@@ -14,7 +14,7 @@ import Inbox from "./Inbox/Inbox";
 import AdminLayout from "./Admin/AdminLayout";
 import AdminDashboard from "./Admin/pages/AdminDashboard";
 import Users from "./Admin/pages/Users";
-import ClaimsManagement from "./Admin/claims";
+import Claims from "./Admin/pages/Claims";
 
 import UserAuth from "./UserAuthPages/UserAuth";
 import PrivateRoute from "./PrivateRoute"; // Import the PrivateRoute component
@@ -32,28 +32,6 @@ function NotFound() {
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-<<<<<<< HEAD
-    <BrowserRouter>
-        <Routes>
-            <Route path="/" element={<App />}>
-                <Route index element={<Dashboard />} />
-                <Route path="report-lost" element={<ReportLost />} />
-                <Route path="submit-found" element={<SubmitPage />} />
-                <Route path="profile" element={<Profile />} />
-                <Route path="inbox" element={<Inbox />} />
-            </Route>
-            <Route path="/admin/*" element={<AdminLayout />}>
-                <Route index element={<AdminDashboard />} />
-                <Route path="users" element={<Users />} />
-             <Route path="claims" element={<ClaimsManagement />} />
-            </Route>
-            <Route path="/auth/*" element={<UserAuth />}>
-                <Route index element={<SignupPage />} />
-            </Route>
-            <Route path="*" element={<h1>404: Not Found</h1>} />
-        </Routes>
-    </BrowserRouter>
-=======
     <React.StrictMode>
         <BrowserRouter>
             <Routes>
@@ -101,5 +79,4 @@ root.render(
             </Routes>
         </BrowserRouter>
     </React.StrictMode>
->>>>>>> df85a87b2d32ab695630d5807a162dbcaa0b6ee7
 );
