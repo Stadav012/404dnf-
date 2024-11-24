@@ -29,7 +29,15 @@ const SubmitPage = () => {
 
                 <div id="categories">
                     <h3>What category of item is this?</h3>
-                    <div id="item-category">{/* add the categories */}</div>
+                    <div id="item-category">{/* add the categories */}
+                    <select id="category-dropdown" className="border p-2 rounded w-full max-w-md">
+                        <option value="">Select</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="furniture">Stationery</option>
+                        <option value="books">Accessories</option>
+                    </select>
+                    </div>
                 </div>
 
                 {/* add the additional information text */}
