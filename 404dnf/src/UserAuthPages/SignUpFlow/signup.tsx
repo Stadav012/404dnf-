@@ -54,7 +54,9 @@ export function AuthForm() {
               };
 
         try {
-            const response = await axios.post(endpoint, payload);
+            const response = await axios.post(endpoint, payload, {
+                withCredentials: true,
+            });
             setMessage(response.data.message);
 
             console.log(response.data);
