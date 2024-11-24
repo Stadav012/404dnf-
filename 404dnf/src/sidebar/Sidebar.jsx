@@ -1,11 +1,19 @@
-// Sidebar.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Ripples from "react-ripples";
 import "./Sidebar.css";
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(true);
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    // Fetch user role on component mount
+    useEffect(() => {
+        const userRole = sessionStorage.getItem("role"); // Assuming role is stored in sessionStorage
+        if (userRole === "admin") {
+            setIsAdmin(true);
+        }
+    }, []);
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
@@ -55,7 +63,6 @@ const Sidebar = () => {
                             </Link>
                         </Ripples>
                     </li>
-                    {/* Add inbox */}
                     <li>
                         <Ripples color="rgba(255, 0, 0, 0.5)">
                             <Link to="/inbox">
@@ -66,17 +73,20 @@ const Sidebar = () => {
                             </Link>
                         </Ripples>
                     </li>
-                    {/* Add more links as needed */}
-                    <li>
-                        <Ripples color="rgba(255, 0, 0, 0.5)">
-                            <Link to="/admin">
-                                <i className="fas fa-chart-line"></i>
-                                <span className="sidebar-text">
-                                    {isOpen && " Admin"}
-                                </span>
-                            </Link>
-                        </Ripples>
-                    </li>
+
+                    {/* Admin link: Show only if the user is admin */}
+                    {isAdmin && (
+                        <li>
+                            <Ripples color="rgba(255, 0, 0, 0.5)">
+                                <Link to="/admin">
+                                    <i className="fas fa-chart-line"></i>
+                                    <span className="sidebar-text">
+                                        {isOpen && " Admin"}
+                                    </span>
+                                </Link>
+                            </Ripples>
+                        </li>
+                    )}
                 </ul>
             </div>
 

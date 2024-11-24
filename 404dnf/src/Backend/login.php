@@ -1,5 +1,10 @@
 <?php
 
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true");
+
 // Include config.php
 include('db/config.php');
 
@@ -56,14 +61,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['theme'] = $user['theme'];
         $_SESSION['role'] = $user['role'];
 
+        // Redirect URL after login
         http_response_code(200); // OK
-        echo json_encode(array('message' => 'Login successful!'));
+        echo json_encode(array(
+            'message' => 'Login successful!',
+            'redirect_url' => 'http://localhost:3000',  // Add the URL for the homepage
+            'user_id' => $_SESSION['user_id'],
+            'username' => $_SESSION['username'],
+            'email' => $_SESSION['email'],
+            'fname' => $_SESSION['fname'],
+            'lname' => $_SESSION['lname'],
+            'profile_pic' => $_SESSION['profile_pic'],
+            'theme' => $_SESSION['theme'],
+            'role' => $_SESSION['role'],
+        ));
     } else {
         // Password is incorrect
         http_response_code(401); // Unauthorized
         echo json_encode(array('message' => 'Incorrect password!'));
     }
 }
+
 // {
 //     "email": "daisy.tsenesa@gmail.com",
 //     "password": "Daisy333#"

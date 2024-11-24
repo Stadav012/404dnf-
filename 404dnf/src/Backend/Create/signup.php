@@ -1,11 +1,21 @@
 <?php
-// Display errors for debugging
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true");
 
-header("Access-Control-Allow-Origin: http://127.0.0.1:3000");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, application/json");
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    // Handle preflight request
+    exit(0);
+}
+// Display errors for debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+
+$response = [
+    'success' => false,
+    'message' => 'Something went wrong.'
+];
 
 // Include config.php
 include('../db/config.php');
@@ -15,9 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get the post data
     $data = json_decode(file_get_contents('php://input'), true);
 
+    // echo the data array 
+    echo json_encode($data);
+
     // Extract variables
-    $lname = $data['lname'];
-    $fname = $data['fname'];
+    $lname = $data['lastname'];
+    $fname = $data['firstname'];
     $email = $data['email'];
     $password = $data['password'];
     $username = $data['username'];
@@ -69,9 +82,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Execute the query and check for success
     if ($stmt->execute()) {
         http_response_code(200); // Success
-        echo json_encode(array('message' => 'User created successfully!', 'redirect' => '../login.php'));
+        $response['success'] = true;
+        $response['message'] = 'Registration successful.';
     } else {
         http_response_code(500); // Internal Server Error
+        $response['message'] = 'Error registering user.';
         echo json_encode(array('message' => 'Could not register!', 'redirect' => 'signup.php'));
     }
 

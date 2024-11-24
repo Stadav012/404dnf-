@@ -13,10 +13,13 @@ import Inbox from "./Inbox/Inbox";
 
 import AdminLayout from "./Admin/AdminLayout";
 import AdminDashboard from "./Admin/pages/AdminDashboard";
+import ClaimsManagement from "./Admin/claims";
 import Users from "./Admin/pages/Users";
 import Claims from "./Admin/pages/Claims";
 
 import UserAuth from "./UserAuthPages/UserAuth";
+import PrivateRoute from "./PrivateRoute"; // Import the PrivateRoute component
+import AdminRoute from "./AdminRoute"; // Import the AdminRoute component
 
 // A simple 404 component
 function NotFound() {
@@ -36,18 +39,36 @@ root.render(
             <Routes>
                 {/* Main App Layout */}
                 <Route path="/" element={<App />}>
-                    <Route index element={<Dashboard />} />
-                    <Route path="report-lost" element={<ReportLost />} />
-                    <Route path="submit-found" element={<SubmitPage />} />
-                    <Route path="profile" element={<Profile />} />
-                    <Route path="inbox" element={<Inbox />} />
+                    <Route
+                        index
+                        element={<PrivateRoute element={<Dashboard />} />}
+                    />
+                    <Route
+                        path="report-lost"
+                        element={<PrivateRoute element={<ReportLost />} />}
+                    />
+                    <Route
+                        path="submit-found"
+                        element={<PrivateRoute element={<SubmitPage />} />}
+                    />
+                    <Route
+                        path="profile"
+                        element={<PrivateRoute element={<Profile />} />}
+                    />
+                    <Route
+                        path="inbox"
+                        element={<PrivateRoute element={<Inbox />} />}
+                    />
                 </Route>
 
                 {/* Admin Layout */}
-                <Route path="/admin/*" element={<AdminLayout />}>
+                <Route
+                    path="/admin/*"
+                    element={<AdminRoute element={<AdminLayout />} />}
+                >
                     <Route index element={<AdminDashboard />} />
                     <Route path="users" element={<Users />} />
-                    <Route path="claims" element={<Claims />} />
+                    <Route path="claims" element={<ClaimsManagement />} />
                 </Route>
 
                 {/* User Authentication */}

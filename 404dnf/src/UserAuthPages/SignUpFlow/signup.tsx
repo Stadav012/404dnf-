@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -32,14 +31,14 @@ export function AuthForm() {
         e.preventDefault();
 
         // only submit if passwords match
-        if (formData.password !== formData.comfirm_password) {
+        if (!isLogin && formData.password !== formData.comfirm_password) {
             setMessage("Passwords do not match.");
             return;
         }
 
         const endpoint = isLogin
             ? "http://localhost/Backend/login.php"
-            : "http://localhost/Backend/Create/signup.php";
+            : "http://localhost/Backend/create/signup.php";
         const payload = isLogin
             ? {
                   email: formData.email,
@@ -57,6 +56,36 @@ export function AuthForm() {
         try {
             const response = await axios.post(endpoint, payload);
             setMessage(response.data.message);
+
+            console.log(response.data);
+
+            // If signup is successful, switch to login form and scroll to the login section
+            if (!isLogin && response.data.success) {
+                setIsLogin(true);
+                // Scroll to login form
+                document
+                    .getElementById("login-form")
+                    .scrollIntoView({ behavior: "smooth" });
+            }
+
+            // If login is successful
+            if (response.data.message === "Login successful!") {
+                // Redirect to the homepage
+                sessionStorage.setItem("user_id", response.data.user_id);
+                sessionStorage.setItem("username", response.data.username);
+                sessionStorage.setItem("email", response.data.email);
+                sessionStorage.setItem("fname", response.data.fname);
+                sessionStorage.setItem("lname", response.data.lname);
+                sessionStorage.setItem(
+                    "profile_pic",
+                    response.data.profile_pic
+                );
+                sessionStorage.setItem("theme", response.data.theme);
+                sessionStorage.setItem("role", response.data.role);
+                window.location.href = response.data.redirect_url;
+            } else {
+                setMessage(response.data.message); // Show any error message
+            }
         } catch (error) {
             setMessage("Something went wrong. Please try again.");
         }
@@ -72,7 +101,12 @@ export function AuthForm() {
                     ? "Login to your account and explore more."
                     : "Signup and get started on your journey."}
             </p>
-            <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
+            <form
+                id="login-form"
+                className="mt-6 space-y-4"
+                onSubmit={handleSubmit}
+            >
+                {/* Signup Fields */}
                 {!isLogin && (
                     <div className="flex flex-col md:flex-row gap-4">
                         <LabelInputContainer>
@@ -112,6 +146,7 @@ export function AuthForm() {
                         />
                     </LabelInputContainer>
                 )}
+                {/* Common Fields */}
                 <LabelInputContainer>
                     <Label htmlFor="email">Email Address</Label>
                     <Input
@@ -134,9 +169,10 @@ export function AuthForm() {
                         className="bg-white text-black"
                     />
                 </LabelInputContainer>
+                {/* Additional Fields for Signup */}
                 {!isLogin && (
                     <LabelInputContainer>
-                        <Label htmlFor="password">Comfirm Password</Label>
+                        <Label htmlFor="password">Confirm Password</Label>
                         <Input
                             id="comfirm_password"
                             placeholder="••••••••"
