@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Ripples from "react-ripples";
 import "./Sidebar.css";
-import Profile from "../Profile/Profile";
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(true);
@@ -52,6 +51,17 @@ const Sidebar = () => {
                                 <i className="fas fa-user"></i>
                                 <span className="sidebar-text">
                                     {isOpen && " Profile"}
+                                </span>
+                            </Link>
+                        </Ripples>
+                    </li>
+                    {/* Add inbox */}
+                    <li>
+                        <Ripples color="rgba(255, 0, 0, 0.5)">
+                            <Link to="/inbox">
+                                <i className="fas fa-inbox"></i>
+                                <span className="sidebar-text">
+                                    {isOpen && " Inbox"}
                                 </span>
                             </Link>
                         </Ripples>

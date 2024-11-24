@@ -8,6 +8,7 @@ import ReportLost from "./ReportLostnFound/ReportLost";
 import SubmitPage from "./SubmitPage/SubmitPage";
 import { SignupPage } from "./UserAuthPages/SignUpFlow/SignupPage";
 import Profile from "./Profile/Profile";
+import Inbox from "./Inbox/Inbox";
 
 import AdminLayout from "./Admin/AdminLayout";
 import AdminDashboard from "./Admin/pages/AdminDashboard";
@@ -28,6 +29,7 @@ root.render(
                 <Route path="report-lost" element={<ReportLost />} />
                 <Route path="submit-found" element={<SubmitPage />} />
                 <Route path="profile" element={<Profile />} />
+                <Route path="inbox" element={<Inbox />} />
             </Route>
             <Route path="/admin/*" element={<AdminLayout />}>
                 <Route index element={<AdminDashboard />} />
