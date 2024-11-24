@@ -13,6 +13,7 @@ import Inbox from "./Inbox/Inbox";
 
 import AdminLayout from "./Admin/AdminLayout";
 import AdminDashboard from "./Admin/pages/AdminDashboard";
+import ClaimsManagement from "./Admin/claims";
 import Users from "./Admin/pages/Users";
 import Claims from "./Admin/pages/Claims";
 
@@ -66,7 +67,7 @@ root.render(
                 >
                     <Route index element={<AdminDashboard />} />
                     <Route path="users" element={<Users />} />
-                    <Route path="claims" element={<Claims />} />
+                    <Route path="claims" element={<ClaimsManagement />} />
                 </Route>
 
                 {/* User Authentication */}
