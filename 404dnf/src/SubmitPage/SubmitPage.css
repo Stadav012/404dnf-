@@ -68,13 +68,13 @@ input[type="text"] {
 }
 
 /* Categories Section */
-#item-category {
+/* #item-category {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     justify-content: center;
     margin-top: 10px;
-}
+} */
 
 /* Additional Info Section */
 #additional-info {
@@ -207,3 +207,9 @@ h3 {
         font-size: 2rem;
     }
 }
+
+select {
+    font-size: 16px;
+    background-color: #f5f5f5;
+  }
+  
