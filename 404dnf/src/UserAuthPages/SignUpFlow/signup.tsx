@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -36,15 +37,15 @@ export function AuthForm() {
             return;
         }
 
-        const endpoint = "http://localhost/auth.php";
+        const endpoint = isLogin
+            ? "http://localhost/Backend/login.php"
+            : "http://localhost/Backend/Create/signup.php";
         const payload = isLogin
             ? {
-                  action: "login",
                   email: formData.email,
                   password: formData.password,
               }
             : {
-                  action: "register",
                   firstname: formData.firstname,
                   username: formData.username,
                   lastname: formData.lastname,

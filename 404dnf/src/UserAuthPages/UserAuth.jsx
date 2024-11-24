@@ -1,4 +1,3 @@
-// AdminLayout.js
 import React from "react";
 import { Outlet } from "react-router-dom";
 import "./styles/user_auth.css";
