@@ -1,17 +1,21 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // Include the config file to connect to the database
 include('../db/config.php');
 
 // start a session
 session_start();
+header('Content-Type: application/json');
 
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    // send the url to the login page
-    http_response_code(401);
-    echo json_encode(['message' => 'user not logged in', 'redirect' => 'login.html']);
-    exit();
-}
+// // Check if user is logged in
+// if (!isset($_SESSION['user_id'])) {
+//     // send the url to the login page
+//     http_response_code(401);
+//     echo json_encode(['message' => 'user not logged in', 'redirect' => 'login.html']);
+//     exit();
+// }
 
 // Check if the request method is GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -19,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Get the user_id from the request
     if (isset($_GET['user_id'])) {
         $user_id = $_GET['user_id'];
-        // $user_id = 1; // default for testing purposes
+        $user_id = 1; // default for testing purposes
 
         // Query to check if the user has any pending reports
         $check_status_sql = "SELECT report_status FROM users WHERE user_id = ?";
