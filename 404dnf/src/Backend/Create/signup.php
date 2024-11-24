@@ -1,4 +1,6 @@
 <?php
+// allow cross-origin requests for all routes
+// header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Origin: http://localhost:3000");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
@@ -84,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         http_response_code(200); // Success
         $response['success'] = true;
         $response['message'] = 'Registration successful.';
+        echo json_encode(array('message' => 'Registration successful!', 'success' => true));
     } else {
         http_response_code(500); // Internal Server Error
         $response['message'] = 'Error registering user.';

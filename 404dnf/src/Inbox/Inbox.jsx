@@ -19,7 +19,7 @@ const Inbox = () => {
         const fetchData = async () => {
             console.log("Fetching data...");
             try {
-                const response = await axios.get("http://localhost/404dnf-/404dnf/src/Backend/Read/inbox.php", {
+                const response = await axios.get("http://localhost/Backend/Read/inbox.php", {
                     params: { user_id: 1 },
                 });
     
