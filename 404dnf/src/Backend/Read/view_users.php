@@ -14,7 +14,7 @@ if (!isset($_SESSION['user_id'])) {
 
 // Retrieve the role from the session
 $role = $_SESSION['role'];
-$role = 1; // default for testing purposes
+// $role = 1; // default for testing purposes
 
 // Check if user is an admin
 if ($role != 1) {
