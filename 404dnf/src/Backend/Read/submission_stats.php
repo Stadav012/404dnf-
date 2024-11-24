@@ -23,8 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // $user_id = 4; // default for testing purposes
 
     // get the user's found items
-    $sql = "SELECT submission_stat_id, num_items_found, num_items_reported, num_items_matched, num_items_claimed 
-            FROM submission_stats 
+    $sql = "SELECT contribution_id, reports_count, submissions_count
+            FROM contribution_counts 
             WHERE user_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('i', $user_id);
