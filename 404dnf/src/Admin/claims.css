@@ -1,0 +1,49 @@
+.claims-management-page {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .claims-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .claims-table th, .claims-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .claims-table th {
+    background-color: #f4f4f4;
+  }
+  
+  .status-dropdown {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .status-label {
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 4px;
+  }
+  
+  .status-label.pending {
+    background-color: #f9f9a5;
+    color: #856404;
+  }
+  
+  .status-label.approved {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .status-label.rejected {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
