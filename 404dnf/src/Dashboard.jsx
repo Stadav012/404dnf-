@@ -57,7 +57,7 @@ function Dashboard() {
                         <Video />
                         <div>
                             <h1 className="md:text-4xl text-2xl lg:text-4xl font-bold text-center text-black relative z-20">
-                                Welcome Rajesh
+                                Welcome {sessionStorage.getItem("username")}
                             </h1>
                             <div className="w-[40rem] h-30 relative">
                                 {/* Gradients */}

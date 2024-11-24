@@ -17,6 +17,7 @@ import Users from "./Admin/pages/Users";
 import ClaimsManagement from "./Admin/claims";
 
 import UserAuth from "./UserAuthPages/UserAuth";
+import PrivateRoute from "./PrivateRoute"; // Import the PrivateRoute component
 
 // A simple 404 component
 function NotFound() {
@@ -58,15 +59,33 @@ root.render(
             <Routes>
                 {/* Main App Layout */}
                 <Route path="/" element={<App />}>
-                    <Route index element={<Dashboard />} />
-                    <Route path="report-lost" element={<ReportLost />} />
-                    <Route path="submit-found" element={<SubmitPage />} />
-                    <Route path="profile" element={<Profile />} />
-                    <Route path="inbox" element={<Inbox />} />
+                    <Route
+                        index
+                        element={<PrivateRoute element={<Dashboard />} />}
+                    />
+                    <Route
+                        path="report-lost"
+                        element={<PrivateRoute element={<ReportLost />} />}
+                    />
+                    <Route
+                        path="submit-found"
+                        element={<PrivateRoute element={<SubmitPage />} />}
+                    />
+                    <Route
+                        path="profile"
+                        element={<PrivateRoute element={<Profile />} />}
+                    />
+                    <Route
+                        path="inbox"
+                        element={<PrivateRoute element={<Inbox />} />}
+                    />
                 </Route>
 
                 {/* Admin Layout */}
-                <Route path="/admin/*" element={<AdminLayout />}>
+                <Route
+                    path="/admin/*"
+                    element={<PrivateRoute element={<AdminLayout />} />}
+                >
                     <Route index element={<AdminDashboard />} />
                     <Route path="users" element={<Users />} />
                     <Route path="claims" element={<Claims />} />

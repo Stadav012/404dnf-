@@ -1,7 +1,17 @@
 <?php
-// Display errors for debugging
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true");
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    // Handle preflight request
+    exit(0);
+}
+
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 
 header("Access-Control-Allow-Origin: http://127.0.0.1:3000");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");

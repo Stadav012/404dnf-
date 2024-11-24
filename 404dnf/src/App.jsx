@@ -5,6 +5,8 @@ import "./App.css";
 import Sidebar from "./sidebar/Sidebar";
 
 function App() {
+    // console log session id
+    console.log(sessionStorage.getItem("user_id"));
     return (
         <div className="App">
             <Sidebar />
