@@ -19,18 +19,24 @@ const Inbox = () => {
         const fetchData = async () => {
             console.log("Fetching data...");
             try {
-                const response = await axios.get("http://localhost/Backend/Read/inbox.php", {
-                    params: { user_id: 1 },
-                });
-    
+                const response = await axios.get(
+                    "http://localhost/Backend/Read/inbox.php",
+                    {
+                        params: { user_id: 1 },
+                        withCredentials: true,
+                    }
+                );
+
                 console.log("API Response:", response.data);
-    
+
                 // Ensure `reported_items` exists and is an array
                 const reportedItems = response.data?.reported_items || [];
                 if (!Array.isArray(reportedItems)) {
-                    throw new Error("Invalid API response: reported_items is not an array");
+                    throw new Error(
+                        "Invalid API response: reported_items is not an array"
+                    );
                 }
-    
+
                 // Transform the data
                 const transformedData = reportedItems.flatMap((report) =>
                     report.matching_found_items.map((item, index) => ({
@@ -41,10 +47,10 @@ const Inbox = () => {
                         description: `${item.found_item} (reported: ${report.item_description})`,
                     }))
                 );
-    console.log("Transformed Data:", transformedData);
+                console.log("Transformed Data:", transformedData);
 
-    // display the image url
-    console.log("Image URL:", transformedData[0].image);
+                // display the image url
+                console.log("Image URL:", transformedData[0].image);
                 setItems(transformedData); // Update the state with transformed data
             } catch (error) {
                 console.error("Error fetching data:", error.message || error);
@@ -52,10 +58,10 @@ const Inbox = () => {
                 setLoading(false); // Turn off loading spinner
             }
         };
-    
+
         fetchData();
     }, []);
-    
+
     if (loading) {
         return <div className="text-center">Loading...</div>; // Show a loader while fetching
     }
@@ -75,7 +81,10 @@ const Inbox = () => {
                         initial={{ y: 20 }}
                         whileInView={{ y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: Math.random() * 0.2 }}
+                        transition={{
+                            duration: 0.6,
+                            delay: Math.random() * 0.2,
+                        }}
                     >
                         <Card className="shadow-lg hover:shadow-xl transition duration-300">
                             <CardHeader>

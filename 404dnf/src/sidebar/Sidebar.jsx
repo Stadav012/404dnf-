@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Ripples from "react-ripples";
 import "./Sidebar.css";
+import LogoutButton from "../logout";
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(true);
@@ -87,6 +88,13 @@ const Sidebar = () => {
                             </Ripples>
                         </li>
                     )}
+
+                    {/* Logout Button */}
+                    <li>
+                        <Ripples color="rgba(255, 0, 0, 0.5)">
+                            <LogoutButton />
+                        </Ripples>
+                    </li>
                 </ul>
             </div>
 

@@ -89,9 +89,9 @@ export function AuthForm() {
                 withCredentials: true,
             });
 
+            // Handle success
             setMessage(response.data.message);
 
-            // If signup is successful, switch to login form
             if (!isLogin && response.data.success) {
                 setIsLogin(true);
                 setMessage("Signup successful! You can now log in.");
@@ -105,7 +105,6 @@ export function AuthForm() {
                 });
             }
 
-            // If login is successful
             if (isLogin && response.data.message === "Login successful!") {
                 sessionStorage.setItem("user_id", response.data.user_id);
                 sessionStorage.setItem("username", response.data.username);
@@ -121,10 +120,20 @@ export function AuthForm() {
                 window.location.href = response.data.redirect_url;
             }
         } catch (error) {
+            // Check if the error is due to duplicate email
             const errorMessage =
                 error.response && error.response.data.message
                     ? error.response.data.message
                     : "Something went wrong. Please try again.";
+
+            if (error.response && error.response.status === 409) {
+                if (error.response.data.message.includes("email")) {
+                    setErrors({ email: "This email is already in use." });
+                } else {
+                    setErrors({});
+                }
+            }
+
             setMessage(errorMessage);
         }
     };

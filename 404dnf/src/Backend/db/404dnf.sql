@@ -22,7 +22,15 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
-
+DROP TABLE IF EXISTS `claims`;
+DROP TABLE IF EXISTS `contribution_counts`;
+DROP TABLE IF EXISTS `reports`;
+DROP TABLE IF EXISTS `rewards`;
+DROP TABLE IF EXISTS `submissions`;
+DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `users_reports`;
+DROP TABLE IF EXISTS `users_submissions`;
+DROP TABLE IF EXISTS `location`;
 --
 -- Table structure for table `claims`
 --
