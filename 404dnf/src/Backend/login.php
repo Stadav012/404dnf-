@@ -11,12 +11,35 @@ include('db/config.php');
 // Start session
 session_start();
 
-// Check if user is already logged in
-if (isset($_SESSION['user_id'])) {
-    http_response_code(200); // OK
-    echo json_encode(array('message' => 'User is already logged in!'));
-    exit();
-}
+// // Check if user is already logged in
+// if (isset($_SESSION['user_id'])) {
+//     http_response_code(200); // OK
+//     // Set session variables with all user details
+//         $_SESSION['user_id'] = $user['user_id'];
+//         $_SESSION['username'] = $user['username'];
+//         $_SESSION['email'] = $user['email'];
+//         $_SESSION['fname'] = $user['fname'];
+//         $_SESSION['lname'] = $user['lname'];
+//         $_SESSION['profile_pic'] = $user['profile_pic'];
+//         $_SESSION['theme'] = $user['theme'];
+//         $_SESSION['role'] = $user['role'];
+
+//         // Redirect URL after login
+//         http_response_code(200); // OK
+//         echo json_encode(array(
+//             'message' => 'User already logged in!',
+//             'redirect_url' => 'http://localhost:3000',  // Add the URL for the homepage
+//             'user_id' => $_SESSION['user_id'],
+//             'username' => $_SESSION['username'],
+//             'email' => $_SESSION['email'],
+//             'fname' => $_SESSION['fname'],
+//             'lname' => $_SESSION['lname'],
+//             'profile_pic' => $_SESSION['profile_pic'],
+//             'theme' => $_SESSION['theme'],
+//             'role' => $_SESSION['role'],
+//         ));
+//     exit();
+// }
 
 // Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

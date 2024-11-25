@@ -27,7 +27,7 @@ function logoutUser() {
             } else {
                 console.error(
                     "Failed to logout on server:",
-                    response.data.message
+                    response.data
                 );
             }
         })

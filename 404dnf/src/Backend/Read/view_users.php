@@ -1,6 +1,6 @@
 <?php
 // Include config.php
-include('config.php');
+include('../db/config.php');
 
 // Start session
 session_start();
@@ -17,7 +17,7 @@ $role = $_SESSION['role'];
 // $role = 1; // default for testing purposes
 
 // Check if user is an admin
-if ($role != 1) {
+if ($role != "admin") {
     http_response_code(403); // Forbidden
     echo json_encode(array('message' => 'Only admins allowed!', 'redirect' => 'index.php'));
     exit();

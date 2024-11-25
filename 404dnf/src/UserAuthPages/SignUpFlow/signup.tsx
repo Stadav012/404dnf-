@@ -2,8 +2,6 @@
 import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
-import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import axios from "axios";
 
 export function AuthForm() {
@@ -91,6 +89,7 @@ export function AuthForm() {
 
             // Handle success
             setMessage(response.data.message);
+            console.log(response.data);
 
             if (!isLogin && response.data.success) {
                 setIsLogin(true);
@@ -105,7 +104,10 @@ export function AuthForm() {
                 });
             }
 
-            if (isLogin && response.data.message === "Login successful!") {
+            if (
+                (isLogin && response.data.message === "Login successful!") ||
+                (isLogin && response.data.message === "User already logged in!")
+            ) {
                 sessionStorage.setItem("user_id", response.data.user_id);
                 sessionStorage.setItem("username", response.data.username);
                 sessionStorage.setItem("email", response.data.email);
@@ -126,7 +128,7 @@ export function AuthForm() {
                     ? error.response.data.message
                     : "Something went wrong. Please try again.";
 
-            if (error.response && error.response.status === 409) {
+            if (error.response && error.response.status === 400) {
                 if (error.response.data.message.includes("email")) {
                     setErrors({ email: "This email is already in use." });
                 } else {
