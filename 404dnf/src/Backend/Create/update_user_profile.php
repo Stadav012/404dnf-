@@ -2,12 +2,23 @@
 // display the errors
 // ini_set('display_errors', 1);
 // ini_set('display_startup_errors', 1);
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Methods: GET, POST, PUT, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true");
+
 
 // Include the config file to connect to the database
-include('config.php');
+include('../db/config.php');
 
 // start session
 session_start();
+
+// Handle preflight requests
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {

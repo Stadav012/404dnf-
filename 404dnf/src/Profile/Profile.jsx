@@ -3,7 +3,10 @@ import { useParams } from "react-router-dom"; // For getting userId from URL
 import axios from "axios"; // Importing axios
 
 const Profile = () => {
-    const { userId } = useParams(); // Get userId from the URL
+    // const { userId } = useParams(); // Get userId from the URL
+
+    // get the userid from the session storage
+    const userId = sessionStorage.getItem("user_id");
     const [userData, setUserData] = useState({
         username: "",
         theme: "Light", // Default theme
@@ -47,7 +50,9 @@ const Profile = () => {
         // Make Axios request to update user profile
         try {
             const response = await axios.put(
-                `http://localhost/Backend/Create/update_user_profile.php?user_id?${userId}`,
+                // console.log("URL: ", `http://localhost/Backend/Create/update_user_profile.php?user_id=${userId}`),
+                // `http://localhost/Backend/Create/update_user_profile.php?user_id=${userId}`,
+                `http://localhost/Backend/Create/update_user_profile.php`,
                 formData,
                 {
                     headers: {
