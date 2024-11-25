@@ -17,11 +17,11 @@ $role = $_SESSION['role'];
 // $role = 1; // default for testing purposes
 
 // Check if user is an admin
-if ($role != 1) {
-    http_response_code(403); // Forbidden
-    echo json_encode(array('message' => 'Only admins allowed!', 'redirect' => 'index.php'));
-    exit();
-}
+// if ($role != 1) {
+//     http_response_code(403); // Forbidden
+//     echo json_encode(array('message' => 'Only admins allowed!', 'redirect' => 'index.php'));
+//     exit();
+// }
 
 // Check if the request method is GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
