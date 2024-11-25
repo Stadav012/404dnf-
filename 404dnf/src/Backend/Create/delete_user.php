@@ -5,6 +5,11 @@ include('../db/config.php');
 // start session
 session_start();
 
+// show errors for debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+
+
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     // Set the response code to 401 (Unauthorized)
