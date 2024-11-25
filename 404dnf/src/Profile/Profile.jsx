@@ -21,7 +21,7 @@ const Profile = () => {
     useEffect(() => {
         const sessionData = {
             username: sessionStorage.getItem("username"),
-            theme: sessionStorage.getItem("theme") || "Light",
+            theme: sessionStorage.getItem("theme") || "vid1",
             profilePic: sessionStorage.getItem("profile_pic"),
         };
         setUserData((prevData) => ({
@@ -41,7 +41,7 @@ const Profile = () => {
         formData.append("theme", userData.theme);
         formData.append("oldPassword", oldPassword);
         formData.append("newPassword", newPassword || "");
-        
+
         // If a new profile picture is selected, append it to the formData
         if (profilePicture) {
             formData.append("profile_pic", profilePicture);
@@ -55,6 +55,7 @@ const Profile = () => {
                 `http://localhost/Backend/Create/update_user_profile.php`,
                 formData,
                 {
+                    params: { user_id: userId },
                     headers: {
                         "Content-Type": "multipart/form-data", // Specify content type
                         // Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -66,7 +67,10 @@ const Profile = () => {
                 // Optionally, store the updated data in sessionStorage for future use
                 sessionStorage.setItem("username", userData.username);
                 sessionStorage.setItem("theme", userData.theme);
-                sessionStorage.setItem("profile_pic", response.data.profile_pic);
+                sessionStorage.setItem(
+                    "profile_pic",
+                    response.data.profile_pic
+                );
                 setCurrentProfilePic(response.data.profile_pic); // Update the profile picture in state
             }
         } catch (error) {
@@ -152,8 +156,8 @@ const Profile = () => {
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
                         >
-                            <option value="Light">Light</option>
-                            <option value="Dark">Dark</option>
+                            <option value="Light">vid1</option>
+                            <option value="Dark">vid2</option>
                         </select>
                     </label>
 

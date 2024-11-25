@@ -1,7 +1,7 @@
 <?php
 // display the errors
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 header("Access-Control-Allow-Origin: http://localhost:3000");
 header("Access-Control-Allow-Methods: GET, POST, PUT, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
@@ -17,16 +17,6 @@ session_start();
 // Handle preflight requests
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
-    exit();
-}
-
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    // Set the response code to 401 (Unauthorized)
-    http_response_code(401);
-    // Set the response message
-    echo json_encode(array('message' => 'User is not logged in!', 'redirect' => 'login.php'));
-    // Exit the script
     exit();
 }
 
