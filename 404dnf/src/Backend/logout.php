@@ -7,6 +7,7 @@ header("Access-Control-Allow-Credentials: true");
 session_start();  // Start the session
 // Check if the session is already started
 if (isset($_SESSION)) {
+
     // Destroy session variables and the session
     session_unset();
     session_destroy();

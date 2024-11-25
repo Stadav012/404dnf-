@@ -6,7 +6,7 @@ include('../db/config.php');
 session_start();
 
 // Check if user is logged in
-if (!isset($GET['id'])) {
+if (!isset($_GET['id'])) {
     http_response_code(401); // Unauthorized
     echo json_encode(array('message' => 'User is not logged in!', 'redirect' => 'login.php'));
     exit();
@@ -14,23 +14,23 @@ if (!isset($GET['id'])) {
 
 // Check if the request method is GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    // Get all locations
-    $query = 'SELECT location_id, location_name FROM locations';
+    // Get all location
+    $query = 'SELECT location_id, location_name FROM location';
     $stmt = $conn->prepare($query);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        $locations = array();  // Change variable name to reflect the data we're fetching
+        $location = array();  // Change variable name to reflect the data we're fetching
         while ($row = $result->fetch_assoc()) {
-            $locations[] = $row;
+            $location[] = $row;
         }
 
         http_response_code(200); // OK
-        echo json_encode($locations);  // Return locations
+        echo json_encode($location);  // Return location
     } else {
         http_response_code(404); // Not Found
-        echo json_encode(array('message' => 'No locations found!'));
+        echo json_encode(array('message' => 'No location found!'));
     }
 } else {
     http_response_code(405); // Method Not Allowed
