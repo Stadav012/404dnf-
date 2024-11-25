@@ -8,6 +8,10 @@ header("Access-Control-Allow-Credentials: true");
 // Include config.php
 include('db/config.php');
 
+// Display errors for debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+
 // Start session
 session_start();
 

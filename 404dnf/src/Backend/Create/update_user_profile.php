@@ -1,7 +1,7 @@
 <?php
 // display the errors
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 header("Access-Control-Allow-Origin: http://localhost:3000");
 header("Access-Control-Allow-Methods: GET, POST, PUT, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
+<<<<<<< HEAD
 // Check if user is logged in
 // if (!isset($_SESSION['user_id'])) {
 //     // Set the response code to 401 (Unauthorized)
@@ -30,6 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 //     exit();
 // }
 
+=======
+>>>>>>> d5fd9706dcb46d774ade4e97b82c0982db7b0954
 // Check if the request method is PUT
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
 

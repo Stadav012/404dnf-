@@ -6,7 +6,7 @@ include('../db/config.php');
 session_start();
 
 // Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
+if (!isset($GET['id'])) {
     http_response_code(401); // Unauthorized
     echo json_encode(array('message' => 'User is not logged in!', 'redirect' => 'login.php'));
     exit();
