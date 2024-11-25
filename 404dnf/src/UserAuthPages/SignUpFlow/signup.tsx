@@ -14,31 +14,63 @@ export function AuthForm() {
         username: "",
         email: "",
         password: "",
-        comfirm_password: "",
+        confirm_password: "",
     });
     const [message, setMessage] = useState("");
+    const [errors, setErrors] = useState({});
 
     const toggleForm = () => {
         setIsLogin(!isLogin);
         setMessage(""); // Reset message on toggle
+        setErrors({}); // Clear errors
     };
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.id]: e.target.value });
     };
 
+    const validateForm = () => {
+        const validationErrors = {};
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!isLogin) {
+            if (!formData.firstname)
+                validationErrors.firstname = "First name is required.";
+            if (!formData.lastname)
+                validationErrors.lastname = "Last name is required.";
+            if (!formData.username)
+                validationErrors.username = "Username is required.";
+        }
+
+        if (!formData.email || !emailRegex.test(formData.email)) {
+            validationErrors.email = "A valid email address is required.";
+        }
+
+        if (!formData.password || formData.password.length < 8) {
+            validationErrors.password =
+                "Password must be at least 8 characters.";
+        }
+
+        if (!isLogin && formData.password !== formData.confirm_password) {
+            validationErrors.confirm_password = "Passwords do not match.";
+        }
+
+        setErrors(validationErrors);
+        return Object.keys(validationErrors).length === 0;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // only submit if passwords match
-        if (!isLogin && formData.password !== formData.comfirm_password) {
-            setMessage("Passwords do not match.");
+        if (!validateForm()) {
+            setMessage("Please fix the errors before submitting.");
             return;
         }
 
         const endpoint = isLogin
             ? "http://localhost/Backend/login.php"
             : "http://localhost/Backend/create/signup.php";
+
         const payload = isLogin
             ? {
                   email: formData.email,
@@ -50,29 +82,31 @@ export function AuthForm() {
                   lastname: formData.lastname,
                   email: formData.email,
                   password: formData.password,
-                  comfirm_password: formData.comfirm_password,
               };
 
         try {
             const response = await axios.post(endpoint, payload, {
                 withCredentials: true,
             });
+
             setMessage(response.data.message);
 
-            console.log(response.data);
-
-            // If signup is successful, switch to login form and scroll to the login section
+            // If signup is successful, switch to login form
             if (!isLogin && response.data.success) {
                 setIsLogin(true);
-                // Scroll to login form
-                document
-                    .getElementById("login-form")
-                    .scrollIntoView({ behavior: "smooth" });
+                setMessage("Signup successful! You can now log in.");
+                setFormData({
+                    firstname: "",
+                    lastname: "",
+                    username: "",
+                    email: "",
+                    password: "",
+                    confirm_password: "",
+                });
             }
 
             // If login is successful
-            if (response.data.message === "Login successful!") {
-                // Redirect to the homepage
+            if (isLogin && response.data.message === "Login successful!") {
                 sessionStorage.setItem("user_id", response.data.user_id);
                 sessionStorage.setItem("username", response.data.username);
                 sessionStorage.setItem("email", response.data.email);
@@ -85,11 +119,13 @@ export function AuthForm() {
                 sessionStorage.setItem("theme", response.data.theme);
                 sessionStorage.setItem("role", response.data.role);
                 window.location.href = response.data.redirect_url;
-            } else {
-                setMessage(response.data.message); // Show any error message
             }
         } catch (error) {
-            setMessage("Something went wrong. Please try again.");
+            const errorMessage =
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : "Something went wrong. Please try again.";
+            setMessage(errorMessage);
         }
     };
 
@@ -108,7 +144,6 @@ export function AuthForm() {
                 className="mt-6 space-y-4"
                 onSubmit={handleSubmit}
             >
-                {/* Signup Fields */}
                 {!isLogin && (
                     <div className="flex flex-col md:flex-row gap-4">
                         <LabelInputContainer>
@@ -121,6 +156,9 @@ export function AuthForm() {
                                 onChange={handleChange}
                                 className="bg-white text-black"
                             />
+                            {errors.firstname && (
+                                <ErrorText message={errors.firstname} />
+                            )}
                         </LabelInputContainer>
                         <LabelInputContainer>
                             <Label htmlFor="lastname">Last Name</Label>
@@ -132,6 +170,9 @@ export function AuthForm() {
                                 onChange={handleChange}
                                 className="bg-white text-black"
                             />
+                            {errors.lastname && (
+                                <ErrorText message={errors.lastname} />
+                            )}
                         </LabelInputContainer>
                     </div>
                 )}
@@ -146,9 +187,11 @@ export function AuthForm() {
                             onChange={handleChange}
                             className="bg-white text-black"
                         />
+                        {errors.username && (
+                            <ErrorText message={errors.username} />
+                        )}
                     </LabelInputContainer>
                 )}
-                {/* Common Fields */}
                 <LabelInputContainer>
                     <Label htmlFor="email">Email Address</Label>
                     <Input
@@ -159,6 +202,7 @@ export function AuthForm() {
                         onChange={handleChange}
                         className="bg-white text-black"
                     />
+                    {errors.email && <ErrorText message={errors.email} />}
                 </LabelInputContainer>
                 <LabelInputContainer>
                     <Label htmlFor="password">Password</Label>
@@ -170,19 +214,24 @@ export function AuthForm() {
                         onChange={handleChange}
                         className="bg-white text-black"
                     />
+                    {errors.password && <ErrorText message={errors.password} />}
                 </LabelInputContainer>
-                {/* Additional Fields for Signup */}
                 {!isLogin && (
                     <LabelInputContainer>
-                        <Label htmlFor="password">Confirm Password</Label>
+                        <Label htmlFor="confirm_password">
+                            Confirm Password
+                        </Label>
                         <Input
-                            id="comfirm_password"
+                            id="confirm_password"
                             placeholder="••••••••"
                             type="password"
-                            value={formData.comfirm_password}
+                            value={formData.confirm_password}
                             onChange={handleChange}
                             className="bg-white text-black"
                         />
+                        {errors.confirm_password && (
+                            <ErrorText message={errors.confirm_password} />
+                        )}
                     </LabelInputContainer>
                 )}
                 <button
@@ -201,20 +250,16 @@ export function AuthForm() {
                 </button>
             </div>
             {message && (
-                <p className="mt-4 text-center bg-red-100 text-red-600 p-2 rounded-md">
+                <p
+                    className={`mt-4 text-center ${
+                        message.includes("successful")
+                            ? "bg-green-100 text-green-600"
+                            : "bg-red-100 text-red-600"
+                    } p-2 rounded-md`}
+                >
                     {message}
                 </p>
             )}
-            <div className="flex gap-4 mt-6">
-                <OAuthButton
-                    Icon={IconBrandGithub}
-                    text="Continue with GitHub"
-                />
-                <OAuthButton
-                    Icon={IconBrandGoogle}
-                    text="Continue with Google"
-                />
-            </div>
         </div>
     );
 }
@@ -229,3 +274,7 @@ const OAuthButton = ({ Icon, text }) => (
 const LabelInputContainer = ({ children }) => {
     return <div className="flex flex-col space-y-2">{children}</div>;
 };
+
+const ErrorText = ({ message }) => (
+    <p className="text-sm text-red-500 mt-1">{message}</p>
+);
