@@ -46,11 +46,30 @@ const ReportLost = () => {
 
         fetchLocations();
     }, []);
-
-
-    const handleFileSelect = (file) => {
-        setFormData((prevData) => ({ ...prevData, file }));
+    
+    // handling input file to store in local directory
+    const handleFileChange = async (e) => {
+        const file = e.target.files[0]; // Get the first file from the input
+        const formData = new FormData();
+        formData.append("file", file);
+        console.log(formData);
+    
+        try {
+            const response = await axios.post("http://localhost/Backend/Create/upload_image.php", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+    
+            if (response.data.success) {
+                console.log("File uploaded successfully:", response.data.file_url);
+                setFormData((prevData) => ({ ...prevData, file: file })); // Update formData with the file
+            } else {
+                console.error("File upload failed:", response.data.message);
+            }
+        } catch (error) {
+            console.error("Error uploading file:", error);
+        }
     };
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -117,7 +136,11 @@ const ReportLost = () => {
 
                 <form onSubmit={handleSubmit}>
                     <div className="w-full max-w-4xl mx-auto min-h-96 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
-                        <FileUpload onChange={handleFileSelect} />
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleFileChange}
+                        />
                     </div>
 
                     <label htmlFor="category">Category</label>
