@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"; // For getting userId from URL
+import axios from "axios"; // Importing axios
 
 const Profile = () => {
-    const { userId } = useParams(); // Get userId from the URL
+    // const { userId } = useParams(); // Get userId from the URL
+
+    // get the userid from the session storage
+    const userId = sessionStorage.getItem("user_id");
     const [userData, setUserData] = useState({
         username: "",
         theme: "Light", // Default theme
@@ -11,93 +15,67 @@ const Profile = () => {
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [error, setError] = useState("");
+    const [currentProfilePic, setCurrentProfilePic] = useState(null);
 
-    // Fetch user data using userId
+    // Fetch user data from sessionStorage when the page loads
     useEffect(() => {
-        async function getUserData() {
-            try {
-                const response = await fetch(
-                    `http://localhost:5000/api/user/${userId}`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${localStorage.getItem(
-                                "token"
-                            )}`,
-                        },
-                    }
-                );
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setUserData({
-                        username: data.username || "",
-                        theme: data.theme || "Light",
-                    });
-                } else {
-                    console.log("Failed to fetch user data");
-                }
-            } catch (error) {
-                console.error("Failed to fetch user data:", error);
-            }
-        }
-
-        getUserData();
-    }, [userId]);
+        const sessionData = {
+            username: sessionStorage.getItem("username"),
+            theme: sessionStorage.getItem("theme") || "vid1",
+            profilePic: sessionStorage.getItem("profile_pic"),
+        };
+        setUserData((prevData) => ({
+            ...prevData,
+            ...sessionData,
+        }));
+        setCurrentProfilePic(sessionData.profilePic); // Set current profile picture
+    }, []);
 
     // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Check if old password matches with the database
+        // Create FormData object for the profile picture and other form data
+        const formData = new FormData();
+        formData.append("username", userData.username);
+        formData.append("theme", userData.theme);
+        formData.append("oldPassword", oldPassword);
+        formData.append("newPassword", newPassword || "");
+
+        // If a new profile picture is selected, append it to the formData
+        if (profilePicture) {
+            formData.append("profile_pic", profilePicture);
+        }
+
+        // Make Axios request to update user profile
         try {
-            const verifyResponse = await fetch(
-                `http://localhost:5000/api/user/verify-password/${userId}`,
+            const response = await axios.put(
+                // console.log("URL: ", `http://localhost/Backend/Create/update_user_profile.php?user_id=${userId}`),
+                // `http://localhost/Backend/Create/update_user_profile.php?user_id=${userId}`,
+                `http://localhost/Backend/Create/update_user_profile.php`,
+                formData,
                 {
-                    method: "POST",
+                    params: { user_id: userId },
                     headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "token"
-                        )}`,
+                        "Content-Type": "multipart/form-data", // Specify content type
+                        // Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
-                    body: JSON.stringify({ oldPassword }),
                 }
             );
-
-            if (!verifyResponse.ok) {
-                const errorData = await verifyResponse.json();
-                setError(errorData.message || "Old password is incorrect");
-                return;
-            }
-
-            // Submit updated user data
-            const updateResponse = await fetch(
-                `http://localhost:5000/api/user/${userId}`,
-                {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "token"
-                        )}`,
-                    },
-                    body: JSON.stringify({
-                        username: userData.username,
-                        theme: userData.theme,
-                        newPassword: newPassword || undefined, // Only send newPassword if provided
-                    }),
-                }
-            );
-
-            if (updateResponse.ok) {
+            if (response.status === 200) {
                 console.log("User data updated successfully!");
-            } else {
-                console.log("Failed to update user data");
+                // Optionally, store the updated data in sessionStorage for future use
+                sessionStorage.setItem("username", userData.username);
+                sessionStorage.setItem("theme", userData.theme);
+                sessionStorage.setItem(
+                    "profile_pic",
+                    response.data.profile_pic
+                );
+                setCurrentProfilePic(response.data.profile_pic); // Update the profile picture in state
             }
         } catch (error) {
             console.error("Error during form submission:", error);
+            setError("An error occurred while updating your profile.");
         }
     };
 
@@ -108,6 +86,19 @@ const Profile = () => {
             ...prevData,
             [name]: value,
         }));
+    };
+
+    // Handle profile picture selection
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setProfilePicture(file);
+        }
+    };
+
+    // Handle clearing the profile picture
+    const handleClearProfilePicture = () => {
+        setProfilePicture(null);
     };
 
     return (
@@ -128,16 +119,32 @@ const Profile = () => {
                         />
                     </label>
 
-                    {/* Profile Picture Upload */}
+                    {/* Profile Picture Display */}
                     <label className="block">
                         <span className="text-gray-700">Profile Picture</span>
-                        <input
-                            type="file"
-                            onChange={(e) =>
-                                setProfilePicture(e.target.files[0])
-                            }
-                            className="mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
-                        />
+                        <div className="flex items-center gap-2">
+                            {currentProfilePic && !profilePicture && (
+                                <img
+                                    src={currentProfilePic}
+                                    alt="Profile"
+                                    className="w-12 h-12 rounded-full"
+                                />
+                            )}
+                            <input
+                                type="file"
+                                onChange={handleFileChange}
+                                className="mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                            />
+                            {profilePicture && (
+                                <button
+                                    type="button"
+                                    onClick={handleClearProfilePicture}
+                                    className="text-red-500 text-sm"
+                                >
+                                    Clear Picture
+                                </button>
+                            )}
+                        </div>
                     </label>
 
                     {/* Theme Selector */}
@@ -149,8 +156,8 @@ const Profile = () => {
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
                         >
-                            <option value="Light">Light</option>
-                            <option value="Dark">Dark</option>
+                            <option value="Light">vid1</option>
+                            <option value="Dark">vid2</option>
                         </select>
                     </label>
 
