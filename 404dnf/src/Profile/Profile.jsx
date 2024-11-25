@@ -9,7 +9,7 @@ const Profile = () => {
     const userId = sessionStorage.getItem("user_id");
     const [userData, setUserData] = useState({
         username: "",
-        theme: "Light", // Default theme
+        theme: "vid1", // Default theme
     });
     const [profilePicture, setProfilePicture] = useState(null);
     const [oldPassword, setOldPassword] = useState("");
@@ -35,48 +35,87 @@ const Profile = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Create FormData object for the profile picture and other form data
-        const formData = new FormData();
-        formData.append("username", userData.username);
-        formData.append("theme", userData.theme);
-        formData.append("oldPassword", oldPassword);
-        formData.append("newPassword", newPassword || "");
+        // save the file on the local storage
+        // get the the file path
+        // save the file path on the database
 
-        // If a new profile picture is selected, append it to the formData
-        if (profilePicture) {
-            formData.append("profile_pic", profilePicture);
-        }
+        // // Create FormData object for the profile picture and other form data
+        // const formData = new FormData();
+        // formData.append("username", userData.username);
+        // formData.append("theme", userData.theme);
+        // formData.append("oldPassword", oldPassword);
+        // formData.append("newPassword", newPassword || "");
 
-        // Make Axios request to update user profile
+        const jsonData = {
+            username: userData.username,
+            theme: userData.theme,
+            old_password: oldPassword || "",
+            new_password: newPassword || "",
+            profile_pic: profilePicture || null // If no new profile picture is selected, send null
+        };
+        
         try {
             const response = await axios.put(
-                // console.log("URL: ", `http://localhost/Backend/Create/update_user_profile.php?user_id=${userId}`),
-                // `http://localhost/Backend/Create/update_user_profile.php?user_id=${userId}`,
-                `http://localhost/Backend/Create/update_user_profile.php`,
-                formData,
+                `http://localhost/Backend/Create/update_user_profile.php?user_id=${userId}`,
+                jsonData, // JSON object
                 {
-                    params: { user_id: userId },
                     headers: {
-                        "Content-Type": "multipart/form-data", // Specify content type
+                        "Content-Type": "application/json", // Specify JSON content type
                         // Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
                 }
             );
+        
             if (response.status === 200) {
-                console.log("User data updated successfully!");
-                // Optionally, store the updated data in sessionStorage for future use
+                console.log(response.data.message, response.status);
                 sessionStorage.setItem("username", userData.username);
                 sessionStorage.setItem("theme", userData.theme);
-                sessionStorage.setItem(
-                    "profile_pic",
-                    response.data.profile_pic
-                );
+                sessionStorage.setItem("profile_pic", response.data.profile_pic);
                 setCurrentProfilePic(response.data.profile_pic); // Update the profile picture in state
+            } else if (response.status === 400) {
+                console.log(response.data.message, response.status);
+                setError(response.data.message);
             }
         } catch (error) {
             console.error("Error during form submission:", error);
             setError("An error occurred while updating your profile.");
         }
+        
+        
+        // If a new profile picture is selected, append it to the formData
+        // if (profilePicture) {
+        //     formData.append("profile_pic", profilePicture);
+        // }
+
+        // Make Axios request to update user profile
+        // try {
+        //     const response = await axios.put(
+        //         // console.log("URL: ", `http://localhost/Backend/Create/update_user_profile.php?user_id=${userId}`),
+        //         `http://localhost/Backend/Create/update_user_profile.php?user_id=${userId}`,
+        //         formData, 
+        //         {
+        //             headers: {
+        //                 "Content-Type": "multipart/form-data", // Specify content type
+        //                 // Authorization: `Bearer ${localStorage.getItem("token")}`,
+        //             },
+        //         }
+        //     );
+        //     if (response.status === 200) {
+        //         console.log(response.data.message, response.status);
+        //         // Optionally, store the updated data in sessionStorage for future use
+        //         sessionStorage.setItem("username", userData.username);
+        //         sessionStorage.setItem("theme", userData.theme);
+        //         sessionStorage.setItem("profile_pic", response.data.profile_pic);
+        //         setCurrentProfilePic(response.data.profile_pic); // Update the profile picture in state
+        //     }
+        //     else if(response.status === 400){
+        //         console.log("No changes made.");
+        //         setError("No changes made.");
+        //     }
+        // } catch (error) {
+        //     console.error("Error during form submission:", error);
+        //     setError("An error occurred while updating your profile.");
+        // }
     };
 
     // Handle input changes
@@ -156,8 +195,8 @@ const Profile = () => {
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
                         >
-                            <option value="Light">vid1</option>
-                            <option value="Dark">vid2</option>
+                            <option value="vid1">Vid1</option>
+                            <option value="vid2">Vid2</option>
                         </select>
                     </label>
 

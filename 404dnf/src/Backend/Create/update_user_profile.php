@@ -20,6 +20,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
+<<<<<<< HEAD
+// Check if user is logged in
+// if (!isset($_SESSION['user_id'])) {
+//     // Set the response code to 401 (Unauthorized)
+//     http_response_code(401);
+//     // Set the response message
+//     echo json_encode(array('message' => 'User is not logged in!', 'redirect' => 'login.php'));
+//     // Exit the script
+//     exit();
+// }
+
+=======
+>>>>>>> d5fd9706dcb46d774ade4e97b82c0982db7b0954
 // Check if the request method is PUT
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
 
