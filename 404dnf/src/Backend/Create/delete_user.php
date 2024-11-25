@@ -1,6 +1,6 @@
 <?php
 // Include the config file
-include('config.php');
+include('../db/config.php');
 
 // start session
 session_start();
@@ -20,7 +20,7 @@ $role = $_SESSION['role'];
 // $role = 1; // default for testing purposes
 
 // Check if user is an admin
-if ($role != 1) {
+if ($role != "admin") {
     // Set the response code to 403 (Forbidden)
     http_response_code(403);
     // Set the response message
@@ -31,49 +31,20 @@ if ($role != 1) {
 
 
 
-// Check if the request method is DELETE
-if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') {
-    // Set the response code to 405 (Method Not Allowed)
-    http_response_code(405);
-    // Set the response message
-    echo json_encode(array('message' => 'Method not allowed.'));
-    // Exit the script
-    exit();
-}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = json_decode(file_get_contents('php://input'), true);
+    $user_id = $data['user_id'];
 
-// Check if the 'user_id' is passed as a GET or POST parameter
-if (isset($_GET['user_id']) || isset($_POST['user_id'])) {
-    // Get the user_id from the request
-    $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : $_POST['user_id'];
-    
-
-    // Prepare the DELETE query
-    $sql = "DELETE FROM users WHERE user_id = ?";
-
-    // Initialize a prepared statement
-    if ($stmt = $conn->prepare($sql)) {
-        // Bind the user_id to the statement
-        $stmt->bind_param("i", $user_id);
-
-        // Execute the query
-        if ($stmt->execute()) {
-            // Check if any row was deleted
-            if ($stmt->affected_rows > 0) {
-                echo "User with ID $user_id has been deleted successfully.";
-            } else {
-                echo "No user found with ID $user_id.";
-            }
-        } else {
-            echo "Error deleting user: " . $stmt->error;
-        }
-
-        // Close the statement
-        $stmt->close();
+    $stmt = $conn->prepare('DELETE FROM users WHERE user_id = ?');
+    $stmt->bind_param('i', $user_id);
+    if ($stmt->execute()) {
+        echo json_encode(['status' => 'success', 'message' => 'User deleted successfully']);
     } else {
-        echo "Error preparing query: " . $conn->error;
+        echo json_encode(['status' => 'error', 'message' => 'Failed to delete user']);
     }
 } else {
-    echo "Error: User ID is required.";
+    http_response_code(405);
+    echo json_encode(['message' => 'Method not allowed']);
 }
 
 // Close the connection

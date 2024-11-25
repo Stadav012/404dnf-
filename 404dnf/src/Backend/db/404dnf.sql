@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Nov 24, 2024 at 05:13 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Host: 127.0.0.1
+-- Generation Time: Nov 25, 2024 at 02:31 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -38,7 +38,7 @@ DROP TABLE IF EXISTS `location`;
 CREATE TABLE `claims` (
   `claim_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `submission_id` varchar(255) NOT NULL,
+  `submission_id` int(11) NOT NULL,
   `status` enum('pending','approved','rejected') DEFAULT 'pending',
   `report_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
@@ -50,11 +50,11 @@ CREATE TABLE `claims` (
 --
 
 INSERT INTO `claims` (`claim_id`, `user_id`, `submission_id`, `status`, `report_id`, `created_at`, `updated_at`) VALUES
-(1, 1, '1', 'pending', 1, '2024-11-24 16:12:49', '2024-11-24 16:12:49'),
-(2, 1, '2', 'approved', 4, '2024-11-24 16:12:49', '2024-11-24 16:12:49'),
-(3, 2, '3', 'pending', 2, '2024-11-24 16:12:49', '2024-11-24 16:12:49'),
-(4, 2, '4', 'rejected', 5, '2024-11-24 16:12:49', '2024-11-24 16:12:49'),
-(5, 3, '5', 'approved', 3, '2024-11-24 16:12:49', '2024-11-24 16:12:49');
+(1, 1, 1, 'pending', 1, '2024-11-24 16:12:49', '2024-11-24 16:12:49'),
+(2, 1, 2, 'approved', 4, '2024-11-24 16:12:49', '2024-11-24 16:12:49'),
+(3, 2, 3, 'pending', 2, '2024-11-24 16:12:49', '2024-11-24 16:12:49'),
+(4, 2, 4, 'rejected', 5, '2024-11-24 16:12:49', '2024-11-24 16:12:49'),
+(5, 3, 5, 'approved', 3, '2024-11-24 16:12:49', '2024-11-24 16:12:49');
 
 -- --------------------------------------------------------
 
@@ -257,7 +257,10 @@ INSERT INTO `users_submissions` (`user_submission_id`, `user_id`, `submission_id
 ALTER TABLE `claims`
   ADD PRIMARY KEY (`claim_id`),
   ADD KEY `user_id` (`user_id`),
-  ADD KEY `report_id` (`report_id`);
+  ADD KEY `report_id` (`report_id`),
+  ADD KEY `user_id_2` (`user_id`),
+  ADD KEY `user_id_3` (`user_id`,`submission_id`,`report_id`),
+  ADD KEY `submission_id` (`submission_id`);
 
 --
 -- Indexes for table `contribution_counts`
@@ -300,7 +303,8 @@ ALTER TABLE `submissions`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `username` (`username`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `users_reports`
@@ -369,36 +373,50 @@ ALTER TABLE `users_submissions`
 --
 
 --
+-- Constraints for table `claims`
+--
+ALTER TABLE `claims`
+  ADD CONSTRAINT `claims_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `claims_ibfk_2` FOREIGN KEY (`submission_id`) REFERENCES `submissions` (`submission_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `claims_ibfk_3` FOREIGN KEY (`report_id`) REFERENCES `reports` (`report_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `contribution_counts`
 --
 ALTER TABLE `contribution_counts`
-  ADD CONSTRAINT `contribution_counts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+  ADD CONSTRAINT `contribution_counts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `reports`
 --
 ALTER TABLE `reports`
-  ADD CONSTRAINT `reports_ibfk_1` FOREIGN KEY (`location_id`) REFERENCES `location` (`location_id`);
+  ADD CONSTRAINT `reports_ibfk_1` FOREIGN KEY (`location_id`) REFERENCES `location` (`location_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `rewards`
+--
+ALTER TABLE `rewards`
+  ADD CONSTRAINT `rewards_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `submissions`
 --
 ALTER TABLE `submissions`
-  ADD CONSTRAINT `submissions_ibfk_1` FOREIGN KEY (`location_id`) REFERENCES `location` (`location_id`);
+  ADD CONSTRAINT `submissions_ibfk_1` FOREIGN KEY (`location_id`) REFERENCES `location` (`location_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `users_reports`
 --
 ALTER TABLE `users_reports`
-  ADD CONSTRAINT `users_reports_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `users_reports_ibfk_2` FOREIGN KEY (`report_id`) REFERENCES `reports` (`report_id`);
+  ADD CONSTRAINT `users_reports_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `users_reports_ibfk_2` FOREIGN KEY (`report_id`) REFERENCES `reports` (`report_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `users_submissions`
 --
 ALTER TABLE `users_submissions`
-  ADD CONSTRAINT `users_submissions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `users_submissions_ibfk_2` FOREIGN KEY (`submission_id`) REFERENCES `submissions` (`submission_id`);
+  ADD CONSTRAINT `users_submissions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `users_submissions_ibfk_2` FOREIGN KEY (`submission_id`) REFERENCES `submissions` (`submission_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
