@@ -21,14 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    // Set the response code to 401 (Unauthorized)
-    http_response_code(401);
-    // Set the response message
-    echo json_encode(array('message' => 'User is not logged in!', 'redirect' => 'login.php'));
-    // Exit the script
-    exit();
-}
+// if (!isset($_SESSION['user_id'])) {
+//     // Set the response code to 401 (Unauthorized)
+//     http_response_code(401);
+//     // Set the response message
+//     echo json_encode(array('message' => 'User is not logged in!', 'redirect' => 'login.php'));
+//     // Exit the script
+//     exit();
+// }
 
 // Check if the request method is PUT
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
