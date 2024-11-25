@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import "./index.css";
-import App from "./App"; // Main layout component
+import App from "./App";
 import Dashboard from "./Dashboard";
 import ReportLost from "./ReportLostnFound/ReportLost";
 import SubmitPage from "./SubmitPage/SubmitPage";
@@ -15,11 +15,9 @@ import AdminLayout from "./Admin/AdminLayout";
 import AdminDashboard from "./Admin/pages/AdminDashboard";
 import ClaimsManagement from "./Admin/claims";
 import Users from "./Admin/pages/Users";
-import Claims from "./Admin/pages/Claims";
 
 import UserAuth from "./UserAuthPages/UserAuth";
-import PrivateRoute from "./PrivateRoute"; // Import the PrivateRoute component
-import AdminRoute from "./AdminRoute"; // Import the AdminRoute component
+import { PrivateRoute, PublicRoute } from "./PrivateRoute"; // Import the PrivateRoute and PublicRoute components
 
 // A simple 404 component
 function NotFound() {
@@ -64,7 +62,7 @@ root.render(
                 {/* Admin Layout */}
                 <Route
                     path="/admin/*"
-                    element={<AdminRoute element={<AdminLayout />} />}
+                    element={<PrivateRoute element={<AdminLayout />} />}
                 >
                     <Route index element={<AdminDashboard />} />
                     <Route path="users" element={<Users />} />
@@ -72,7 +70,10 @@ root.render(
                 </Route>
 
                 {/* User Authentication */}
-                <Route path="/auth/*" element={<UserAuth />}>
+                <Route
+                    path="/auth/*"
+                    element={<PublicRoute element={<UserAuth />} />}
+                >
                     <Route index element={<SignupPage />} />
                 </Route>
 

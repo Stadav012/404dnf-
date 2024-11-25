@@ -1,4 +1,8 @@
-("use client");
+"use client";
+
+import { useState, useEffect } from "react";
+import Lottie from "react-lottie-player";
+import loadingAnimation from "../public/animations/loading.json";
 import Video from "./Video/video";
 import Statistics from "./Statistics/Statistics";
 import Section from "./Sections/Sections";
@@ -7,17 +11,33 @@ import { IconClipboardCopy, IconTrophy, IconBox } from "@tabler/icons-react";
 import { HeroHighlight } from "@/components/ui/hero-highlight";
 import { Spotlight } from "@/components/ui/spotlight";
 import { SparklesCore } from "@/components/ui/sparkles";
-// import ImageUpload from './upload_image/ImageUpload';
 
-<div className="">
-    {/* Radial gradient for the container to give a faded look */}
-    <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
-    <p className="text-4xl sm:text-7xl font-bold relative z-20 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500 py-8">
-        Backgrounds
-    </p>
-</div>;
+// Lottie Loader Component
+function Loader() {
+    return (
+        <div className="flex items-center justify-center h-screen bg-gray-900">
+            <Lottie
+                loop
+                animationData={loadingAnimation}
+                play
+                style={{ width: 300, height: 300 }}
+            />
+        </div>
+    );
+}
 
 function Dashboard() {
+    const [loading, setLoading] = useState(true);
+
+    // Simulate data loading or API calls
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setLoading(false); // Set to false after data is fetched
+        }, 2000);
+
+        return () => clearTimeout(timeout); // Cleanup timeout
+    }, []);
+
     const awards = [
         {
             label: "Top Contributor",
@@ -44,6 +64,10 @@ function Dashboard() {
         },
     ];
 
+    if (loading) {
+        return <Loader />;
+    }
+
     return (
         <BentoGrid className="max-w-5xl mx-auto md:auto-rows-[30rem] gap-y-24 p-5">
             {/* Video Item */}
@@ -60,23 +84,8 @@ function Dashboard() {
                                 Welcome {sessionStorage.getItem("username")}
                             </h1>
                             <div className="w-[40rem] h-30 relative">
-                                {/* Gradients */}
                                 <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-[2px] w-3/4 blur-sm" />
-                                <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-px w-3/4" />
                                 <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-[5px] w-1/4 blur-sm" />
-                                <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-px w-1/4" />
-
-                                {/* Core component
-                                <SparklesCore
-                                    background="transparent"
-                                    minSize={0.4}
-                                    maxSize={1}
-                                    particleDensity={1200}
-                                    className="w-full h-full"
-                                    particleColor="#FFFFFF"
-                                /> */}
-
-                                {/* Radial Gradient to prevent sharp edges */}
                                 <div className="absolute inset-0 w-full h-full bg-black [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]"></div>
                             </div>
                         </div>
@@ -90,7 +99,6 @@ function Dashboard() {
                 className="md:col-span-5 h-[35rem]"
                 header={
                     <div className="flex flex-col md:flex-row gap-4 h-full">
-                        {/* Awards Section */}
                         <div className="flex-1">
                             <BentoGridItem
                                 title="Awards"
@@ -109,8 +117,6 @@ function Dashboard() {
                                 }
                             />
                         </div>
-
-                        {/* Smart Locker Access Section */}
                         <div className="flex-1">
                             <BentoGridItem
                                 title="Smart Locker Access"

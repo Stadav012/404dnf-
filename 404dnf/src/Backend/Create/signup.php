@@ -27,9 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get the post data
     $data = json_decode(file_get_contents('php://input'), true);
 
-    // echo the data array 
-    echo json_encode($data);
-
     // Extract variables
     $lname = $data['lastname'];
     $fname = $data['firstname'];

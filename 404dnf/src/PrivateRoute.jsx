@@ -1,16 +1,24 @@
-import React from "react";
+// PrivateRoute.js
 import { Navigate } from "react-router-dom";
 
-// The PrivateRoute component checks if the user is logged in
-const PrivateRoute = ({ element }) => {
-    const isLoggedIn = sessionStorage.getItem("user_id"); // Or use localStorage, context, or a global state
+// PrivateRoute for protected pages (only accessible if logged in)
+export function PrivateRoute({ element }) {
+    const isLoggedIn = sessionStorage.getItem("user_id"); // Example: check user in sessionStorage
 
     if (!isLoggedIn) {
-        // If not logged in, redirect to the login page
-        return <Navigate to="/auth" />;
+        return <Navigate to="/auth" replace />;
     }
 
-    return element; // If logged in, render the route element
-};
+    return element;
+}
 
-export default PrivateRoute;
+// PublicRoute for auth pages (only accessible if logged out)
+export function PublicRoute({ element }) {
+    const isLoggedIn = sessionStorage.getItem("user_id");
+
+    if (isLoggedIn) {
+        return <Navigate to="/" replace />; // Redirect to Dashboard if logged in
+    }
+
+    return element;
+}

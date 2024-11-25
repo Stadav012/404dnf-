@@ -12,7 +12,7 @@ const SubmitPage = () => {
         setFormData((prevData) => ({ ...prevData, file }));
     };
     return (
-        <div class="submit-page-content">
+        <div className="submit-page-content">
             <form action="">
                 <h2>Submit found item</h2>
                 <p>Please fill in the details you found</p>
@@ -29,14 +29,18 @@ const SubmitPage = () => {
 
                 <div id="categories">
                     <h3>What category of item is this?</h3>
-                    <div id="item-category">{/* add the categories */}
-                    <select id="category-dropdown" className="border p-2 rounded w-full max-w-md">
-                        <option value="">Select</option>
-                        <option value="electronics">Electronics</option>
-                        <option value="clothing">Clothing</option>
-                        <option value="furniture">Stationery</option>
-                        <option value="books">Accessories</option>
-                    </select>
+                    <div id="item-category">
+                        {/* add the categories */}
+                        <select
+                            id="category-dropdown"
+                            className="border p-2 rounded w-full max-w-md"
+                        >
+                            <option value="">Select</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="furniture">Stationery</option>
+                            <option value="books">Accessories</option>
+                        </select>
                     </div>
                 </div>
 
