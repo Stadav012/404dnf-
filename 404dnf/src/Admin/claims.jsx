@@ -72,8 +72,11 @@ const ClaimsManagement = () => {
         <thead>
           <tr>
             <th>Claim ID</th>
-            <th>Description</th>
-            <th>Location</th>
+            <th>Report_Description</th>
+            <th>Submission_Description</th>
+            <th>Reports_Photo</th>
+            <th>Submissions_Photo</th>
+             <th>Location</th>
             <th>Username</th>
             <th>Status</th>
             <th>Action</th>
@@ -85,6 +88,9 @@ const ClaimsManagement = () => {
               <tr key={claim.claim_id}>
                 <td>{claim.claim_id}</td>
                 <td>{claim.item_description}</td>
+                <td>{claim.submission_description}</td>
+                <td>{claim.photo_url}</td>
+                <td>{claim.photo_url}</td>
                 <td>{claim.location_name || "N/A"}</td>
                 <td>{claim.username}</td>
                 <td>
@@ -109,7 +115,7 @@ const ClaimsManagement = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="6">No claims available</td>
+              <td colSpan="9">No claims available</td>
             </tr>
           )}
         </tbody>
