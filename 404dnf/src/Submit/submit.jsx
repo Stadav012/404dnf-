@@ -23,7 +23,7 @@ function Submit({ formData }) {
                 setSubmitted(true);
                 console.log("Form successfully submitted:", response.data);
             } else {
-                throw new Error(response.data.message || "Submission failed.");
+                // throw new Error(response.data.message || "Submission failed.");
             }
         } catch (err) {
             // handling an arising error

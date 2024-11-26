@@ -56,6 +56,9 @@ const ReportLost = () => {
     
         try {
             const response = await axios.post("http://localhost/Backend/Create/upload_image.php", formData, {
+                params: {
+                    id: sessionStorage.getItem('user_id')
+                },
                 headers: { "Content-Type": "multipart/form-data" },
             });
     
