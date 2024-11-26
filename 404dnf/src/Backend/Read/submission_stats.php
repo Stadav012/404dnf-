@@ -42,9 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         echo json_encode(['submission_stats' => $row]);
 
     } else {
-        // if there are no found items, return an empty array
-        http_response_code(404);
-        echo json_encode(['message' => 'No submission stats found']);
+        // return an array of 0 found items
+        http_response_code(200);
+        echo json_encode(['submission_stats' => []]);
     }
 } else {
     // if the request method is not GET, return an error
