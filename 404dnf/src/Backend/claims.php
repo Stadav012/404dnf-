@@ -25,13 +25,23 @@ switch ($method) {
         if (isset($data['claim_id'])) {
             // Retrieve a specific claim by ID
             $stmt = $conn->prepare("
-                SELECT users.username, reports.item_description, submissions.description
-                FROM claims
-                INNER JOIN users ON claims.user_id = users.user_id
-                INNER JOIN reports ON claims.report_id = reports.report_id
-                INNER JOIN submissions ON claims.submission_id = submissions.submission_id
+                SELECT 
+    c.claim_id, 
+    u.username, 
+    r.item_description, 
+    s.description AS submission_description, 
+    r.photo_url AS report_photo_url, 
+    s.photo_url AS submission_photo_url
+FROM 
+    claims AS c
+INNER JOIN 
+    users AS u ON c.user_id = u.user_id
+INNER JOIN 
+    reports AS r ON c.report_id = r.report_id
+INNER JOIN 
+    submissions AS s ON c.submission_id = s.submission_id
 
-                WHERE claim_id = ?
+                WHERE c.claim_id = ?
             ");
             $stmt->bind_param('i', $data['claim_id']);
             $stmt->execute();
@@ -46,11 +56,22 @@ switch ($method) {
         } else {
             // Retrieve all claims
             $stmt = $conn->prepare("
-                SELECT users.username, reports.item_description, submissions.description
-                FROM claims
-                INNER JOIN users ON claims.user_id = users.user_id
-                INNER JOIN reports ON claims.report_id = reports.report_id
-                INNER JOIN submissions ON claims.submission_id = submissions.submission_id
+                SELECT 
+                c.status,
+    c.claim_id, 
+    u.username, 
+    r.item_description, 
+    s.description AS submission_description, 
+    r.photo_url AS report_photo_url, 
+    s.photo_url AS submission_photo_url
+FROM 
+    claims AS c
+INNER JOIN 
+    users AS u ON c.user_id = u.user_id
+INNER JOIN 
+    reports AS r ON c.report_id = r.report_id
+INNER JOIN 
+    submissions AS s ON c.submission_id = s.submission_id
 
 
             ");

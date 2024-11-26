@@ -38,15 +38,14 @@ const Profile = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-
         const jsonData = {
             username: userData.username,
             theme: userData.theme,
             old_password: oldPassword || "",
             new_password: newPassword || "",
-            profile_pic: profilePicture || null // If no new profile picture is selected, send null
+            profile_pic: profilePicture || null, // If no new profile picture is selected, send null
         };
-        
+
         try {
             const response = await axios.put(
                 `http://localhost/Backend/Create/update_user_profile.php?user_id=${userId}`,
@@ -58,7 +57,7 @@ const Profile = () => {
                     },
                 }
             );
-        
+
             if (response.status === 200) {
                 console.log(response.data.message, response.status);
                 sessionStorage.setItem("username", (response.data.username ? response.data.username:  userData.username));
@@ -83,9 +82,6 @@ const Profile = () => {
             console.error("Error during form submission:", error);
             setError("An error occurred while updating your profile.");
         }
-        
-        
-
     };
 
     // Handle input changes
@@ -117,7 +113,6 @@ const Profile = () => {
         }
         setSuccess(""); // Clear success message on file change
     };
-    
 
     // Handle clearing the profile picture
     const handleClearProfilePicture = () => {
