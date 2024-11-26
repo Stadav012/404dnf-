@@ -60,6 +60,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param('i', $user_id);
         $stmt->execute();
 
+        // changing report_status in users table
+        $query = 'UPDATE users SET report_status = 1 WHERE user_id = ?';
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param('i', $user_id);
+        $stmt->execute();
+        
+
+        http_response_code(200);
         echo json_encode(['success' => true, 'message' => 'Report submitted successfully.']);
     } else {
         echo json_encode(['success' => false, 'message' => 'Failed to submit report.']);
