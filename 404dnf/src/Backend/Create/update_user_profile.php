@@ -197,7 +197,7 @@ function updateUsername($conn, $user_id, $new_username) {
                 // update the session username
                 $_SESSION['username'] = $new_username;
                 http_response_code(200);
-                echo json_encode(array('message' => 'Username updated successfully.'));
+                echo json_encode(array('message' => 'Username updated successfully.', 'username' => $new_username));
             } else {
                 http_response_code(205);
                 echo json_encode(array('message' => 'No changes made to username.'));
@@ -231,9 +231,12 @@ function updateTheme($conn, $user_id, $new_theme) {
                 // update the session theme
                 $_SESSION['theme'] = $new_theme;
                 http_response_code(200);
-                echo json_encode(array('message' => 'Theme updated successfully.'));
+                echo json_encode(array(
+                    'message' => 'Theme updated successfully.',
+                    'theme' => $new_theme
+                ));
             } else {
-                http_response_code(206);
+                http_response_code(200);
                 echo json_encode(array('message' => 'No changes made to theme.'));
             }
         } else {
@@ -320,9 +323,12 @@ function updateProfilePic($conn, $user_id, $new_profile_pic)
                 // Update the session profile pic
                 $_SESSION['profile_pic'] = $new_profile_pic;
                 http_response_code(200);
-                echo json_encode(array('message' => 'Profile picture updated successfully.'));
+                echo json_encode(array(
+                    'message' => 'Profile picture updated successfully.',
+                    'profile_pic' => $new_profile_pic
+                ));
             } else {
-                http_response_code(400);
+                http_response_code(207);
                 echo json_encode(array('message' => 'No changes made to profile picture.'));
             }
         } else {
@@ -336,6 +342,7 @@ function updateProfilePic($conn, $user_id, $new_profile_pic)
         echo json_encode(array('message' => 'Error preparing update query: ' . $conn->error));
     }
 }
+
 
 
 ?>

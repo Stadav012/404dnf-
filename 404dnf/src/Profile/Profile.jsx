@@ -1,37 +1,51 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"; // For getting userId from URL
-import axios from "axios"; // Importing axios
+import axios from "axios";
+
+// ShadCN UI Components
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+    Select,
+    SelectTrigger,
+    SelectContent,
+    SelectItem,
+} from "@/components/ui/select";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 const Profile = () => {
-    // const { userId } = useParams(); // Get userId from the URL
-
-    // get the userid from the session storage
     const userId = sessionStorage.getItem("user_id");
     const [userData, setUserData] = useState({
         username: "",
-        theme: "vid1", // Default theme
+        theme: "vid1",
+        profilePic: "",
     });
     const [profilePicture, setProfilePicture] = useState(null);
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
-    const [error, setError] = useState("");
     const [currentProfilePic, setCurrentProfilePic] = useState(null);
+
+    const { toast } = useToast();
 
     // Fetch user data from sessionStorage when the page loads
     useEffect(() => {
         const sessionData = {
             username: sessionStorage.getItem("username"),
             theme: sessionStorage.getItem("theme") || "vid1",
-            profilePic: sessionStorage.getItem("profile_pic"),
+            profile_pic: sessionStorage.getItem("profile_pic"),
         };
         setUserData((prevData) => ({
             ...prevData,
             ...sessionData,
         }));
-        setCurrentProfilePic(sessionData.profilePic); // Set current profile picture
+        setCurrentProfilePic(sessionData.profile_pic);
     }, []);
 
-    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -40,41 +54,62 @@ const Profile = () => {
             theme: userData.theme,
             old_password: oldPassword || "",
             new_password: newPassword || "",
-            profile_pic: profilePicture || null, // If no new profile picture is selected, send null
+            profile_pic: profilePicture || null,
         };
 
         try {
             const response = await axios.put(
                 `http://localhost/Backend/Create/update_user_profile.php?user_id=${userId}`,
-                jsonData, // JSON object
+                jsonData,
                 {
                     headers: {
-                        "Content-Type": "application/json", // Specify JSON content type
-                        // Authorization: `Bearer ${localStorage.getItem("token")}`,
+                        "Content-Type": "application/json",
                     },
                 }
             );
 
             if (response.status === 200) {
-                console.log(response.data.message, response.status);
-                sessionStorage.setItem("username", userData.username);
-                sessionStorage.setItem("theme", userData.theme);
+                sessionStorage.setItem(
+                    "username",
+                    response.data.username || userData.username
+                );
+                sessionStorage.setItem(
+                    "theme",
+                    response.data.theme || userData.theme
+                );
                 sessionStorage.setItem(
                     "profile_pic",
-                    response.data.profile_pic
+                    response.data.profile_pic || userData.profilePic
                 );
-                setCurrentProfilePic(response.data.profile_pic); // Update the profile picture in state
-            } else if (response.status === 400) {
-                console.log(response.data.message, response.status);
-                setError(response.data.message);
+                setCurrentProfilePic(
+                    response.data.profile_pic || userData.profilePic
+                );
+
+                toast({
+                    title: "Profile Updated!",
+                    description: "Your profile has been updated successfully.",
+                    action: (
+                        <ToastAction altText="Undo changes">Undo</ToastAction>
+                    ),
+                });
+            } else {
+                toast({
+                    title: "Update Failed",
+                    description:
+                        response.data.message || "Something went wrong.",
+                    variant: "destructive",
+                });
             }
         } catch (error) {
             console.error("Error during form submission:", error);
-            setError("An error occurred while updating your profile.");
+            toast({
+                title: "Error",
+                description: "An error occurred while updating your profile.",
+                variant: "destructive",
+            });
         }
     };
 
-    // Handle input changes
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setUserData((prevData) => ({
@@ -83,128 +118,130 @@ const Profile = () => {
         }));
     };
 
-    // Handle profile picture selection
-    // const handleFileChange = (e) => {
-    //     const file = e.target.files[0];
-    //     if (file) {
-    //         setProfilePicture(file);
-    //     }
-    // };
-
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setProfilePicture(reader.result); // Set Base64 string
+                setProfilePicture(reader.result);
             };
-            reader.readAsDataURL(file); // Read file as a data URL (Base64 string)
+            reader.readAsDataURL(file);
         }
     };
 
-    // Handle clearing the profile picture
     const handleClearProfilePicture = () => {
         setProfilePicture(null);
     };
 
     return (
-        <div>
-            <h1>Profile</h1>
-            <form onSubmit={handleSubmit}>
-                <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-                    {/* Username Field */}
-                    <label className="block">
-                        <span className="text-gray-700">Username</span>
-                        <input
+        <Card className="max-w-3xl mx-auto mt-10 shadow-lg">
+            <CardHeader className="text-center">
+                <CardTitle className="text-2xl font-bold">
+                    Your Profile
+                </CardTitle>
+            </CardHeader>
+            <Separator />
+            <CardContent>
+                <form onSubmit={handleSubmit}>
+                    {/* Avatar Section */}
+                    <div className="flex justify-center items-center gap-4 mb-6">
+                        <Avatar className="w-20 h-20">
+                            <AvatarImage
+                                src={
+                                    profilePicture ||
+                                    currentProfilePic ||
+                                    "/default-avatar.png"
+                                }
+                                alt={userData.username}
+                            />
+                            <AvatarFallback>
+                                {userData.username.charAt(0).toUpperCase()}
+                            </AvatarFallback>
+                        </Avatar>
+                        <div>
+                            <input type="file" onChange={handleFileChange} />
+                            {profilePicture && (
+                                <Button
+                                    variant="secondary"
+                                    size="sm"
+                                    onClick={handleClearProfilePicture}
+                                    className="mt-2"
+                                >
+                                    Clear Picture
+                                </Button>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Username */}
+                    <div className="mb-4">
+                        <label className="block mb-1 text-sm font-medium">
+                            Username
+                        </label>
+                        <Input
                             type="text"
                             name="username"
                             value={userData.username}
                             onChange={handleInputChange}
-                            className="mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
-                            placeholder="Username"
+                            placeholder="Enter your username"
                         />
-                    </label>
-
-                    {/* Profile Picture Display */}
-                    <label className="block">
-                        <span className="text-gray-700">Profile Picture</span>
-                        <div className="flex items-center gap-2">
-                            {currentProfilePic && !profilePicture && (
-                                <img
-                                    src={currentProfilePic}
-                                    alt="Profile"
-                                    className="w-12 h-12 rounded-full"
-                                />
-                            )}
-                            <input
-                                type="file"
-                                onChange={handleFileChange}
-                                className="mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
-                            />
-                            {profilePicture && (
-                                <button
-                                    type="button"
-                                    onClick={handleClearProfilePicture}
-                                    className="text-red-500 text-sm"
-                                >
-                                    Clear Picture
-                                </button>
-                            )}
-                        </div>
-                    </label>
+                    </div>
 
                     {/* Theme Selector */}
-                    <label className="block">
-                        <span className="text-gray-700">Theme</span>
-                        <select
-                            name="theme"
+                    <div className="mb-4">
+                        <label className="block mb-1 text-sm font-medium">
+                            Theme
+                        </label>
+                        <Select
                             value={userData.theme}
-                            onChange={handleInputChange}
-                            className="mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                            onValueChange={(value) =>
+                                setUserData((prevData) => ({
+                                    ...prevData,
+                                    theme: value,
+                                }))
+                            }
                         >
-                            <option value="vid1">Vid1</option>
-                            <option value="vid2">Vid2</option>
-                        </select>
-                    </label>
+                            <SelectTrigger className="w-full">
+                                {userData.theme}
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="vid1">Vid1</SelectItem>
+                                <SelectItem value="vid2">Vid2</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
 
-                    {/* Old Password Field */}
-                    <label className="block">
-                        <span className="text-gray-700">Old Password</span>
-                        <input
+                    {/* Password Fields */}
+                    <div className="mb-4">
+                        <label className="block mb-1 text-sm font-medium">
+                            Old Password
+                        </label>
+                        <Input
                             type="password"
                             value={oldPassword}
                             onChange={(e) => setOldPassword(e.target.value)}
-                            className="mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
                             placeholder="Enter your old password"
                         />
-                    </label>
-
-                    {/* New Password Field */}
-                    <label className="block">
-                        <span className="text-gray-700">New Password</span>
-                        <input
+                    </div>
+                    <div className="mb-4">
+                        <label className="block mb-1 text-sm font-medium">
+                            New Password
+                        </label>
+                        <Input
                             type="password"
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
-                            className="mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
                             placeholder="Enter a new password"
                         />
-                    </label>
-                </div>
+                    </div>
 
-                {/* Error Message */}
-                {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-
-                <div className="mt-6">
-                    <button
-                        type="submit"
-                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
+                    {/* Save Button */}
+                    <Button type="submit" className="w-full">
                         Save
-                    </button>
-                </div>
-            </form>
-        </div>
+                    </Button>
+                </form>
+            </CardContent>
+        </Card>
     );
 };
 

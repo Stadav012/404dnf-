@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 header("Access-Control-Allow-Origin: http://localhost:3000");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
@@ -73,6 +75,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if password is correct
     $user = $result->fetch_assoc();
     if (password_verify($password, $user['password'])) {
+
+        // check their report status and update it in the database
+        // check if there is a report submitted by user with a given user id
+        $check_status_sql = "SELECT report_id FROM users_reports WHERE user_id = ?";
+        $stmt = $conn->prepare($check_status_sql);
+        $stmt->bind_param('i', $user['user_id']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            // update the report status to 1
+            $update_status_sql = "UPDATE users SET report_status = 1 WHERE user_id = ?";
+            $stmt = $conn->prepare($update_status_sql);
+            $stmt->bind_param('i', $user['user_id']);
+            $stmt->execute();
+        }
+        else{
+            // set the report status to 0
+            $update_status_sql = "UPDATE users SET report_status = 0 WHERE user_id = ?";
+            $stmt = $conn->prepare($update_status_sql);
+            $stmt->bind_param('i', $user['user_id']);
+            $stmt->execute();
+
+        }
+
+
+
         // Password is correct
         // Set session variables with all user details
         $_SESSION['user_id'] = $user['user_id'];

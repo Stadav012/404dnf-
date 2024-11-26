@@ -8,7 +8,7 @@ import {
 } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import axios from "axios"; // Ensure axios is imported
+import axios from "axios";
 import { cn } from "@/lib/utils";
 
 const SidebarAdmin = () => {
