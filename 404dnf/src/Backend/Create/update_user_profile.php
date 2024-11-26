@@ -16,7 +16,6 @@ session_start();
 header('Content-Type: application/json');
 
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     // Handle preflight request
     http_response_code(200);
@@ -41,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     // Get the raw data from the request body
     $data = json_decode(file_get_contents("php://input"), true);
 
-
+  
 
     // the variables can be extracted from the data array or can set to empty string
     $username = isset($data['username']) ? trim($data['username'] ): '';
@@ -82,7 +81,7 @@ function updateUserProfile($conn, $user_id, $username, $profile_pic, $theme, $ne
 
     // Check if the password is being updated
     if (!empty($new_password) && !empty($old_password)) {
-        echo "updating password";
+        // echo "updating password";
         updatePassword($conn, $user_id, $old_password, $new_password);
     }
 
@@ -92,7 +91,7 @@ function updateUserProfile($conn, $user_id, $username, $profile_pic, $theme, $ne
 
 // Function to update the password
 function updatePassword($conn, $user_id, $old_password, $new_password) {
-    echo "starting to change password";
+    // echo "starting to change password";
     // Step 1: Retrieve the hashed password from the database
     $check_password_sql = "SELECT password FROM users WHERE user_id = ?";
 

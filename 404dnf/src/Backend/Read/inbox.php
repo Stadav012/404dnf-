@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Get the user_id from the request
     if (isset($_GET['user_id'])) {
         $user_id = $_GET['user_id'];
-        $user_id = 1; // default for testing purposes
+        // $user_id = 1; // default for testing purposes
 
         // Query to check if the user has any pending reports
         $check_status_sql = "SELECT report_status FROM users WHERE user_id = ?";
