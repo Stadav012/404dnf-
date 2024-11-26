@@ -1,6 +1,12 @@
 <?php
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true");
+include '../db/config.php';
 
-include 'config.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 
 session_start();
 
@@ -9,11 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $input = file_get_contents('php://input');
     $data = json_decode($input, true);
 
-    if (!isset($_SESSION['user_id'])) {
+    // echo "session id: " . $_GET['id'];
+
+    if (!isset($_GET['id'])) {
         die(json_encode(['success' => false, 'message' => 'User not logged in']));
     }
 
-    $user_id = $_SESSION['user_id'];
+    $user_id = $_GET['id'];
     // $user_id = 1;   // debugging purposes
     $item_description = $data['item_description'] ?? '';
     $category = $data['category'] ?? '';

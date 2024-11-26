@@ -5,7 +5,10 @@ import {
     TableCell,
     TableHead,
     TableRow,
-} from "@/components/ui/table"; // Adjust paths as needed
+    TableHeader,
+    TableCaption,
+    TableFooter,
+} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import {
@@ -14,8 +17,9 @@ import {
     SelectTrigger,
     SelectContent,
 } from "@/components/ui/select";
-import { Trash, Award } from "lucide-react";
+import { Trash, Award, Eye } from "lucide-react"; // Import Eye for view icon
 import UserAwardModal from "@/components/ui/UserAwardModal";
+import UserDetailsModal from "./UserDetailsModal";
 import ErrorBoundary from "./ErrorBoundary";
 
 import axios from "axios";
@@ -111,26 +115,43 @@ const Users = () => {
 
     return (
         <ErrorBoundary>
-            <Table className="mt-10">
-                <TableHead>
-                    <TableRow className="text-green-900">
-                        <TableCell className="text-left">Username</TableCell>
-                        <TableCell className="text-left">Role</TableCell>
-                        <TableCell className="text-right">Awards</TableCell>
-                        <TableCell className="text-right">Claims</TableCell>
-                        <TableCell className="text-right">
-                            Submitted Lost Items
-                        </TableCell>
-                        <TableCell className="text-left">Actions</TableCell>
+            <Table className="min-w-full table-auto">
+                <TableCaption>A list of users and their actions.</TableCaption>
+                <TableHeader>
+                    <TableRow className="bg-gray-100">
+                        <TableHead className="w-[150px] p-3 text-left">
+                            Username
+                        </TableHead>
+                        <TableHead className="w-[120px] p-3 text-left">
+                            Role
+                        </TableHead>
+                        <TableHead className="text-right w-[120px] p-3">
+                            Awards
+                        </TableHead>
+                        <TableHead className="text-right w-[120px] p-3">
+                            Claims
+                        </TableHead>
+                        <TableHead className="text-right w-[120px] p-3">
+                            Reports
+                        </TableHead>
+                        <TableHead className="text-right w-[120px] p-3">
+                            Submissions
+                        </TableHead>
+                        <TableHead className="text-left px-20">
+                            Actions
+                        </TableHead>
                     </TableRow>
-                </TableHead>
+                </TableHeader>
                 <TableBody>
                     {users.map((user) => (
-                        <TableRow key={user.user_id}>
-                            <TableCell className="text-left">
+                        <TableRow
+                            key={user.user_id}
+                            className="hover:bg-gray-50"
+                        >
+                            <TableCell className="font-medium p-3">
                                 {user.username}
                             </TableCell>
-                            <TableCell className="text-left">
+                            <TableCell className="p-3">
                                 <Select
                                     value={user.role}
                                     onValueChange={(value) =>
@@ -150,17 +171,39 @@ const Users = () => {
                                     </SelectContent>
                                 </Select>
                             </TableCell>
-                            <TableCell className="text-right">
+                            <TableCell className="text-right p-3">
                                 {user.awards || 0}
                             </TableCell>
-                            <TableCell className="text-right">
+                            <TableCell className="text-right p-3">
                                 {user.claims || 0}
                             </TableCell>
-                            <TableCell className="text-right">
+                            <TableCell className="text-right p-3">
+                                {user.reports || 0}
+                            </TableCell>
+                            <TableCell className="text-right p-3">
                                 {user.submittedLostItems || 0}
                             </TableCell>
-                            <TableCell className="text-left">
-                                <div className="flex space-x-9 actions">
+                            <TableCell className="px-20">
+                                <div className="flex space-x-3">
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                            <Button
+                                                aria-label="View User"
+                                                onClick={() =>
+                                                    setSelectedUser(user)
+                                                }
+                                                className="bg-blue-500 text-white hover:bg-blue-400"
+                                            >
+                                                <Eye size={20} />
+                                            </Button>
+                                        </DialogTrigger>
+                                        <DialogContent>
+                                            <UserDetailsModal
+                                                user={selectedUser}
+                                            />
+                                        </DialogContent>
+                                    </Dialog>
+
                                     <Dialog>
                                         <DialogTrigger asChild>
                                             <Button
@@ -168,6 +211,7 @@ const Users = () => {
                                                 onClick={() =>
                                                     setSelectedUser(user)
                                                 }
+                                                className="bg-yellow-500 text-white hover:bg-yellow-400"
                                             >
                                                 <Award size={20} />
                                             </Button>
@@ -191,6 +235,7 @@ const Users = () => {
                                             handleDeleteUser(user.user_id)
                                         }
                                         variant="destructive"
+                                        className="bg-red-500 text-white hover:bg-red-400"
                                     >
                                         <Trash size={20} />
                                     </Button>
@@ -199,6 +244,19 @@ const Users = () => {
                         </TableRow>
                     ))}
                 </TableBody>
+                <TableFooter>
+                    <TableRow className="bg-gray-100">
+                        <TableCell
+                            colSpan={6}
+                            className="font-semibold text-right p-3"
+                        >
+                            Total Users
+                        </TableCell>
+                        <TableCell className="text-right p-3">
+                            {users.length}
+                        </TableCell>
+                    </TableRow>
+                </TableFooter>
             </Table>
         </ErrorBoundary>
     );

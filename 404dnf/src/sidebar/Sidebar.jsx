@@ -75,6 +75,18 @@ const Sidebar = () => {
                         </Ripples>
                     </li>
 
+                    {/* add messages  */}
+                    <li>
+                        <Ripples color="rgba(255, 0, 0, 0.5)">
+                            <Link to="/messages">
+                                <i className="fas fa-envelope"></i>
+                                <span className="sidebar-text">
+                                    {isOpen && " Messages"}
+                                </span>
+                            </Link>
+                        </Ripples>
+                    </li>
+
                     {/* Admin link: Show only if the user is admin */}
                     {isAdmin && (
                         <li>

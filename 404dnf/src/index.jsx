@@ -10,6 +10,7 @@ import SubmitPage from "./SubmitPage/SubmitPage";
 import { SignupPage } from "./UserAuthPages/SignUpFlow/SignupPage";
 import Profile from "./Profile/Profile";
 import Inbox from "./Inbox/Inbox";
+import MessageInbox from "./Messages/MessageInbox";
 
 import AdminLayout from "./Admin/AdminLayout";
 import AdminDashboard from "./Admin/pages/AdminDashboard";
@@ -56,6 +57,10 @@ root.render(
                     <Route
                         path="inbox"
                         element={<PrivateRoute element={<Inbox />} />}
+                    />
+                    <Route
+                        path="messages"
+                        element={<PrivateRoute element={<MessageInbox />} />}
                     />
                 </Route>
 
