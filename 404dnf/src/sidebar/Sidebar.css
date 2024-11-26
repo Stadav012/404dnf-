@@ -1,14 +1,14 @@
 .sidebar-container{
     display: flex;
     align-items: center;
-    width: 20%; /* Width of the sidebar */
+    /* width: 100%;  */
     transition: width 0.3s;
     overflow: hidden; /* Hide overflow for smooth transition */
     height: 100%;
     top: 0;
     left: 0;
     position: fixed;
-    padding: 10px;
+    /* padding: 10px; */
     z-index: 20;
 }
 
@@ -26,17 +26,23 @@
 }
 
 .sidebar {
-    width: 90%;
+    width: 240px;
     transition: width 0.3s;
     overflow: hidden; /* Hide overflow for smooth transition */
     height: 100%;
     box-shadow: 1px 1px 1px rgb(37, 37, 37, 0.1);
     border-radius: 10px;
+    /* background-color: #fff; */
 }
 
 .sidebar.closed {
-    width: 10%; 
+    width: 140px; 
     display: none;/* Hide the menu when menu-icon closed */
+}
+
+/* Open sidebar */
+.sidebar.open {
+    width: 240px; /* Fixed width for larger screens */
 }
 
 .menu-icon {
@@ -100,18 +106,19 @@
 }
 
 
+
 /* Responsive styles */
-@media (max-width: 1200px) { /* Adjust breakpoint as needed */
+/* @media (max-width: 1200px) {
     .sidebar-container{
-        width: 18%;
+        width: 250px;
         padding: 8px;
         
     }
     .sidebar-container.open{
-        width: 18%;
+        width: 250px;
     }
     .sidebar {
-        width: 98%; 
+        width: 240px; 
         font-size: 12px;
     }
     .menu-icon{
@@ -119,17 +126,17 @@
         margin-left: 1px;
     }
 
-}
+} */
 
 /* Responsive styles */
-@media (max-width: 868px) { /* Adjust breakpoint as needed */
+@media (max-width: 768px) { /* Adjust breakpoint as needed */
     .sidebar-container{
-        width: 90px;
+        width: 150px;
         /* background-color: aqua; */
         
     }
     .sidebar-container.open{
-        width: 100px;
+        width: 90px;
         /* background-color: blue; */
     }
 
@@ -138,7 +145,7 @@
         /* background-color: blue; */
     }
     .sidebar {
-        width: 100%; 
+        width: 150px; 
         /* display: none; */
         /* background-color: aqua; */
         margin: 0;
@@ -148,6 +155,14 @@
         display: none; 
     }
     .menu-icon{
-        padding: 1px 5px;
+        /* padding: 1px 2px; */
+        padding: 3px 10px;
+        margin-left: 1px;
     }
+}
+.message-count {
+    color: red;
+    font-size: 12px;
+    font-weight: bold; 
+    margin-left: 5px; 
 }
