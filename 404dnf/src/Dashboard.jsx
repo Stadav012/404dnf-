@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import axios from "axios";
 import Lottie from "react-lottie-player";
 import loadingAnimation from "../public/animations/loading.json";
 import Video from "./Video/video";
 import Statistics from "./Statistics/Statistics";
 import Section from "./Sections/Sections";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
+import { Avatar } from "@/components/ui/avatar"; // ShadCN Avatar
 import { IconClipboardCopy, IconTrophy, IconBox } from "@tabler/icons-react";
 import { HeroHighlight } from "@/components/ui/hero-highlight";
 import { Spotlight } from "@/components/ui/spotlight";
@@ -28,65 +30,92 @@ function Loader() {
 
 function Dashboard() {
     const [loading, setLoading] = useState(true);
+    const [submissionStats, setSubmissionStats] = useState(null);
+    const [error, setError] = useState("");
 
-    // Simulate data loading or API calls
+    // Fetch submission stats from API
     useEffect(() => {
-        const timeout = setTimeout(() => {
-            setLoading(false); // Set to false after data is fetched
-        }, 2000);
+        const userId = sessionStorage.getItem("user_id"); // Retrieve user_id from sessionStorage
+        if (!userId) {
+            setError("User not logged in. Please log in.");
+            setLoading(false);
+            return;
+        }
 
-        return () => clearTimeout(timeout); // Cleanup timeout
+        axios
+            .get(
+                `http://localhost/Backend/Read/submission_stats.php?user_id=${userId}`
+            )
+            .then((response) => {
+                const data = response.data;
+                if (data.submission_stats) {
+                    setSubmissionStats(data.submission_stats);
+                } else {
+                    setError(data.message || "No stats found.");
+                }
+                setLoading(false);
+            })
+            .catch((err) => {
+                if (err.response && err.response.data) {
+                    setError(
+                        err.response.data.message || "Failed to fetch stats."
+                    );
+                } else {
+                    setError("An unknown error occurred.");
+                }
+                setLoading(false);
+            });
     }, []);
 
-    const awards = [
-        {
-            label: "Top Contributor",
-            description: "You have helped 100 users find their lost items.",
-            icon: "trophy",
-        },
-        {
-            label: "Best Finder",
-            description: "You have found 50 lost items.",
-            icon: "medal",
-        },
-    ];
-
-    const lockers = [
-        {
-            label: "View available lockers",
-            description: "Locker number: 12",
-            icon: "box",
-        },
-        {
-            label: "View available lockers",
-            description: "Locker number: 12",
-            icon: "compass",
-        },
-    ];
-
+    // Show loader while fetching data
     if (loading) {
         return <Loader />;
     }
+
+    // Show error message if any
+    if (error) {
+        return (
+            <div className="flex items-center justify-center h-screen text-red-600">
+                <p>{error}</p>
+            </div>
+        );
+    }
+
+    const username = sessionStorage.getItem("username") || "Guest";
+    const profilePic =
+        sessionStorage.getItem("profile_pic") || "../public/logo192.png"; // Fallback to default avatar
 
     return (
         <BentoGrid className="max-w-5xl mx-auto md:auto-rows-[30rem] gap-y-24 p-5">
             {/* Video Item */}
             <BentoGridItem
                 header={
-                    <div>
+                    <div className="relative">
                         <Spotlight
-                            className="-top-5 left-0 md:left-60 md:-top-20"
+                            className="-top-5 left-10 md:left-0 md:-top-20"
                             fill="#F58327"
                         />
                         <Video />
-                        <div>
-                            <h1 className="md:text-4xl text-2xl lg:text-4xl font-bold text-center text-black relative z-20">
-                                Welcome {sessionStorage.getItem("username")}
-                            </h1>
-                            <div className="w-[40rem] h-30 relative">
-                                <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-[2px] w-3/4 blur-sm" />
-                                <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-[5px] w-1/4 blur-sm" />
-                                <div className="absolute inset-0 w-full h-full bg-black [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]"></div>
+                        <div className="flex items-center justify-center space-x-4 mt-4">
+                            <div>
+                                <div className="flex items-center pl-32">
+                                    {/* ShadCN Avatar */}
+                                    <Avatar className="w-16 h-16">
+                                        <img
+                                            src={profilePic}
+                                            alt={`${username}'s profile`}
+                                            className="rounded-full"
+                                        />
+                                    </Avatar>
+                                    <h1 className="md:text-4xl text-2xl lg:text-4xl font-bold text-black relative z-20">
+                                        Welcome, {username}
+                                    </h1>
+                                </div>
+                                <div className="w-[40rem] h-33 left-10 relative">
+                                    <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-orange-500 to-transparent h-[2px] w-3/4 blur-sm" />
+                                    <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-red-500 to-transparent h-[5px] w-1/4 blur-sm" />
+                                    <div className="absolute inset-0 w-full h-full bg-black [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -107,7 +136,20 @@ function Dashboard() {
                                     <HeroHighlight>
                                         <Section
                                             heading="Awards"
-                                            pills={awards}
+                                            pills={[
+                                                {
+                                                    label: "Top Contributor",
+                                                    description:
+                                                        "Helped 100 users find lost items.",
+                                                    icon: "trophy",
+                                                },
+                                                {
+                                                    label: "Best Finder",
+                                                    description:
+                                                        "Found 50 lost items.",
+                                                    icon: "medal",
+                                                },
+                                            ]}
                                         />
                                     </HeroHighlight>
                                 }
@@ -125,7 +167,14 @@ function Dashboard() {
                                     <HeroHighlight>
                                         <Section
                                             heading="Smart Locker"
-                                            pills={lockers}
+                                            pills={[
+                                                {
+                                                    label: "Locker 12",
+                                                    description:
+                                                        "Access granted.",
+                                                    icon: "box",
+                                                },
+                                            ]}
                                         />
                                     </HeroHighlight>
                                 }
@@ -157,13 +206,23 @@ function Dashboard() {
                             />
                         </div>
                         <div className="stats">
-                            <Statistics title="Total Items Found" stats="100" />
-                            <Statistics title="Total Items Lost" stats="30" />
+                            <Statistics
+                                title="Total Reports"
+                                stats={submissionStats?.reports_count || "0"}
+                            />
+                            <Statistics
+                                title="Total Submissions"
+                                stats={
+                                    submissionStats?.submissions_count || "0"
+                                }
+                            />
                         </div>
                     </div>
                 }
                 className="md:col-span-5 h-[18rem]"
-                icon={<IconTrophy className="h-4 w-4 text-neutral-500" />}
+                icon={
+                    <IconClipboardCopy className="h-4 w-4 text-neutral-500" />
+                }
             />
         </BentoGrid>
     );
