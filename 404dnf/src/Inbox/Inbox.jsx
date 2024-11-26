@@ -14,6 +14,9 @@ const Inbox = () => {
     const [items, setItems] = useState([]); // State to hold the transformed data
     const [loading, setLoading] = useState(true); // State for loading spinner
 
+    // get the userid from the session storage
+    const userId = sessionStorage.getItem("user_id");
+
     // Fetch and transform data
     useEffect(() => {
         const fetchData = async () => {
@@ -22,12 +25,12 @@ const Inbox = () => {
                 const response = await axios.get(
                     "http://localhost/Backend/Read/inbox.php",
                     {
-                        params: { user_id: 1 },
+                        params: { user_id: userId }, // Pass the user ID as a query parameter
                         withCredentials: true,
                     }
                 );
 
-                console.log("API Response:", response.data);
+                // console.log("API Response:", response.data);
 
                 // Ensure `reported_items` exists and is an array
                 const reportedItems = response.data?.reported_items || [];
@@ -50,7 +53,7 @@ const Inbox = () => {
                 console.log("Transformed Data:", transformedData);
 
                 // display the image url
-                console.log("Image URL:", transformedData[0].image);
+                // console.log("Image URL:", transformedData[0].image);
                 setItems(transformedData); // Update the state with transformed data
             } catch (error) {
                 console.error("Error fetching data:", error.message || error);
@@ -65,6 +68,28 @@ const Inbox = () => {
     if (loading) {
         return <div className="text-center">Loading...</div>; // Show a loader while fetching
     }
+
+    // if (items.length === 0) {
+    //     return <div className="text-center text-gray-600">There is currently nothing in your inbox.</div>;
+    // }
+
+    if (items.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center h-64 text-center text-gray-600">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-12 w-12 text-gray-400 mb-4"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                >
+                    <path d="M2.003 5.884l8-4a1 1 0 01.994 0l8 4A1 1 0 0119 6.764v6.472a1 1 0 01-.503.879l-8 4a1 1 0 01-.994 0l-8-4A1 1 0 011 13.236V6.764a1 1 0 011.003-.88zM11 10V7H9v3H6l4 4 4-4h-3z" />
+                </svg>
+                <p className="text-lg font-medium">There is currently nothing in your inbox.</p>
+                <p className="text-sm text-gray-500 mt-1">Check back later for updates.</p>
+            </div>
+        );
+    }
+    
 
     return (
         <div className="p-6">
