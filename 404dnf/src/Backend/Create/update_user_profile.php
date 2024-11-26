@@ -1,38 +1,28 @@
 <?php
-// display the errors
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
 header("Access-Control-Allow-Origin: http://localhost:3000");
 header("Access-Control-Allow-Methods: GET, POST, PUT, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true");
 
+// display the errors
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 
 // Include the config file to connect to the database
 include('../db/config.php');
 
 // start session
 session_start();
+header('Content-Type: application/json');
 
-// Handle preflight requests
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    // Handle preflight request
     http_response_code(200);
-    exit();
+    exit(0);
 }
 
-<<<<<<< HEAD
-// Check if user is logged in
-// if (!isset($_SESSION['user_id'])) {
-//     // Set the response code to 401 (Unauthorized)
-//     http_response_code(401);
-//     // Set the response message
-//     echo json_encode(array('message' => 'User is not logged in!', 'redirect' => 'login.php'));
-//     // Exit the script
-//     exit();
-// }
-
-=======
->>>>>>> d5fd9706dcb46d774ade4e97b82c0982db7b0954
 // Check if the request method is PUT
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
 
@@ -40,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
         // Retrieve user ID from query parameters
         if (isset($_GET['user_id'])) {
             $user_id = $_GET['user_id'];
+            // $user_id = 12; // set a default id
         } else {
             http_response_code(400);
             echo json_encode(['message' => 'Invalid or missing user ID in query parameters.']);
@@ -50,18 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     // Get the raw data from the request body
     $data = json_decode(file_get_contents("php://input"), true);
 
-    $profile_pic = null;
-    // Handle the profile picture update
-    // if the user is updating the profile picture, get file name
-    if (isset($_FILES['profilePicture'])) {
-        $profile_pic = handleProfilePictureUpload($_FILES['profile_pic'], $user_id);
-
-        if ($profile_pic === null) {
-            // Handle error, e.g., invalid file type or failed upload
-            echo json_encode(['message' => 'Failed to upload profile picture']);
-            exit();
-        }
-    }
 
 
     // the variables can be extracted from the data array or can set to empty string
@@ -69,6 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $theme = isset($data['theme']) ? trim($data['theme']) : '';
     $new_password = isset($data['new_password']) ? trim($data['new_password']) : '';
     $old_password = isset($data['old_password']) ? trim($data['old_password']) : '';
+    $profile_pic = isset($data['profile_pic']) ? handleBase64ProfilePicture(trim($data['profile_pic']), $user_id) : '';
+    
 
     // Make the updates to the user profile
     updateUserProfile($conn, $user_id, $username, $profile_pic, $theme, $new_password, $old_password);
@@ -101,6 +82,7 @@ function updateUserProfile($conn, $user_id, $username, $profile_pic, $theme, $ne
 
     // Check if the password is being updated
     if (!empty($new_password) && !empty($old_password)) {
+        echo "updating password";
         updatePassword($conn, $user_id, $old_password, $new_password);
     }
 
@@ -108,9 +90,9 @@ function updateUserProfile($conn, $user_id, $username, $profile_pic, $theme, $ne
 }
 
 
-
 // Function to update the password
 function updatePassword($conn, $user_id, $old_password, $new_password) {
+    echo "starting to change password";
     // Step 1: Retrieve the hashed password from the database
     $check_password_sql = "SELECT password FROM users WHERE user_id = ?";
 
@@ -142,8 +124,8 @@ function updatePassword($conn, $user_id, $old_password, $new_password) {
                             echo json_encode(array('message' => 'Password updated successfully.'));
                         } else {
                             // No rows affected
-                            http_response_code(400);
-                            echo json_encode(array('message' => 'No changes made.'));
+                            http_response_code(201);
+                            echo json_encode(array('message' => 'No changes made to password.'));
                         }
                     } else {
                         // Update query failed
@@ -188,7 +170,7 @@ function updateUsername($conn, $user_id, $new_username) {
 
         // If a row exists, the username is already taken
         if ($check_stmt->num_rows > 0) {
-            http_response_code(400);
+            http_response_code(202);
             echo json_encode(array('message' => 'Username already taken.'));
             $check_stmt->close();
             return;
@@ -218,8 +200,8 @@ function updateUsername($conn, $user_id, $new_username) {
                 http_response_code(200);
                 echo json_encode(array('message' => 'Username updated successfully.'));
             } else {
-                http_response_code(400);
-                echo json_encode(array('message' => 'No changes made.'));
+                http_response_code(205);
+                echo json_encode(array('message' => 'No changes made to username.'));
             }
         } else {
             http_response_code(500);
@@ -252,8 +234,8 @@ function updateTheme($conn, $user_id, $new_theme) {
                 http_response_code(200);
                 echo json_encode(array('message' => 'Theme updated successfully.'));
             } else {
-                http_response_code(400);
-                echo json_encode(array('message' => 'No changes made.'));
+                http_response_code(206);
+                echo json_encode(array('message' => 'No changes made to theme.'));
             }
         } else {
             http_response_code(500);
@@ -267,8 +249,63 @@ function updateTheme($conn, $user_id, $new_theme) {
     }
 }
 
+
+
+
+/**
+ * Handles the profile picture upload from a Base64 string and saves it to a user-specific directory.
+ * 
+ * @param string $base64Image The Base64-encoded string of the image.
+ * @param int $userId The user ID to create a user-specific directory.
+ * @param string $baseDir The base directory where user-specific directories will be created.
+ * @return string|null The relative file path to the image, or null if the decoding or saving failed.
+ */
+function handleBase64ProfilePicture($base64Image, $userId, $baseDir = 'images/profiles/')
+{
+    $baseDir = $_SERVER['DOCUMENT_ROOT'] . '/images/profiles/';
+
+
+    // Decode the Base64 string
+    $imageData = explode(',', $base64Image); // Separate metadata from actual image data
+    $imageDecoded = base64_decode(end($imageData));
+    if ($imageDecoded === false) {
+        return null; // Decoding failed
+    }
+
+    // Create the user-specific directory if it doesn't exist
+    $userDir = $baseDir . $userId . '/';
+    if (!file_exists($userDir)) {
+        mkdir($userDir, 0777, true); // Create directory with appropriate permissions
+    }
+
+    // Determine the file type (assuming the input includes a MIME type)
+    $fileType = null;
+    if (strpos($imageData[0], 'image/jpeg') !== false) {
+        $fileType = 'jpg';
+    } elseif (strpos($imageData[0], 'image/png') !== false) {
+        $fileType = 'png';
+    } elseif (strpos($imageData[0], 'image/gif') !== false) {
+        $fileType = 'gif';
+    }
+
+    if (!$fileType) {
+        return null; // Unsupported file type
+    }
+
+    // Set the target file path
+    $targetFile = $userDir . uniqid('profile_', true) . '.' . $fileType;
+
+    // Save the decoded image data to the file
+    if (file_put_contents($targetFile, $imageDecoded) !== false) {
+        return '/' . $targetFile; // Return the relative path
+    } else {
+        return null; // Failed to save the image
+    }
+}
+
 // Function to update profile pic
-function updateProfilePic($conn, $user_id, $new_profile_pic){
+function updateProfilePic($conn, $user_id, $new_profile_pic)
+{
     // Prepare the UPDATE query
     $update_sql = "UPDATE users SET profile_pic = ? WHERE user_id = ?";
 
@@ -281,13 +318,13 @@ function updateProfilePic($conn, $user_id, $new_profile_pic){
         if ($stmt->execute()) {
             // Check if any rows were updated
             if ($stmt->affected_rows > 0) {
-                // update the session profile pic
+                // Update the session profile pic
                 $_SESSION['profile_pic'] = $new_profile_pic;
                 http_response_code(200);
                 echo json_encode(array('message' => 'Profile picture updated successfully.'));
             } else {
                 http_response_code(400);
-                echo json_encode(array('message' => 'No changes made.'));
+                echo json_encode(array('message' => 'No changes made to profile picture.'));
             }
         } else {
             http_response_code(500);
@@ -300,61 +337,6 @@ function updateProfilePic($conn, $user_id, $new_profile_pic){
         echo json_encode(array('message' => 'Error preparing update query: ' . $conn->error));
     }
 }
-
-
-/**
- * Handles the profile picture upload and returns the path to the saved image.
- * Creates a unique directory for each user based on their user ID.
- * If the file already exists, it removes the old file before saving the new one.
- * 
- * @param array $file The file array from the uploaded file (usually $_FILES['profilePicture']).
- * @param int $userId The user ID to create a user-specific directory.
- * @param string $baseDir The base directory where user-specific directories will be created.
- * @return string|null The relative file path to the image, or null if the upload failed.
- */
-function handleProfilePictureUpload($file, $userId, $baseDir = 'images/profiles/')
-{
-    // Check if file is uploaded without errors
-    if ($file['error'] === UPLOAD_ERR_OK) {
-        // Create the user-specific directory if it doesn't exist
-        $userDir = $baseDir . $userId . '/';
-        if (!file_exists($userDir)) {
-            mkdir($userDir, 0777, true); // Create directory with appropriate permissions
-        }
-
-        // Set the target file path
-        $targetFile = $userDir . basename($file['name']);
-        $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
-        
-        // Validate the file type (optional, you can allow more types)
-        $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
-        if (!in_array($fileType, $allowedTypes)) {
-            return null; // Invalid file type
-        }
-        
-        // Check file size (optional, here limiting to 5MB max)
-        if ($file['size'] > 5 * 1024 * 1024) {
-            return null; // File too large
-        }
-        
-        // Check if the file already exists
-        if (file_exists($targetFile)) {
-            // Delete the old file
-            unlink($targetFile); // Removes the old file
-        }
-        
-        // Move the uploaded file to the user-specific directory
-        if (move_uploaded_file($file['tmp_name'], $targetFile)) {
-            // Return the relative file path to the uploaded image
-            return '/images/profiles/' . $userId . '/' . basename($file['name']);
-        } else {
-            return null; // Failed to move file
-        }
-    } else {
-        return null; // Error during upload
-    }
-}
-
 
 
 ?>
