@@ -1,8 +1,9 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"; // For getting userId from URL
 import axios from "axios";
 
-// ShadCN & Acertinity UI Components
+// ShadCN UI Components
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -14,22 +15,22 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 const Profile = () => {
-    // Get userId from session storage
     const userId = sessionStorage.getItem("user_id");
     const [userData, setUserData] = useState({
         username: "",
-        theme: "vid1", // Default theme
+        theme: "vid1",
         profilePic: "",
     });
-    const [success, setSuccess] = useState("");
     const [profilePicture, setProfilePicture] = useState(null);
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
-    const [error, setError] = useState("");
     const [currentProfilePic, setCurrentProfilePic] = useState(null);
+
+    const { toast } = useToast();
 
     // Fetch user data from sessionStorage when the page loads
     useEffect(() => {
@@ -42,10 +43,9 @@ const Profile = () => {
             ...prevData,
             ...sessionData,
         }));
-        setCurrentProfilePic(sessionData.profile_pic); // Set current profile picture
+        setCurrentProfilePic(sessionData.profile_pic);
     }, []);
 
-    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -54,7 +54,7 @@ const Profile = () => {
             theme: userData.theme,
             old_password: oldPassword || "",
             new_password: newPassword || "",
-            profile_pic: profilePicture || null, // If no new profile picture is selected, send null
+            profile_pic: profilePicture || null,
         };
 
         try {
@@ -84,42 +84,51 @@ const Profile = () => {
                 setCurrentProfilePic(
                     response.data.profile_pic || userData.profilePic
                 );
-                setSuccess("Profile updated successfully!");
-                setError(""); // Clear any previous error messages
+
+                toast({
+                    title: "Profile Updated!",
+                    description: "Your profile has been updated successfully.",
+                    action: (
+                        <ToastAction altText="Undo changes">Undo</ToastAction>
+                    ),
+                });
             } else {
-                setError(response.data.message || "An error occurred.");
-                setSuccess("");
+                toast({
+                    title: "Update Failed",
+                    description:
+                        response.data.message || "Something went wrong.",
+                    variant: "destructive",
+                });
             }
         } catch (error) {
             console.error("Error during form submission:", error);
-            setError("An error occurred while updating your profile.");
+            toast({
+                title: "Error",
+                description: "An error occurred while updating your profile.",
+                variant: "destructive",
+            });
         }
     };
 
-    // Handle input changes
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setUserData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
-        setSuccess(""); // Clear success message on input change
     };
 
-    // Handle profile picture selection
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setProfilePicture(reader.result); // Set Base64 string
+                setProfilePicture(reader.result);
             };
-            reader.readAsDataURL(file); // Read file as a data URL (Base64 string)
+            reader.readAsDataURL(file);
         }
-        setSuccess(""); // Clear success message on file change
     };
 
-    // Handle clearing the profile picture
     const handleClearProfilePicture = () => {
         setProfilePicture(null);
     };
@@ -225,24 +234,6 @@ const Profile = () => {
                             placeholder="Enter a new password"
                         />
                     </div>
-
-                    {/* Success/Error Messages */}
-                    {success && (
-                        <Badge
-                            variant="success"
-                            className="w-full text-center mb-4"
-                        >
-                            {success}
-                        </Badge>
-                    )}
-                    {error && (
-                        <Badge
-                            variant="destructive"
-                            className="w-full text-center mb-4"
-                        >
-                            {error}
-                        </Badge>
-                    )}
 
                     {/* Save Button */}
                     <Button type="submit" className="w-full">
