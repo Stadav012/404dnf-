@@ -69,21 +69,30 @@ const Profile = () => {
             );
 
             if (response.status === 200) {
-                sessionStorage.setItem(
-                    "username",
-                    response.data.username || userData.username
-                );
-                sessionStorage.setItem(
-                    "theme",
-                    response.data.theme || userData.theme
-                );
-                sessionStorage.setItem(
-                    "profile_pic",
-                    response.data.profile_pic || userData.profilePic
-                );
-                setCurrentProfilePic(
-                    response.data.profile_pic || userData.profilePic
-                );
+                console.log("Response data:", response.data);
+                // check for each update that has been made
+                if(response.data.updates.username_update){
+                    // update the session storage
+                    if(response.data.updates.username_update.success){
+                    sessionStorage.setItem("username", response.data.updates.username_update.username);
+                }
+                if(response.data.updates.theme_update){
+                    if(response.data.updates.theme_update.success){
+                        sessionStorage.setItem("theme", response.data.updates.theme_update.theme);
+                    }
+                }
+                if(response.data.updates.profile_pic_update){
+                    if(response.data.updates.profile_pic_update.success){
+                        sessionStorage.setItem("profile_pic", response.data.updates.profile_pic_update.profile_pic);
+                        // full url of image
+                        let image_url = `http://localhost/Backend/Create${response.data.updates.profile_pic_update.profile_pic}`;
+                        // console.log("Image URL:", image_url);
+                        setCurrentProfilePic(image_url);
+                    }
+                }
+
+                }
+
 
                 toast({
                     title: "Profile Updated!",

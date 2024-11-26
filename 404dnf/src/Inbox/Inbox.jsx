@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import axios from "axios"; // Import axios
+import axios from "axios";
 import {
     Card,
     CardContent,
@@ -11,54 +11,68 @@ import {
 import { Button } from "@/components/ui/button";
 
 const Inbox = () => {
-    const [items, setItems] = useState([]); // State to hold the transformed data
-    const [loading, setLoading] = useState(true); // State for loading spinner
-
-    // get the userid from the session storage
+    const [items, setItems] = useState([]);
+    const [loading, setLoading] = useState(true);
     const userId = sessionStorage.getItem("user_id");
 
-    // Fetch and transform data
+    // Function to handle claiming an item
+    const handleClaim = async (reportId, submissionId) => {
+        try {
+            const response = await axios.post(
+                "http://localhost/Backend/Create/claim_item.php",
+                {
+                    user_id: userId,
+                    report_id: reportId,
+                    submission_id: submissionId,
+                },
+                { withCredentials: true }
+            );
+            console.log("Claim response:", response.data);
+
+            if (response.data.success) {
+                alert("Claim successful!");
+            } else {
+                alert("Failed to claim the item. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error claiming item:", error.message || error);
+            alert("An error occurred while claiming the item.");
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
-            console.log("Fetching data...");
             try {
                 const response = await axios.get(
                     "http://localhost/Backend/Read/inbox.php",
                     {
-                        params: { user_id: userId }, // Pass the user ID as a query parameter
+                        params: { user_id: userId },
                         withCredentials: true,
                     }
                 );
 
-                // console.log("API Response:", response.data);
-
-                // Ensure `reported_items` exists and is an array
                 const reportedItems = response.data?.reported_items || [];
                 if (!Array.isArray(reportedItems)) {
-                    throw new Error(
-                        "Invalid API response: reported_items is not an array"
-                    );
+                    throw new Error("Invalid API response: reported_items is not an array");
                 }
 
-                // Transform the data
+                // Transform the data to include `report_id` and `submission_id`
                 const transformedData = reportedItems.flatMap((report) =>
                     report.matching_found_items.map((item, index) => ({
-                        id: `${report.report_id}-${index}`, // Generate unique IDs
+                        id: `${report.report_id}-${index}`,
+                        report_id: report.report_id,
+                        submission_id: item.submission_id,
                         name: item.found_item,
                         image: item.found_photo,
                         category: report.category,
                         description: `${item.found_item} (reported: ${report.item_description})`,
                     }))
                 );
-                console.log("Transformed Data:", transformedData);
-
-                // display the image url
-                // console.log("Image URL:", transformedData[0].image);
-                setItems(transformedData); // Update the state with transformed data
+                setItems(transformedData);
             } catch (error) {
                 console.error("Error fetching data:", error.message || error);
             } finally {
-                setLoading(false); // Turn off loading spinner
+                setLoading(false);
             }
         };
 
@@ -67,12 +81,8 @@ const Inbox = () => {
     
 
     if (loading) {
-        return <div className="text-center">Loading...</div>; // Show a loader while fetching
+        return <div className="text-center">Loading...</div>;
     }
-
-    // if (items.length === 0) {
-    //     return <div className="text-center text-gray-600">There is currently nothing in your inbox.</div>;
-    // }
 
     if (items.length === 0) {
         return (
@@ -90,7 +100,6 @@ const Inbox = () => {
             </div>
         );
     }
-    
 
     return (
         <div className="p-6">
@@ -131,8 +140,12 @@ const Inbox = () => {
                                 <Button
                                     variant="secondary"
                                     className="mt-4 w-full"
+<<<<<<< HEAD
                                     onClick={() => handleClaim(item.id)}
 
+=======
+                                    onClick={() => handleClaim(item.report_id, item.submission_id)}
+>>>>>>> 23d0095080f13a0cc6332e3397af94ce5640dc67
                                 >
                                     Claim
                                 </Button>
@@ -141,28 +154,6 @@ const Inbox = () => {
                     </motion.div>
                 ))}
             </motion.div>
-
-            {/* Parallax effect using Bento Grid */}
-            <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-                <motion.div
-                    className="w-96 h-96 rounded-full bg-gradient-to-r from-cyan-500 to-orange-500 opacity-60"
-                    style={{
-                        position: "absolute",
-                        top: "50%",
-                        left: "10%",
-                        translate: "-50%",
-                    }}
-                    animate={{
-                        x: [0, 10, -10, 0],
-                        y: [0, 15, -15, 0],
-                    }}
-                    transition={{
-                        duration: 5,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                    }}
-                />
-            </div>
         </div>
     );
 

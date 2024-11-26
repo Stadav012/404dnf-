@@ -1,11 +1,20 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Textarea } from "@/components/ui/textarea"; // Import Textarea component
-import { Input } from "@/components/ui/input"; // Import Input component
-import "./ReportLost.css";
-import Sidebar from "../sidebar/Sidebar";
-import Submit from "../Submit/submit";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+    Select,
+    SelectTrigger,
+    SelectContent,
+    SelectItem,
+} from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileUpload } from "@/components/ui/file-upload";
+import { Separator } from "@/components/ui/separator";
+import Sidebar from "../sidebar/Sidebar";
 
 const ReportLost = () => {
     const [formData, setFormData] = useState({
@@ -21,20 +30,22 @@ const ReportLost = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [message, setMessage] = useState("");
 
-    // Fetch locations from the database on component mount
     useEffect(() => {
         const fetchLocations = async () => {
             try {
-                const response = await axios.get("http://localhost/Backend/Read/view_locations.php", {
-                    params: {
-                        id: sessionStorage.getItem('user_id')
-                    },
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
+                const response = await axios.get(
+                    "http://localhost/Backend/Read/view_locations.php",
+                    {
+                        params: {
+                            id: sessionStorage.getItem("user_id"),
+                        },
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
                 if (response.status === 200) {
-                    setLocations(response.data); // Set the locations to the state
+                    setLocations(response.data);
                 } else {
                     setMessage("Failed to load locations.");
                 }
@@ -46,25 +57,35 @@ const ReportLost = () => {
 
         fetchLocations();
     }, []);
-    
-    // handling input file to store in local directory
-    const handleFileChange = async (e) => {
-        const file = e.target.files[0]; // Get the first file from the input
+
+    const handleFileChange = async (files) => {
+        if (!files || files.length === 0) {
+            console.error("No file selected");
+            return;
+        }
+        const file = files[0]; // Assuming only one file upload is allowed
         const formData = new FormData();
         formData.append("file", file);
-        console.log(formData);
-    
+
         try {
-            const response = await axios.post("http://localhost/Backend/Create/upload_image.php", formData, {
-                params: {
-                    id: sessionStorage.getItem('user_id')
-                },
-                headers: { "Content-Type": "multipart/form-data" },
-            });
-    
+            console.log("Uploading file...");
+            const response = await axios.post(
+                "http://localhost/Backend/Create/upload_image.php",
+                formData,
+                {
+                    params: {
+                        id: sessionStorage.getItem("user_id"),
+                    },
+                    headers: { "Content-Type": "multipart/form-data" },
+                }
+            );
+
             if (response.data.success) {
-                console.log("File uploaded successfully:", response.data.file_url);
-                setFormData((prevData) => ({ ...prevData, file: file })); // Update formData with the file
+                console.log(
+                    "File uploaded successfully:",
+                    response.data.file_url
+                );
+                setFormData((prevData) => ({ ...prevData, file: file }));
             } else {
                 console.error("File upload failed:", response.data.message);
             }
@@ -72,7 +93,6 @@ const ReportLost = () => {
             console.error("Error uploading file:", error);
         }
     };
-    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -81,33 +101,33 @@ const ReportLost = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         setIsSubmitting(true);
         setMessage("");
-    
-        // Construct the data as a JSON object
+
         const data = {
             category: formData.category,
             item_description: formData.description,
-            location_id: formData.location, 
-            photo_url: formData.file ? formData.file.name : "", // Send the file name or URL if already uploaded
+            location_id: formData.location,
+            photo_url: formData.file ? formData.file.name : "",
         };
-    
+
         try {
-            // Post data to the endpoint as JSON
-            const response = await axios.post("http://localhost/Backend/Create/report.php", data, {
-                params: {
-                    id: sessionStorage.getItem('user_id')
-                },
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-    
+            const response = await axios.post(
+                "http://localhost/Backend/Create/report.php",
+                data,
+                {
+                    params: {
+                        id: sessionStorage.getItem("user_id"),
+                    },
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
             if (response.data.success) {
                 setMessage("Report submitted successfully!");
-
-                // clear form, ready for the next form entry
                 setFormData({
                     category: "",
                     description: "",
@@ -126,84 +146,163 @@ const ReportLost = () => {
             setIsSubmitting(false);
         }
     };
-    
 
     return (
-        <div className="report-lost-page">
+        <div className="flex">
             <Sidebar />
-            <main className="report-content">
-                <h1>Report a Lost Item</h1>
-                <p>Please provide as much detail as possible.</p>
+            <main className="flex-1 p-6">
+                <Card className="max-w-4xl mx-auto shadow-lg">
+                    <CardHeader>
+                        <CardTitle className="text-2xl font-bold text-center">
+                            Report a Lost Item
+                        </CardTitle>
+                    </CardHeader>
+                    <Separator />
+                    <CardContent>
+                        {message && (
+                            <div
+                                className={`${
+                                    message.includes("success")
+                                        ? "bg-green-100 text-green-700"
+                                        : "bg-red-100 text-red-700"
+                                } p-4 rounded mb-4`}
+                            >
+                                {message}
+                            </div>
+                        )}
+                        <form onSubmit={handleSubmit}>
+                            {/* File Upload */}
+                            <div className="mb-6">
+                                <label className="block mb-1 text-sm font-medium">
+                                    Upload an Image
+                                </label>
+                                <FileUpload
+                                    id="file"
+                                    onChange={(files) =>
+                                        handleFileChange(files)
+                                    }
+                                    accept="image/*"
+                                />
+                            </div>
 
-                {message && <p className="message">{message}</p>}
+                            {/* Category */}
+                            <div className="mb-4">
+                                <label className="block mb-1 text-sm font-medium">
+                                    Category
+                                </label>
+                                <Select
+                                    value={formData.category}
+                                    onValueChange={(value) =>
+                                        setFormData((prevData) => ({
+                                            ...prevData,
+                                            category: value,
+                                        }))
+                                    }
+                                >
+                                    <SelectTrigger className="w-full">
+                                        {formData.category || "Select Category"}
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="clothing">
+                                            Clothing
+                                        </SelectItem>
+                                        <SelectItem value="electronics">
+                                            Electronics
+                                        </SelectItem>
+                                        <SelectItem value="stationery">
+                                            Stationery
+                                        </SelectItem>
+                                        <SelectItem value="accessories">
+                                            Accessories
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
 
-                <form onSubmit={handleSubmit}>
-                    <div className="w-full max-w-4xl mx-auto min-h-96 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleFileChange}
-                        />
-                    </div>
+                            {/* Description */}
+                            <div className="mb-4">
+                                <label className="block mb-1 text-sm font-medium">
+                                    Description
+                                </label>
+                                <Textarea
+                                    name="description"
+                                    value={formData.description}
+                                    onChange={handleChange}
+                                    placeholder="Describe the lost item in detail"
+                                />
+                            </div>
 
-                    <label htmlFor="category">Category</label>
-                    <select
-                        name="category"
-                        value={formData.category}
-                        onChange={handleChange}
-                    >
-                        <option value="">Select</option>
-                        <option value="clothing">Clothing</option>
-                        <option value="electronics">Electronics</option>
-                        <option value="stationery">Stationery</option>
-                        <option value="accessories">Accessories</option>
-                    </select>
+                            {/* Color */}
+                            <div className="mb-4">
+                                <label className="block mb-1 text-sm font-medium">
+                                    Color
+                                </label>
+                                <Input
+                                    type="text"
+                                    name="color"
+                                    value={formData.color}
+                                    onChange={handleChange}
+                                    placeholder="e.g., Red"
+                                />
+                            </div>
 
-                    <label htmlFor="description">Description</label>
-                    <Textarea
-                        name="description"
-                        value={formData.description}
-                        onChange={handleChange}
-                        placeholder="Describe the lost item"
-                    />
+                            {/* Size */}
+                            <div className="mb-4">
+                                <label className="block mb-1 text-sm font-medium">
+                                    Size
+                                </label>
+                                <Input
+                                    type="text"
+                                    name="size"
+                                    value={formData.size}
+                                    onChange={handleChange}
+                                    placeholder="e.g., Small, Medium, Large"
+                                />
+                            </div>
 
-                    <label htmlFor="color">Color</label>
-                    <Input
-                        type="text"
-                        name="color"
-                        value={formData.color}
-                        onChange={handleChange}
-                        placeholder="e.g., Red"
-                    />
+                            {/* Location */}
+                            <div className="mb-4">
+                                <label className="block mb-1 text-sm font-medium">
+                                    Location
+                                </label>
+                                <Select
+                                    value={formData.location}
+                                    onValueChange={(value) =>
+                                        setFormData((prevData) => ({
+                                            ...prevData,
+                                            location: value,
+                                        }))
+                                    }
+                                >
+                                    <SelectTrigger className="w-full">
+                                        {formData.location || "Select Location"}
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {locations.map((location) => (
+                                            <SelectItem
+                                                key={location.location_id}
+                                                value={location.location_id}
+                                            >
+                                                {location.location_name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
 
-                    <label htmlFor="size">Size (optional)</label>
-                    <Input
-                        type="text"
-                        name="size"
-                        value={formData.size}
-                        onChange={handleChange}
-                        placeholder="e.g., S, M, L"
-                    />
-
-                    <label htmlFor="location">Where was it lost?</label>
-                    <select
-                        name="location"
-                        value={formData.location}
-                        onChange={handleChange}
-                    >
-                        <option value="">Select Location</option>
-                        {locations.map((location) => (
-                            <option key={location.location_id} value={location.location_id}>
-                                {location.location_name}
-                            </option>
-                        ))}
-                    </select>
-
-
-                    <Submit formData={formData} onClick={handleSubmit} disabled={isSubmitting}>
-                        {isSubmitting ? "Submitting..." : "Submit Report"}
-                    </Submit>
-                </form>
+                            {/* Submit Button */}
+                            <Button
+                                type="submit"
+                                className="w-full"
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting
+                                    ? "Submitting..."
+                                    : "Submit Report"}
+                            </Button>
+                        </form>
+                    </CardContent>
+                </Card>
             </main>
         </div>
     );
