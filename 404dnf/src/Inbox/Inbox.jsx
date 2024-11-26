@@ -140,12 +140,7 @@ const Inbox = () => {
                                 <Button
                                     variant="secondary"
                                     className="mt-4 w-full"
-<<<<<<< HEAD
-                                    onClick={() => handleClaim(item.id)}
-
-=======
                                     onClick={() => handleClaim(item.report_id, item.submission_id)}
->>>>>>> 23d0095080f13a0cc6332e3397af94ce5640dc67
                                 >
                                     Claim
                                 </Button>
