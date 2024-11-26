@@ -2,7 +2,7 @@
 // get the user's submission stats
 
 // include the config file
-include('config.php');
+include('../db/config.php');
 
 // start a session
 session_start();
