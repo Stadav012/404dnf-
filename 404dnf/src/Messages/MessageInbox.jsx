@@ -1,44 +1,64 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge"; // For statuses
 import { Avatar } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import clsx from "clsx";
 
-// Mock Data
-const messages = [
-    {
-        id: 1,
-        subject: "Lost Wallet Found",
-        content:
-            "A black leather wallet was found near the library. Does this match your description?",
-        status: "Approved",
-        time: "10:15 AM",
-        avatar: "https://via.placeholder.com/150",
-        read: false,
-    },
-    {
-        id: 2,
-        subject: "Claim for Blue Backpack",
-        content:
-            "Your claim for the blue backpack has been denied. It doesn't match the description.",
-        status: "Denied",
-        time: "Yesterday",
-        avatar: "https://via.placeholder.com/150",
-        read: true,
-    },
-    {
-        id: 3,
-        subject: "Lost Phone Found",
-        content:
-            "A Samsung Galaxy S20 was found at the gym. Is this your phone?",
-        status: "Approved",
-        time: "2 Days Ago",
-        avatar: "https://via.placeholder.com/150",
-        read: true,
-    },
-];
-
 const MessageInbox = () => {
+    // State to store messages
+    const [messages, setMessages] = useState([]);
+    // State to store loading status
+    const [loading, setLoading] = useState(true);
+    // State to store any error that might occur during fetching
+    const [error, setError] = useState(null);
+
+    // Fetch messages from the backend when the component mounts
+    useEffect(() => {
+        // Fetch messages from the PHP backend
+        const fetchMessages = async () => {
+            try {
+                const response = await fetch("http://localhost/Backend/messages.php"); // Update this with your actual endpoint
+                const data = await response.json();
+
+                if (response.ok) {
+                    setMessages(data); // Set the data received from the backend
+                } else {
+                    setError("Failed to fetch messages.");
+                }
+            } catch (err) {
+                setError("An error occurred while fetching messages.");
+            } finally {
+                setLoading(false); // Set loading to false when the fetch is complete
+            }
+        };
+
+        fetchMessages(); // Call the function to fetch messages
+    }, []); // Empty dependency array means this runs once when the component mounts
+
+    if (loading) {
+        return <div>Loading...</div>; // Show loading text while messages are being fetched
+    }
+
+    if (error) {
+        return <div>{error}</div>; // Show error if something goes wrong
+    }
+    // Function to dynamically generate the message body content
+    const generateMessageBody = (message) => {
+
+        if (message.status === "approved") {
+            return `Hi ${message.username}, your claim for some  "${message.category}" has been Approved. You can collect it.`;
+        } else if(message.status === "rejected")
+         {
+            return `Hi ${message.username}, your claim for some  "${message.category}" has been Rejected.`;
+        }
+         
+        else {
+            return `Hi ${message.username}, your claim for some  "${message.category}" is still Pending. Please check back later.`;
+        }
+    };
+
+       
+
     return (
         <div className="flex flex-col h-screen bg-gray-100">
             {/* Header */}
@@ -75,18 +95,15 @@ const MessageInbox = () => {
                                         {message.subject}
                                     </h3>
                                     <p className="text-sm text-gray-600 truncate">
-                                        {message.content}
+                                        {generateMessageBody(message)} {/* Dynamically generated content */}
                                     </p>
                                 </div>
                                 <div className="text-right">
                                     <Badge
                                         className={clsx(
-                                            message.status === "Approved" &&
-                                                "bg-green-100 text-green-800",
-                                            message.status === "Denied" &&
-                                                "bg-red-100 text-red-800",
-                                            message.status === "Pending" &&
-                                                "bg-yellow-100 text-yellow-800"
+                                            message.status === "Approved" && "bg-green-100 text-green-800",
+                                            message.status === "Rejected" && "bg-red-100 text-red-800"
+                                           // message.status === "Pending" && "bg-yellow-100 text-yellow-800"
                                         )}
                                     >
                                         {message.status}
