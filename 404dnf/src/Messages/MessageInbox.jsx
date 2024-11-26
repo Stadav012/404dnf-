@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { Search } from "lucide-react"; // Icon
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge"; // For statuses
 import { Avatar } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
@@ -33,7 +31,7 @@ const messages = [
         subject: "Lost Phone Found",
         content:
             "A Samsung Galaxy S20 was found at the gym. Is this your phone?",
-        status: "Pending",
+        status: "Approved",
         time: "2 Days Ago",
         avatar: "https://via.placeholder.com/150",
         read: true,
@@ -41,8 +39,6 @@ const messages = [
 ];
 
 const MessageInbox = () => {
-    const [selectedMessage, setSelectedMessage] = useState(null);
-
     return (
         <div className="flex flex-col h-screen bg-gray-100">
             {/* Header */}
@@ -56,13 +52,12 @@ const MessageInbox = () => {
             </header>
 
             {/* Content */}
-            <div className="flex flex-1 flex-col md:flex-row overflow-hidden">
+            <div className="flex flex-1 flex-col overflow-hidden">
                 {/* Message List */}
-                <div className="w-full md:w-1/3 bg-gray-50 border-r border-gray-200 overflow-y-auto">
+                <div className="w-full bg-gray-50 border-r border-gray-200 overflow-y-auto">
                     {messages.map((message) => (
                         <div
                             key={message.id}
-                            onClick={() => setSelectedMessage(message)}
                             className={clsx(
                                 "p-4 flex flex-col gap-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100",
                                 !message.read && "bg-indigo-50"
@@ -103,43 +98,6 @@ const MessageInbox = () => {
                             </div>
                         </div>
                     ))}
-                </div>
-
-                {/* Message Detail */}
-                <div className="flex-1 p-4 overflow-y-auto bg-white">
-                    {selectedMessage ? (
-                        <div className="space-y-4">
-                            <div className="flex items-start justify-between border-b pb-4">
-                                <div>
-                                    <h2 className="text-lg font-bold">
-                                        {selectedMessage.subject}
-                                    </h2>
-                                    <p className="text-sm text-gray-600">
-                                        Sent by Admin
-                                    </p>
-                                </div>
-                                <Badge
-                                    className={clsx(
-                                        selectedMessage.status === "Approved" &&
-                                            "bg-green-100 text-green-800",
-                                        selectedMessage.status === "Denied" &&
-                                            "bg-red-100 text-red-800",
-                                        selectedMessage.status === "Pending" &&
-                                            "bg-yellow-100 text-yellow-800"
-                                    )}
-                                >
-                                    {selectedMessage.status}
-                                </Badge>
-                            </div>
-                            <p className="text-gray-700 whitespace-pre-line">
-                                {selectedMessage.content}
-                            </p>
-                        </div>
-                    ) : (
-                        <p className="text-gray-500 text-center mt-10">
-                            Select a message to view its details.
-                        </p>
-                    )}
                 </div>
             </div>
         </div>
