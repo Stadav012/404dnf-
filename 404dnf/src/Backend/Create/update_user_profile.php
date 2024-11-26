@@ -197,7 +197,7 @@ function updateUsername($conn, $user_id, $new_username) {
                 // update the session username
                 $_SESSION['username'] = $new_username;
                 http_response_code(200);
-                echo json_encode(array('message' => 'Username updated successfully.'));
+                echo json_encode(array('message' => 'Username updated successfully.', 'username' => $new_username));
             } else {
                 http_response_code(205);
                 echo json_encode(array('message' => 'No changes made to username.'));
@@ -236,7 +236,7 @@ function updateTheme($conn, $user_id, $new_theme) {
                     'theme' => $new_theme
                 ));
             } else {
-                http_response_code(206);
+                http_response_code(200);
                 echo json_encode(array('message' => 'No changes made to theme.'));
             }
         } else {
