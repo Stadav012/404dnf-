@@ -63,7 +63,7 @@ const MessageInbox = () => {
         <div className="flex flex-col h-screen bg-gray-100">
             {/* Header */}
             <header className="flex flex-wrap items-center justify-between p-4 bg-white border-b border-gray-200">
-                <h1 className="text-xl font-bold">Admin Messages</h1>
+                <h1 className="text-xl font-bold">Messages</h1>
                 <Input
                     type="search"
                     placeholder="Search messages..."
