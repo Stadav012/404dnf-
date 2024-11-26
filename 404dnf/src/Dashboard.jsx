@@ -83,7 +83,7 @@ function Dashboard() {
 
     const username = sessionStorage.getItem("username") || "Guest";
     const profilePic =
-        sessionStorage.getItem("profile_pic") || "../public/logo192.png"; // Fallback to default avatar
+        sessionStorage.getItem("profile_pic") || "/public/logo192.png"; // Fallback to default avatar
 
     return (
         <BentoGrid className="max-w-5xl mx-auto md:auto-rows-[30rem] gap-y-24 p-5">
