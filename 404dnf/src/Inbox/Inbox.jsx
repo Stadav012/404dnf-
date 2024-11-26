@@ -17,7 +17,7 @@ const Inbox = () => {
 
     // Function to handle claiming an item
     const handleClaim = async (reportId, submissionId) => {
-        console.log("Claiming item:", reportId, submissionId);
+        console.log("Claiming item:", reportId, submissionId, userId);
         try {
             const response = await axios.post(
                 "http://localhost/Backend/Create/create_claim.php",

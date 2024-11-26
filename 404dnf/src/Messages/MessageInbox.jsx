@@ -17,7 +17,7 @@ const MessageInbox = () => {
         // Fetch messages from the PHP backend
         const fetchMessages = async () => {
             try {
-                const response = await fetch("http://localhost/Backend/messages.php"); // Update this with your actual endpoint
+                const response = await fetch("http://localhost/Backend/Create/messages.php"); // Update this with your actual endpoint
                 const data = await response.json();
 
                 if (response.ok) {
