@@ -2,8 +2,13 @@
 
 // Allow cross-origin requests
 // header('Access-Control-Allow-Origin: *');
+
 header('Access-Control-Allow-Origin: http://localhost:3000');
+<<<<<<< HEAD
 header('Access-Control-Allow-Methods: GET, POST, PUT, OPTIONS');
+=======
+header('Access-Control-Allow-Methods: GET, POST,OPTIONS');
+>>>>>>> 041b8f1252154f4439ee4b101c27a78ca6ad8fb9
 header('Access-Control-Allow-Headers: Content-Type');
 header('Access-Control-Allow-Credentials: true');
 

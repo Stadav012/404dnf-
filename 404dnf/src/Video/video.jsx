@@ -5,7 +5,7 @@ function Video() {
     const videoRef = useRef(null);
 
     // List of video URLs from the public/videos folder
-    const videos = ["/videos/sunny.mp4", "/videos/butterfly.mp4"];
+    const videos = ["/videos/butterfly.mp4", "/videos/sunny.mp4"];
 
     const [currentIndex, setCurrentIndex] = useState(0); // Track the current video index
 
