@@ -3,10 +3,14 @@ import { Link } from "react-router-dom";
 import Ripples from "react-ripples";
 import "./Sidebar.css";
 import LogoutButton from "../logout";
+import axios from "axios";
 
 const Sidebar = () => {
+
+    
     const [isOpen, setIsOpen] = useState(true);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [messageCount, setMessageCount] = useState(0);
 
     // Fetch user role on component mount
     useEffect(() => {
@@ -14,6 +18,24 @@ const Sidebar = () => {
         if (userRole === "admin") {
             setIsAdmin(true);
         }
+
+        // get the userid from the session storage
+        const userId = sessionStorage.getItem("user_id");
+
+        // Fetch message count
+        const fetchMessageCount = async () => {
+            try {
+                const response = await axios.get(`http://localhost/Backend/Read/num_matches.php?user_id=${userId}`);
+                setMessageCount(response.data.count > 0 ? response.data.count : 0);
+                // setMessageCount(1); 
+                console.log("Message Count:", response.data.count);
+            } catch (error) {
+                console.error("Error fetching message count:", error);
+            }
+        };
+    
+        fetchMessageCount();
+
     }, []);
 
     const toggleSidebar = () => {
@@ -67,9 +89,15 @@ const Sidebar = () => {
                     <li>
                         <Ripples color="rgba(255, 0, 0, 0.5)">
                             <Link to="/inbox">
-                                <i className="fas fa-inbox"></i>
+                                <i className="fas fa-inbox">
+                                <span className="message-count">
+                                {messageCount >= 1 && `(${messageCount})`}
+                                            
+                                    </span>
+                                </i>
                                 <span className="sidebar-text">
                                     {isOpen && " Inbox"}
+
                                 </span>
                             </Link>
                         </Ripples>
