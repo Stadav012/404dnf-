@@ -17,9 +17,10 @@ const Inbox = () => {
 
     // Function to handle claiming an item
     const handleClaim = async (reportId, submissionId) => {
+        console.log("Claiming item:", reportId, submissionId);
         try {
             const response = await axios.post(
-                "http://localhost/Backend/Create/claim_item.php",
+                "http://localhost/Backend/Create/create_claim.php",
                 {
                     user_id: userId,
                     report_id: reportId,
