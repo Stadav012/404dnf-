@@ -10,7 +10,10 @@ const Profile = () => {
     const [userData, setUserData] = useState({
         username: "",
         theme: "vid1", // Default theme
+        profilePic : "",
+
     });
+    const [success, setSuccess] = useState("");
     const [profilePicture, setProfilePicture] = useState(null);
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
@@ -22,13 +25,13 @@ const Profile = () => {
         const sessionData = {
             username: sessionStorage.getItem("username"),
             theme: sessionStorage.getItem("theme") || "vid1",
-            profilePic: sessionStorage.getItem("profile_pic"),
+            profile_pic: sessionStorage.getItem("profile_pic"),
         };
         setUserData((prevData) => ({
             ...prevData,
             ...sessionData,
         }));
-        setCurrentProfilePic(sessionData.profilePic); // Set current profile picture
+        setCurrentProfilePic(sessionData.profile_pic); // Set current profile picture
     }, []);
 
     // Handle form submission
@@ -58,13 +61,23 @@ const Profile = () => {
         
             if (response.status === 200) {
                 console.log(response.data.message, response.status);
-                sessionStorage.setItem("username", userData.username);
-                sessionStorage.setItem("theme", userData.theme);
-                sessionStorage.setItem("profile_pic", response.data.profile_pic);
-                setCurrentProfilePic(response.data.profile_pic); // Update the profile picture in state
-            } else if (response.status === 400) {
+                sessionStorage.setItem("username", (response.data.username ? response.data.username:  userData.username));
+                sessionStorage.setItem("theme", (response.data.theme ? response.data.theme:  userData.theme));
+                sessionStorage.setItem("profile_pic", (response.data.profile_pic ? response.data.profile_pic:  userData.profilePic));
+                setCurrentProfilePic((response.data.profile_pic ? response.data.profile_pic:  userData.profilePic)); // Update the profile picture in state
+                console.log("Profile Picture:", (response.data.profile_pic ? response.data.profile_pic:  userData.profilePic));
+                setSuccess("Profile updated successfully!");
+                setError(""); // Clear any previous error messages
+            }
+            // if(response.status > 200 && response.status < 300) {
+            //     console.log(response.data.message, response.status);
+            //     setSuccess(response.data.message);
+            //     setError(""); // Clear error message on success
+            // }
+            else if (response.status === 400) {
                 console.log(response.data.message, response.status);
                 setError(response.data.message);
+                setSuccess(""); // Clear success message on error
             }
         } catch (error) {
             console.error("Error during form submission:", error);
@@ -82,6 +95,7 @@ const Profile = () => {
             ...prevData,
             [name]: value,
         }));
+        setSuccess(""); // Clear success message on input change
     };
 
     // Handle profile picture selection
@@ -101,6 +115,7 @@ const Profile = () => {
             };
             reader.readAsDataURL(file); // Read file as a data URL (Base64 string)
         }
+        setSuccess(""); // Clear success message on file change
     };
     
 
@@ -206,6 +221,7 @@ const Profile = () => {
                     </button>
                 </div>
             </form>
+            {success && <p className="text-green-500 text-sm mt-2">{success}</p>}
         </div>
     );
 };

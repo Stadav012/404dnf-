@@ -15,6 +15,7 @@ if (isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
     $uploadDir = "uploads/"; // Directory to store uploaded files
     $fileName = basename($_FILES['file']['name']);
     $targetFile = $uploadDir . $fileName;
+    echo 'target file: ' . $targetFile;
 
     // Create upload directory if it doesn't exist
     if (!is_dir($uploadDir)) {
