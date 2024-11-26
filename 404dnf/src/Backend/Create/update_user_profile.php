@@ -64,26 +64,41 @@ $conn->close();
 
 
 function updateUserProfile($conn, $user_id, $username, $profile_pic, $theme, $new_password, $old_password) {
+
+
+    // store the updated changes here
+    $response = ['theme_update' => null, 'username_update' => null, 'profile_pic_update' => null, 'password_update' => null];
     // Check if the username is being updated
     if (!empty($username)) {
-        updateUsername($conn, $user_id, $username);
+        // then add the username to the response
+        $response['username_update' ] = updateUsername($conn, $user_id, $username);
+        // updateUsername($conn, $user_id, $username);
     }
 
-    // Check if the profile picture is being updated
+
+        // Check if the profile picture is being updated
     if (!empty($profile_pic)) {
-        updateProfilePic($conn, $user_id, $profile_pic);
+        // if the profile pic is updated, add it to the response
+        $response['profile_pic_update'] = updateProfilePic($conn, $user_id, $profile_pic);
     }
 
     // Check if the theme is being updated
     if (!empty($theme)) {
-        updateTheme($conn, $user_id, $theme);
+        // if the theme is updated, add it to the response
+        $response['theme_update'] = updateTheme($conn, $user_id, $theme);
+        // $response[] = ['theme_update' => updateTheme($conn, $user_id, $theme)];
+        // updateTheme($conn, $user_id, $theme);
     }
 
     // Check if the password is being updated
     if (!empty($new_password) && !empty($old_password)) {
+        $response['password_update'] = updatePassword($conn, $user_id, $old_password, $new_password);
         // echo "updating password";
-        updatePassword($conn, $user_id, $old_password, $new_password);
+        // updatePassword($conn, $user_id, $old_password, $new_password);
     }
+
+    http_response_code(200);
+    echo json_encode(['updates' => $response]);
 
 
 }
@@ -119,42 +134,14 @@ function updatePassword($conn, $user_id, $old_password, $new_password) {
                     if ($update_stmt->execute()) {
                         if ($update_stmt->affected_rows > 0) {
                             // Password updated successfully
-                            http_response_code(200);
-                            echo json_encode(array('message' => 'Password updated successfully.'));
-                        } else {
-                            // No rows affected
-                            http_response_code(201);
-                            echo json_encode(array('message' => 'No changes made to password.'));
+                            return ['success' => true, 'message' => 'Password updated successfully.'];
                         }
-                    } else {
-                        // Update query failed
-                        http_response_code(500);
-                        echo json_encode(array('message' => 'Error updating password: ' . $update_stmt->error));
                     }
-
-                    $update_stmt->close();
-                } else {
-                    // Error preparing update statement
-                    http_response_code(500);
-                    echo json_encode(array('message' => 'Error preparing update query: ' . $conn->error));
                 }
-            } else {
-                // Incorrect old password
-                http_response_code(400);
-                echo json_encode(array('message' => 'Incorrect old password.'));
             }
-        } else {
-            // User not found
-            http_response_code(404);
-            echo json_encode(array('message' => 'User not found.'));
-        }
-
-        $stmt->close();
-    } else {
-        // Error preparing password check statement
-        http_response_code(500);
-        echo json_encode(array('message' => 'Error preparing password check query: ' . $conn->error));
+    } 
     }
+    return ['success' => false, 'message' => 'Password not updated.'];
 }
 
 // Function to update the username
@@ -169,16 +156,16 @@ function updateUsername($conn, $user_id, $new_username) {
 
         // If a row exists, the username is already taken
         if ($check_stmt->num_rows > 0) {
-            http_response_code(202);
-            echo json_encode(array('message' => 'Username already taken.'));
-            $check_stmt->close();
-            return;
+            // http_response_code(210);
+            // echo json_encode(array('message' => 'Username already taken.'));
+            // $check_stmt->close();
+            return ['success' => false, 'message' => 'Username already taken.', 'username' => null];
         }
         $check_stmt->close();
     } else {
-        http_response_code(500);
-        echo json_encode(array('message' => 'Error checking username availability: ' . $conn->error));
-        return;
+        // http_response_code(500);
+        // echo json_encode(array('message' => 'Error checking username availability: ' . $conn->error));
+        return ['success' => false, 'message' => 'Error checking username availability', 'username' => null];
     }
     
 
@@ -195,23 +182,11 @@ function updateUsername($conn, $user_id, $new_username) {
             // Check if any rows were updated
             if ($stmt->affected_rows > 0) {
                 // update the session username
-                $_SESSION['username'] = $new_username;
-                http_response_code(200);
-                echo json_encode(array('message' => 'Username updated successfully.'));
-            } else {
-                http_response_code(205);
-                echo json_encode(array('message' => 'No changes made to username.'));
+                return ['success' => true, 'message' => 'Username updated successfully.', 'username' => $new_username];
             }
-        } else {
-            http_response_code(500);
-            echo json_encode(array('message' => 'Error updating username: ' . $stmt->error));
         }
-
-        // Close the statement
-        $stmt->close();
-    } else {
-        echo json_encode(array('message' => 'Error preparing update query: ' . $conn->error));
     }
+    return ['success' => false, 'message' => 'Username not updated.', 'username' => null];
 }
 
 // function to update the theme
@@ -230,25 +205,16 @@ function updateTheme($conn, $user_id, $new_theme) {
             if ($stmt->affected_rows > 0) {
                 // update the session theme
                 $_SESSION['theme'] = $new_theme;
-                http_response_code(200);
-                echo json_encode(array(
-                    'message' => 'Theme updated successfully.',
-                    'theme' => $new_theme
-                ));
-            } else {
-                http_response_code(206);
-                echo json_encode(array('message' => 'No changes made to theme.'));
-            }
-        } else {
-            http_response_code(500);
-            echo json_encode(array('message' => 'Error updating theme: ' . $stmt->error));
+                // http_response_code(200);
+                // echo json_encode(array(
+                //     'message' => 'Theme updated successfully.',
+                //     'theme' => $new_theme
+                // ));
+                return ['success' => true, 'message' => 'Theme updated successfully.', 'theme' => $new_theme];
+            } 
         }
-
-        // Close the statement
-        $stmt->close();
-    } else {
-        echo json_encode(array('message' => 'Error preparing update query: ' . $conn->error));
     }
+    return ['success' => false, 'message' => 'Theme not updated.', 'theme' => null];
 }
 
 
@@ -262,11 +228,14 @@ function updateTheme($conn, $user_id, $new_theme) {
  * @param string $baseDir The base directory where user-specific directories will be created.
  * @return string|null The relative file path to the image, or null if the decoding or saving failed.
  */
-function handleBase64ProfilePicture($base64Image, $userId, $baseDir = 'images/profiles/')
+function handleBase64ProfilePicture($base64Image, $userId, $baseDir = 'uploads/profiles/')
 {
-    $baseDir = $_SERVER['DOCUMENT_ROOT'] . '/images/profiles/';
+    // $baseDir = $_SERVER['DOCUMENT_ROOT'] . '/Backend/Create/uploads/profiles/';
+    $baseDir =  'uploads/profiles/';
 
 
+    // /Applications/XAMPP/xamppfiles/htdocs/Backend/Create/uploads
+    // /Applications/XAMPP/xamppfiles/htdocs/Backend/Create/uploads/profiles
     // Decode the Base64 string
     $imageData = explode(',', $base64Image); // Separate metadata from actual image data
     $imageDecoded = base64_decode(end($imageData));
@@ -321,26 +290,11 @@ function updateProfilePic($conn, $user_id, $new_profile_pic)
             // Check if any rows were updated
             if ($stmt->affected_rows > 0) {
                 // Update the session profile pic
-                $_SESSION['profile_pic'] = $new_profile_pic;
-                http_response_code(200);
-                echo json_encode(array(
-                    'message' => 'Profile picture updated successfully.',
-                    'profile_pic' => $new_profile_pic
-                ));
-            } else {
-                http_response_code(207);
-                echo json_encode(array('message' => 'No changes made to profile picture.'));
+                return ['success' => true, 'message' => 'Profile picture updated successfully.', 'profile_pic' => $new_profile_pic];
             }
-        } else {
-            http_response_code(500);
-            echo json_encode(array('message' => 'Error updating profile picture: ' . $stmt->error));
         }
-
-        // Close the statement
-        $stmt->close();
-    } else {
-        echo json_encode(array('message' => 'Error preparing update query: ' . $conn->error));
     }
+    return ['success' => false, 'message' => 'Profile picture not updated.', 'profile_pic' => null];
 }
 
 

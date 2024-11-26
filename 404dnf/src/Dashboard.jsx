@@ -96,13 +96,16 @@ function Dashboard() {
                             fill="#F58327"
                         />
                         <Video />
+                        {console.log(`http://localhost/Backend/Create${profilePic}`)}
                         <div className="flex items-center justify-center space-x-4 mt-4">
                             <div>
                                 <div className="flex items-center pl-32">
                                     {/* ShadCN Avatar */}
                                     <Avatar className="w-16 h-16">
                                         <img
-                                            src={profilePic}
+                                            // src={profilePic}
+                                            src={`http://localhost/Backend/Create${profilePic}`}
+                                            
                                             alt={`${username}'s profile`}
                                             className="rounded-full"
                                         />

@@ -59,23 +59,55 @@ const Profile = () => {
             );
 
             if (response.status === 200) {
-                console.log(response.data.message, response.status);
-                sessionStorage.setItem("username", (response.data.username ? response.data.username:  userData.username));
-                sessionStorage.setItem("theme", (response.data.theme ? response.data.theme:  userData.theme));
-                sessionStorage.setItem("profile_pic", (response.data.profile_pic ? response.data.profile_pic:  userData.profilePic));
-                setCurrentProfilePic((response.data.profile_pic ? response.data.profile_pic:  userData.profilePic)); // Update the profile picture in state
-                console.log("Profile Picture:", (response.data.profile_pic ? response.data.profile_pic:  userData.profilePic));
+
+                // let image_url = `../Backend/Create${response.data.updates.profile_pic_update.profile_pic}`;
+                console.log("Response data:", response.data);
+                // check for each update that has been made
+                if(response.data.updates.username_update.username){
+                    sessionStorage.setItem("username", response.data.updates.username_update.username);
+                }
+                if(response.data.updates.theme_update.theme){
+                    sessionStorage.setItem("theme", response.data.updates.theme_update.theme);
+                }
+                if(response.data.updates.profile_pic_update.profile_pic){
+                    sessionStorage.setItem("profile_pic", response.data.updates.profile_pic_update.profile_pic);
+                    // full url of image
+                    let image_url = `http://localhost/Backend/Create${response.data.updates.profile_pic_update.profile_pic}`;
+                    // console.log("Image URL:", image_url);
+                    setCurrentProfilePic(image_url);
+                }
+
+
+                // console.log(response.data.message, response.status);
+                // sessionStorage.setItem("username", (response.data.username ? response.data.username:  userData.username));
+                // sessionStorage.setItem("theme", (response.data.theme ? response.data.theme:  userData.theme));
+                // sessionStorage.setItem("profile_pic", (response.data.profile_pic ? response.data.profile_pic:  userData.profilePic));
+                // setCurrentProfilePic((response.data.profile_pic ? response.data.profile_pic:  userData.profilePic)); // Update the profile picture in state
+                // console.log("Response data :" , response.data );
+                console.log("Response data:", response.data.updates.profile_pic_update.profile_pic);
                 setSuccess("Profile updated successfully!");
                 setError(""); // Clear any previous error messages
             }
+            // if(response.status === 210){
+            //     sessionStorage.setItem("username", (response.data.username ? response.data.username:  userData.username));
+
+
+            // }
+
+            // if(response.status === 230){
+            //     sessionStorage.setItem("profile_pic", (response.data.profile_pic ? response.data.profile_pic:  userData.profilePic));
+            //     console.log("New image:", response.data.profile_pic)
+
+
+            // }
             // if(response.status > 200 && response.status < 300) {
             //     console.log(response.data.message, response.status);
             //     setSuccess(response.data.message);
             //     setError(""); // Clear error message on success
             // }
             else if (response.status === 400) {
-                console.log(response.data.message, response.status);
-                setError(response.data.message);
+                // console.log(response.data.message, response.status);
+                setError(response.data);
                 setSuccess(""); // Clear success message on error
             }
         } catch (error) {
@@ -143,7 +175,8 @@ const Profile = () => {
                         <div className="flex items-center gap-2">
                             {currentProfilePic && !profilePicture && (
                                 <img
-                                    src={currentProfilePic}
+                                    // src={currentProfilePic}
+                                    src={`../Backend/Create${currentProfilePic}`}
                                     alt="Profile"
                                     className="w-12 h-12 rounded-full"
                                 />
