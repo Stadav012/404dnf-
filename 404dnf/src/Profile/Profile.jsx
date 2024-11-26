@@ -35,16 +35,6 @@ const Profile = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // save the file on the local storage
-        // get the the file path
-        // save the file path on the database
-
-        // // Create FormData object for the profile picture and other form data
-        // const formData = new FormData();
-        // formData.append("username", userData.username);
-        // formData.append("theme", userData.theme);
-        // formData.append("oldPassword", oldPassword);
-        // formData.append("newPassword", newPassword || "");
 
         const jsonData = {
             username: userData.username,
@@ -82,40 +72,7 @@ const Profile = () => {
         }
         
         
-        // If a new profile picture is selected, append it to the formData
-        // if (profilePicture) {
-        //     formData.append("profile_pic", profilePicture);
-        // }
 
-        // Make Axios request to update user profile
-        // try {
-        //     const response = await axios.put(
-        //         // console.log("URL: ", `http://localhost/Backend/Create/update_user_profile.php?user_id=${userId}`),
-        //         `http://localhost/Backend/Create/update_user_profile.php?user_id=${userId}`,
-        //         formData, 
-        //         {
-        //             headers: {
-        //                 "Content-Type": "multipart/form-data", // Specify content type
-        //                 // Authorization: `Bearer ${localStorage.getItem("token")}`,
-        //             },
-        //         }
-        //     );
-        //     if (response.status === 200) {
-        //         console.log(response.data.message, response.status);
-        //         // Optionally, store the updated data in sessionStorage for future use
-        //         sessionStorage.setItem("username", userData.username);
-        //         sessionStorage.setItem("theme", userData.theme);
-        //         sessionStorage.setItem("profile_pic", response.data.profile_pic);
-        //         setCurrentProfilePic(response.data.profile_pic); // Update the profile picture in state
-        //     }
-        //     else if(response.status === 400){
-        //         console.log("No changes made.");
-        //         setError("No changes made.");
-        //     }
-        // } catch (error) {
-        //     console.error("Error during form submission:", error);
-        //     setError("An error occurred while updating your profile.");
-        // }
     };
 
     // Handle input changes
@@ -128,12 +85,24 @@ const Profile = () => {
     };
 
     // Handle profile picture selection
+    // const handleFileChange = (e) => {
+    //     const file = e.target.files[0];
+    //     if (file) {
+    //         setProfilePicture(file);
+    //     }
+    // };
+
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setProfilePicture(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setProfilePicture(reader.result); // Set Base64 string
+            };
+            reader.readAsDataURL(file); // Read file as a data URL (Base64 string)
         }
     };
+    
 
     // Handle clearing the profile picture
     const handleClearProfilePicture = () => {
