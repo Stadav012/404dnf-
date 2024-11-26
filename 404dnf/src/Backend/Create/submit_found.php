@@ -17,11 +17,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $input = file_get_contents('php://input');
     $data = json_decode($input, true);
 
-    if (!isset($_SESSION['user_id'])) {
-        die(json_encode(['success' => false, 'message' => 'User not logged in']));
-    }
+    // if (!isset($_GET['id'])) {
+    //     die(json_encode(['success' => false, 'message' => 'User not logged in']));
+    // }
 
-    $user_id = $_SESSION['user_id'];
+    $user_id = $_GET['id'];
     // $user_id = 1;
     $category = $data['category'] ?? '';
     $description = $data['description'] ?? '';

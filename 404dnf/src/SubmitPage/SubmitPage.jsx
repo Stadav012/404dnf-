@@ -12,6 +12,7 @@ const SubmitFound = () => {
         description: "",
         location: "",
         file: null,
+        name: "",
     });
 
     const [locations, setLocations] = useState([]);
