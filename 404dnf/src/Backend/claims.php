@@ -45,18 +45,18 @@ switch ($method) {
             // Retrieve all claims
             $stmt = $conn->prepare("
                 SELECT 
-    claims.claim_id, 
-    users.username, 
-    reports.item_description, 
-    claims.status
-FROM 
-    claims
-INNER JOIN 
-    users ON claims.user_id = users.user_id
-INNER JOIN 
-    reports ON claims.report_id = reports.report_id;
-
-            ");
+                claims.claim_id, 
+                users.username, 
+                reports.item_description, 
+                claims.status
+                
+                FROM 
+                claims
+                INNER JOIN 
+                users ON claims.user_id = users.user_id
+                INNER JOIN 
+                reports ON claims.report_id = reports.report_id;
+           ");
             $stmt->execute();
             $result = $stmt->get_result();
 

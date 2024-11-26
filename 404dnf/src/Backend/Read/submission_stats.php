@@ -2,13 +2,13 @@
 // get the user's submission stats
 
 // include the config file
-include('config.php');
+include('../db/config.php');
 
 // start a session
 session_start();
 
 // check if user is logged in
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_GET['user_id'])) {
     // send the url to the login page
     http_response_code(401);
     echo json_encode(['message' => 'user not logged in', 'redirect' => 'login.html']);
@@ -19,7 +19,7 @@ if (!isset($_SESSION['user_id'])) {
 // check the request method
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // get the user id from the session
-    $user_id = $_SESSION['user_id'];
+    $user_id = $_GET['user_id'];
     // $user_id = 4; // default for testing purposes
 
     // get the user's found items
