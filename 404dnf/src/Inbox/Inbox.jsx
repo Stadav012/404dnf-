@@ -64,6 +64,7 @@ const Inbox = () => {
 
         fetchData();
     }, []);
+    
 
     if (loading) {
         return <div className="text-center">Loading...</div>; // Show a loader while fetching
@@ -130,6 +131,8 @@ const Inbox = () => {
                                 <Button
                                     variant="secondary"
                                     className="mt-4 w-full"
+                                    onClick={() => handleClaim(item.id)}
+
                                 >
                                     Claim
                                 </Button>
@@ -162,6 +165,8 @@ const Inbox = () => {
             </div>
         </div>
     );
+
 };
+
 
 export default Inbox;
