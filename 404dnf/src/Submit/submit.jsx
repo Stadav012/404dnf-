@@ -10,18 +10,6 @@ function Submit({ formData }) {
     // function handling the button click, posting form data to the backend
     const handleSubmit = async () => {
 
-        //  trying to deal with the file object in the payload
-        // let base64File = null;
-        // if (formData.file) {
-        //     base64File = await convertFileToBase64(formData.file);
-        // }
-
-        // Prepare JSON payload
-        // const payload = {
-        //     ...formData,
-        //     file: base64File, // Add the Base64-encoded file
-        // };
-
         try {
             // sending data to the server as json, including the file
             const response = await axios.post("http://localhost/Backend/Create/report.php", formData, {
@@ -45,16 +33,6 @@ function Submit({ formData }) {
             console.error("Error name:", err.name);
         }
     };
-
-    // Helper function to convert file to Base64
-    // const convertFileToBase64 = (file) => {
-    //     return new Promise((resolve, reject) => {
-    //         const reader = new FileReader();
-    //         reader.onload = () => resolve(reader.result); // File content in Base64
-    //         reader.onerror = (error) => reject(error);
-    //         reader.readAsDataURL(file);
-    //     });
-    // };
 
     return (
         <div className="submit">
