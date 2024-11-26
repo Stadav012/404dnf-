@@ -11,8 +11,8 @@
     // The message
     $message = "Hi $Username, your claim (ID: $claimId) has been $status.";
 
-    // Insert notification into a table (e.g., notifications table)
-    $sql = "INSERT INTO notifications (user_id, message, created_at) VALUES (?, ?, NOW())";
+    // Insert message into a table 
+    $sql = "INSERT INTO messages (user_id, message, created_at) VALUES (?, ?, NOW())";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("is", $userId, $message);
 
