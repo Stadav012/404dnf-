@@ -86,11 +86,13 @@ const ClaimsManagement = () => {
           {claims.length > 0 ? (
             claims.map((claim) => (
               <tr key={claim.claim_id}>
+                {console.log(claim)}
                 <td>{claim.claim_id}</td>
+                
                 <td>{claim.item_description}</td>
                 <td>{claim.submission_description}</td>
-                <td>{claim.photo_url}</td>
-                <td>{claim.photo_url}</td>
+                <td>{claim.report_photo_url}</td>
+                <td>{claim.submission_photo_url}</td>
                 <td>{claim.location_name || "N/A"}</td>
                 <td>{claim.username}</td>
                 <td>
