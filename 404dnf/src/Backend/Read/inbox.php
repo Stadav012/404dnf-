@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
                             // Get matching found items from the submissions table based on the category only
                             $matching_items_sql = "
-                                SELECT s.description AS found_item, s.photo_url AS found_photo
+                                SELECT s.submission_id, s.description AS found_item, s.photo_url AS found_photo
                                 FROM submissions s
                                 WHERE s.category = ?
                             ";
