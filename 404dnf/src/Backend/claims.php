@@ -25,13 +25,15 @@ switch ($method) {
         if (isset($data['claim_id'])) {
             // Retrieve a specific claim by ID
             $stmt = $conn->prepare("
-                SELECT users.username, reports.item_description
+                SELECT users.username, reports.item_description, submissions.description
                 FROM claims
                 INNER JOIN users ON claims.user_id = users.user_id
                 INNER JOIN reports ON claims.report_id = reports.report_id
+                INNER JOIN submissions ON claims.submission_id = submissions.submission_id
+
                 WHERE claim_id = ?
             ");
-            $stmt->bind_param('si', $data['claim_id']);
+            $stmt->bind_param('i', $data['claim_id']);
             $stmt->execute();
             $result = $stmt->get_result();
             
@@ -44,19 +46,14 @@ switch ($method) {
         } else {
             // Retrieve all claims
             $stmt = $conn->prepare("
-                SELECT 
-                claims.claim_id, 
-                users.username, 
-                reports.item_description, 
-                claims.status
-                
-                FROM 
-                claims
-                INNER JOIN 
-                users ON claims.user_id = users.user_id
-                INNER JOIN 
-                reports ON claims.report_id = reports.report_id;
-           ");
+                SELECT users.username, reports.item_description, submissions.description
+                FROM claims
+                INNER JOIN users ON claims.user_id = users.user_id
+                INNER JOIN reports ON claims.report_id = reports.report_id
+                INNER JOIN submissions ON claims.submission_id = submissions.submission_id
+
+
+            ");
             $stmt->execute();
             $result = $stmt->get_result();
 
