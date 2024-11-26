@@ -12,6 +12,7 @@ const SubmitFound = () => {
         description: "",
         location: "",
         file: null,
+        name: "",
     });
 
     const [locations, setLocations] = useState([]);
@@ -85,6 +86,7 @@ const SubmitFound = () => {
             description: formData.description,
             location_id: formData.location,
             photo_url: formData.file ? formData.file.name : "", // Send file name or URL
+            name: formData.name,
         };
 
         try {
