@@ -56,38 +56,76 @@ const SubmitFound = () => {
         fetchLocations();
     }, []);
 
-    const handleFileChange = (file) => {
-        if (file) {
-            const formData = new FormData();
-            formData.append("file", file);
+    // const handleFileChange = (file) => {
+    //     if (file) {
+    //         const formData = new FormData();
+    //         formData.append("file", file);
 
-            axios
-                .post(
-                    "/api/Backend/Create/upload_image.php",
+    //         axios
+    //             .post(
+    //                 "/api/Backend/Create/upload_image.php",
 
-                    formData,
-                    {
-                        params: {
-                            user_id : sessionStorage.getItem("user_id"),
-                            action: "submit",
-                        },
-                        headers: { "Content-Type": "multipart/form-data" },
-                    }
-                )
-                .then((response) => {
-                    if (response.data.success) {
-                        setFilePreview(URL.createObjectURL(file));
-                        setFormData((prevData) => ({ ...prevData, file }));
-                    } else {
-                        setMessage("File upload failed.");
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error uploading file:", error);
-                    setMessage("Error uploading the file.");
-                });
+    //                 formData,
+    //                 {
+    //                     params: {
+    //                         user_id : sessionStorage.getItem("user_id"),
+    //                         action: "submit",
+    //                     },
+    //                     headers: { "Content-Type": "multipart/form-data" },
+    //                 }
+    //             )
+    //             .then((response) => {
+    //                 if (response.data.success) {
+    //                     setFilePreview(URL.createObjectURL(file));
+    //                     setFormData((prevData) => ({ ...prevData, file }));
+    //                 } else {
+    //                     setMessage("File upload failed.");
+    //                 }
+    //             })
+    //             .catch((error) => {
+    //                 console.error("Error uploading file:", error);
+    //                 setMessage("Error uploading the file.");
+    //             });
+    //     }
+    // };
+
+    const handleFileChange = async (files) => {
+        if (!files || files.length === 0) {
+            console.error("No file selected");
+            return;
+        }
+        const file = files[0]; // Assuming only one file upload is allowed
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+            console.log("Uploading file...");
+            const response = await axios.post(
+                "/api/Backend/Create/upload_image.php",
+                formData,
+                {
+                    params: {
+                        id: sessionStorage.getItem("user_id"),
+                        action : "submit",
+                    },
+                    headers: { "Content-Type": "multipart/form-data" },
+                }
+            );
+
+            if (response.data.success) {
+                console.log(
+                    "File uploaded successfully:",
+                    response.data.file_url
+                );
+                setFormData((prevData) => ({ ...prevData, file: file }));
+            } else {
+                console.error("File upload failed:", response.data.message);
+            }
+        } catch (error) {
+            console.error("Error uploading file:", error);
         }
     };
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
