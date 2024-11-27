@@ -34,7 +34,11 @@ const Users = () => {
     useEffect(() => {
         // Fetch users from backend
         axios
-            .get("http://localhost/Backend/Read/view_users.php", {
+            .get("http://169.239.251.102:3341/~daisy.tsenesa/Backend/Read/view_users.php", {
+                params: {
+                    user_id: sessionStorage.getItem("user_id"),
+                    role: sessionStorage.getItem("role"),
+                },
                 withCredentials: true,
             })
             .then((response) => {
@@ -52,7 +56,7 @@ const Users = () => {
         // Update the role in the backend
         axios
             .post(
-                "http://localhost/Backend/Create/updateUserRole.php",
+                "http://169.239.251.102:3341/~daisy.tsenesa/Backend/Create/updateUserRole.php",
                 { user_id: userId, role: newRole },
                 { withCredentials: true }
             )
@@ -95,9 +99,15 @@ const Users = () => {
         // Delete user from backend
         axios
             .post(
-                "http://localhost/Backend/Create/delete_user.php",
-                { user_id: userId },
-                { withCredentials: true }
+                "http://169.239.251.102:3341/~daisy.tsenesa/Backend/Create/delete_user.php",
+                {user_id: userId},
+                
+                { 
+                    params: {
+                        user_id: sessionStorage.getItem("user_id"),
+                        role: sessionStorage.getItem("role"),
+                    },
+                    withCredentials: true }
             )
             .then((response) => {
                 if (response.data.status === "success") {

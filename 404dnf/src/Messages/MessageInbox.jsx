@@ -20,7 +20,7 @@ const MessageInbox = () => {
         // Fetch messages from the PHP backend
         const fetchMessages = async () => {
             try {
-                const response = await fetch(`http://localhost/Backend/Create/messages.php?user_id=${user_id}`); // Update this with your actual endpoint
+                const response = await fetch(`http://169.239.251.102:3341/~daisy.tsenesa/Backend/Create/messages.php?user_id=${user_id}`); // Update this with your actual endpoint
                 const data = await response.json();
 
                 if (response.ok) {

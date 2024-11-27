@@ -66,8 +66,8 @@ export function AuthForm() {
         }
 
         const endpoint = isLogin
-            ? "http://localhost/Backend/login.php"
-            : "http://localhost/Backend/create/signup.php";
+            ? "http://169.239.251.102:3341/~daisy.tsenesa/Backend/login.php"
+            : "http://169.239.251.102:3341/~daisy.tsenesa/Backend/create/signup.php";
 
         const payload = isLogin
             ? {

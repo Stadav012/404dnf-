@@ -34,7 +34,7 @@ const ReportLost = () => {
         const fetchLocations = async () => {
             try {
                 const response = await axios.get(
-                    "http://localhost/Backend/Read/view_locations.php",
+                    "http://169.239.251.102:3341/~daisy.tsenesa/Backend/Read/view_locations.php",
                     {
                         params: {
                             id: sessionStorage.getItem("user_id"),
@@ -70,7 +70,7 @@ const ReportLost = () => {
         try {
             console.log("Uploading file...");
             const response = await axios.post(
-                "http://localhost/Backend/Create/upload_image.php",
+                "http://169.239.251.102:3341/~daisy.tsenesa/Backend/Create/upload_image.php",
                 formData,
                 {
                     params: {
@@ -114,7 +114,7 @@ const ReportLost = () => {
 
         try {
             const response = await axios.post(
-                "http://localhost/Backend/Create/report.php",
+                "http://169.239.251.102:3341/~daisy.tsenesa/Backend/Create/report.php",
                 data,
                 {
                     params: {
