@@ -95,13 +95,13 @@ const ClaimsManagement = () => {
                 <td>{claim.submission_description}</td>
                 <td>
                   <img
-                    src={`http://169.239.251.102:3341/~daisy.tsenesa/uploads/reports/${claim.report_photo_url}`}
+                    src={`http://169.239.251.102:3341/~daisy.tsenesa/${claim.report_photo_url}`}
                     alt="Report"
                   />
                 </td>
                 <td>
                   <img
-                    src={`http://169.239.251.102:3341/~daisy.tsenesa/uploads/submit/${claim.submission_photo_url}`}
+                    src={`http://169.239.251.102:3341/~daisy.tsenesa/${claim.submission_photo_url}`}
                     alt="Submission"
                   />
                 </td>
