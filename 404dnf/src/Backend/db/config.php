@@ -3,7 +3,7 @@
 // Allow cross-origin requests
 // header('Access-Control-Allow-Origin: *');
 
-header('Access-Control-Allow-Origin: http://localhost:3000');
+header('Access-Control-Allow-Origin: https://404dnf.vercel.app');
 header('Access-Control-Allow-Methods: GET, POST, PUT, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 header('Access-Control-Allow-Credentials: true');
@@ -25,6 +25,8 @@ $servername = "localhost";
 $username = "daisy.tsenesa";
 $password = "dkt11.py";
 $db = "webtech_fall2024_daisy_tsenesa";
+
+
 $conn = mysqli_connect($servername, $username, $password, $db);
 
 if (!$conn) {

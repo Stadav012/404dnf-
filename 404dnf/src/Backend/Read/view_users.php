@@ -6,14 +6,14 @@ include('../db/config.php');
 session_start();
 
 // Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_GET['user_id'])) {
     http_response_code(401); // Unauthorized
     echo json_encode(array('message' => 'User is not logged in!', 'redirect' => 'login.php'));
     exit();
 }
 
 // Retrieve the role from the session
-$role = $_SESSION['role'];
+$role = $_GET['role'];
 
 // Check if user is an admin
 if ($role != "admin") {
@@ -24,6 +24,7 @@ if ($role != "admin") {
 
 // Check if the request method is GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+
     // Main query to fetch user details
     $query = '
         SELECT 

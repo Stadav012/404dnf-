@@ -115,7 +115,7 @@ const SubmitFound = () => {
 
             if (response.data.success) {
                 console.log(
-                    "File uploaded successfully:",
+                    "File SUbmission uploaded successfully:",
                     response.data.file_url
                 );
                 setFormData((prevData) => ({ ...prevData, file: file , photo_url: response.data.file_url}));

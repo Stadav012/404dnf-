@@ -2,10 +2,15 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Origin: https://404dnf.vercel.app");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true");
+// Handle preflight requests
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 // Include config.php
 include('db/config.php');
@@ -13,35 +18,7 @@ include('db/config.php');
 // Start session
 session_start();
 
-// // Check if user is already logged in
-// if (isset($_SESSION['user_id'])) {
-//     http_response_code(200); // OK
-//     // Set session variables with all user details
-//         $_SESSION['user_id'] = $user['user_id'];
-//         $_SESSION['username'] = $user['username'];
-//         $_SESSION['email'] = $user['email'];
-//         $_SESSION['fname'] = $user['fname'];
-//         $_SESSION['lname'] = $user['lname'];
-//         $_SESSION['profile_pic'] = $user['profile_pic'];
-//         $_SESSION['theme'] = $user['theme'];
-//         $_SESSION['role'] = $user['role'];
 
-//         // Redirect URL after login
-//         http_response_code(200); // OK
-//         echo json_encode(array(
-//             'message' => 'User already logged in!',
-//             'redirect_url' => 'http://localhost:3000',  // Add the URL for the homepage
-//             'user_id' => $_SESSION['user_id'],
-//             'username' => $_SESSION['username'],
-//             'email' => $_SESSION['email'],
-//             'fname' => $_SESSION['fname'],
-//             'lname' => $_SESSION['lname'],
-//             'profile_pic' => $_SESSION['profile_pic'],
-//             'theme' => $_SESSION['theme'],
-//             'role' => $_SESSION['role'],
-//         ));
-//     exit();
-// }
 
 // Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -117,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         http_response_code(200); // OK
         echo json_encode(array(
             'message' => 'Login successful!',
-            'redirect_url' => 'http://localhost:3000',  // Add the URL for the homepage
+            'redirect_url' => 'https://404dnf.vercel.app/',  // Add the URL for the homepage
             'user_id' => $_SESSION['user_id'],
             'username' => $_SESSION['username'],
             'email' => $_SESSION['email'],

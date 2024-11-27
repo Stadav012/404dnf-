@@ -2,10 +2,10 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-header("Access-Control-Allow-Origin: http://localhost:3000");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header("Access-Control-Allow-Credentials: true");
+header('Access-Control-Allow-Origin: https://404dnf.vercel.app');
+header('Access-Control-Allow-Methods: GET, POST, PUT, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Credentials: true');
 
 include("../db/config.php");
 
@@ -61,7 +61,7 @@ switch ($method) {
             header('Content-Type: application/json');
             echo json_encode($messages);
         } else {
-            http_response_code(404);
+            http_response_code(202);
             echo json_encode(["message" => "No messages found."]);
         }
         $stmt->close();

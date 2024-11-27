@@ -11,7 +11,7 @@ ini_set('display_startup_errors', 1);
 
 
 // Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_GET['user_id'])) {
     // Set the response code to 401 (Unauthorized)
     http_response_code(401);
     // Set the response message
@@ -21,7 +21,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Retrieve the role from the session
-$role = $_SESSION['role'];
+$role = $_GET['role'];
 // $role = 1; // default for testing purposes
 
 // Check if user is an admin

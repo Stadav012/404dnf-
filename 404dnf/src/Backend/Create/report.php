@@ -1,8 +1,8 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost:3000");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header("Access-Control-Allow-Credentials: true");
+header('Access-Control-Allow-Origin: https://404dnf.vercel.app');
+header('Access-Control-Allow-Methods: GET, POST, PUT, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Credentials: true');
 include '../db/config.php';
 
 ini_set('display_errors', 1);
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // validating category value
-    $valid_categories = ['electronics', 'clothing', 'stationery', 'accessories'];
+    $valid_categories = ['Electronics', 'Clothing', 'Stationery', 'Accessories'];
     if (!in_array($category, $valid_categories)) {
         die(json_encode(['success' => false, 'message' => 'Invalid category value.']));
     }

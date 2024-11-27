@@ -1,8 +1,8 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost:3000");
-header("Access-Control-Allow-Methods: GET, POST, PUT, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header("Access-Control-Allow-Credentials: true");
+header('Access-Control-Allow-Origin: https://404dnf.vercel.app');
+header('Access-Control-Allow-Methods: GET, POST, PUT, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Credentials: true');
 
 // display the errors
 ini_set('display_errors', 1);
@@ -228,10 +228,10 @@ function updateTheme($conn, $user_id, $new_theme) {
  * @param string $baseDir The base directory where user-specific directories will be created.
  * @return string|null The relative file path to the image, or null if the decoding or saving failed.
  */
-function handleBase64ProfilePicture($base64Image, $userId, $baseDir = 'uploads/profiles/')
+function handleBase64ProfilePicture($base64Image, $userId, $baseDir = '../../uploads/profiles/')
 {
     // $baseDir = $_SERVER['DOCUMENT_ROOT'] . '/Backend/Create/uploads/profiles/';
-    $baseDir =  'uploads/profiles/';
+    $baseDir =  '../../uploads/profiles/';
 
 
     // /Applications/XAMPP/xamppfiles/htdocs/Backend/Create/uploads

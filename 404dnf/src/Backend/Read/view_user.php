@@ -5,23 +5,23 @@ include('../db/config.php');
 // Start session
 session_start();
 
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    http_response_code(401); // Unauthorized
-    echo json_encode(array('message' => 'User is not logged in!', 'redirect' => 'login.php'));
-    exit();
-}
+// // Check if user is logged in
+// if (!isset($_SESSION['user_id'])) {
+//     http_response_code(401); // Unauthorized
+//     echo json_encode(array('message' => 'User is not logged in!', 'redirect' => 'login.php'));
+//     exit();
+// }
 
 // Retrieve the role from the session
-$role = $_SESSION['role'];
+// $role = $_SESSION['role'];
 // $role = 1; // default for testing purposes
 
 // Check if user is an admin
-if ($role != 1) {
-    http_response_code(403); // Forbidden
-    echo json_encode(array('message' => 'Only admins allowed!', 'redirect' => 'index.php'));
-    exit();
-}
+// if ($role != 1) {
+//     http_response_code(403); // Forbidden
+//     echo json_encode(array('message' => 'Only admins allowed!', 'redirect' => 'index.php'));
+//     exit();
+// }
 
 // Check if the request method is GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
