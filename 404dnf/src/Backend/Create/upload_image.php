@@ -9,42 +9,34 @@ $response = [
     "message" => "File upload failed."
 ];
 
-// Check if a file was uploaded
 if (isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
-    // Extract the file extension
+    // Extract file extension
     $pathInfo = pathinfo($_FILES['file']['name']);
     $fileExtension = $pathInfo['extension'];
 
-    $action = $_GET['action'];
-    echo $action . " is the action";
-    if ($_GET['action'] == 'report') {
-        $uploadDir = "../../uploads/reports/"; // Directory to store uploaded files
-        $fileName = 'report_' . time();
-        $targetFile = $fileName . '.' . $fileExtension; // Use original extension
-    } else if($_GET['action'] == 'submit') {
-        $uploadDir = "../../uploads/submit/"; // Directory to store uploaded files
-        $fileName = 'submit_' . time();
-        $targetFile = $fileName . '.' . $fileExtension; // Use original extension
-    }
+    // Determine upload directory and file naming convention
+    $action = $_GET['action'] ?? '';
+    $uploadDir = $action === 'report' ? "../../uploads/reports/" : "../../uploads/submit/";
+    $fileName = ($action === 'report' ? 'report_' : 'submit_') . time();
+    $targetFile = $uploadDir . $fileName . '.' . $fileExtension;
 
-    // Create upload directory if it doesn't exist
+    // Ensure the upload directory exists
     if (!is_dir($uploadDir)) {
-        echo 'making directory';
         mkdir($uploadDir, 0777, true);
     }
 
-    // Move the uploaded file to the target directory
+    // Move the uploaded file
     if (move_uploaded_file($_FILES['file']['tmp_name'], $targetFile)) {
         $response["success"] = true;
         $response["message"] = "File uploaded successfully.";
-        $response["file_url"] = $targetFile; // Provide the correct file path
+        $response["file_url"] = str_replace("../../", "/", $targetFile); // Ensure correct URL format
     } else {
         $response["message"] = "Failed to move the uploaded file.";
     }
 } else {
-    $response["message"] = "No file uploaded or upload error: " . $_FILES['file']['error'];
+    $response["message"] = "No file uploaded or upload error: " . ($_FILES['file']['error'] ?? 'Unknown error');
 }
 
-// Return the response as JSON
+header('Content-Type: application/json');
 echo json_encode($response);
 ?>
