@@ -16,11 +16,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$db = "404dnf";
+// $servername = "localhost";
+// $username = "root";
+// $password = "";
+// $db = "404dnf";
 
+$servername = "localhost";
+$username = "daisy.tsenesa";
+$password = "dkt11.py";
+$db = "webtech_fall2024_daisy_tsenesa";
 $conn = mysqli_connect($servername, $username, $password, $db);
 
 if (!$conn) {
