@@ -16,7 +16,7 @@ function logoutUser() {
     sessionStorage.removeItem("role");
 
     axios
-        .post("http://169.239.251.102:3341/~daisy.tsenesa/Backend/logout.php", null, {
+        .post("/api/Backend/logout.php", null, {
             withCredentials: true, // Important to send cookies with cross-origin requests
         })
         .then((response) => {

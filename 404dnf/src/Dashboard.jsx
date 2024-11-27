@@ -44,7 +44,7 @@ function Dashboard() {
 
         axios
             .get(
-                `http://169.239.251.102:3341/~daisy.tsenesa/Backend/Read/submission_stats.php?user_id=${userId}`
+                `/api/Backend/Read/submission_stats.php?user_id=${userId}`
             )
             .then((response) => {
                 const data = response.data;
@@ -96,7 +96,7 @@ function Dashboard() {
                             fill="#F58327"
                         />
                         <Video />
-                        {console.log(`http://169.239.251.102:3341/~daisy.tsenesa/Backend/Create${profilePic}`)}
+                        {console.log(`/api/Backend/Create${profilePic}`)}
                         <div className="flex items-center justify-center space-x-4 mt-4">
                             <div>
                                 <div className="flex items-center pl-32">
@@ -104,7 +104,7 @@ function Dashboard() {
                                     <Avatar className="w-16 h-16">
                                         <img
                                             // src={profilePic}
-                                            src={`http://169.239.251.102:3341/~daisy.tsenesa/Backend/Create${profilePic}`}
+                                            src={`/api/Backend/Create${profilePic}`}
                                             
                                             alt={`${username}'s profile`}
                                             className="rounded-full"

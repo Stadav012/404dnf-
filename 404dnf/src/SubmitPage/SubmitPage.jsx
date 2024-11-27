@@ -31,7 +31,7 @@ const SubmitFound = () => {
         const fetchLocations = async () => {
             try {
                 const response = await axios.get(
-                    "http://169.239.251.102:3341/~daisy.tsenesa/Backend/Read/view_locations.php",
+                    "/api/Backend/Read/view_locations.php",
                     {
                         params: {
                             id: sessionStorage.getItem("user_id"),
@@ -63,7 +63,7 @@ const SubmitFound = () => {
 
             axios
                 .post(
-                    "http://169.239.251.102:3341/~daisy.tsenesa/Backend/Create/upload_image.php",
+                    "/api/Backend/Create/upload_image.php",
                     formData,
                     {
                         headers: { "Content-Type": "multipart/form-data" },
@@ -105,7 +105,7 @@ const SubmitFound = () => {
 
         try {
             const response = await axios.post(
-                "http://169.239.251.102:3341/~daisy.tsenesa/Backend/Create/submit_found.php",
+                "/api/Backend/Create/submit_found.php",
                 data,
                 {
                     params: {

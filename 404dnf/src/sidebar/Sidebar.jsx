@@ -25,7 +25,7 @@ const Sidebar = () => {
         // Fetch message count
         const fetchMessageCount = async () => {
             try {
-                const response = await axios.get(`http://169.239.251.102:3341/~daisy.tsenesa/Backend/Read/num_matches.php?user_id=${userId}`);
+                const response = await axios.get(`/api/Backend/Read/num_matches.php?user_id=${userId}`);
                 setMessageCount(response.data.count > 0 ? response.data.count : 0);
                 // setMessageCount(1); 
                 console.log("Message Count:", response.data.count);

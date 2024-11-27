@@ -13,7 +13,7 @@ const ClaimsManagement = () => {
 
   const fetchClaims = async () => {
     try {
-      const response = await axios.get("http://169.239.251.102:3341/~daisy.tsenesa/Backend/claims.php", {
+      const response = await axios.get("/api/Backend/claims.php", {
         headers: {
           "Content-Type": "application/json",
         },
@@ -30,7 +30,7 @@ const ClaimsManagement = () => {
 
     try {
       await axios.put(
-        "http://169.239.251.102:3341/~daisy.tsenesa/Backend/claims.php",
+        "/api/Backend/claims.php",
         {
           claim_id: id,
           status: newStatus,

@@ -20,7 +20,7 @@ const Inbox = () => {
         console.log("Claiming item:", reportId, submissionId, userId);
         try {
             const response = await axios.post(
-                "http://169.239.251.102:3341/~daisy.tsenesa/Backend/Create/create_claim.php",
+                "/api/Backend/Create/create_claim.php",
                 {
                     user_id: userId,
                     report_id: reportId,
@@ -45,7 +45,7 @@ const Inbox = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(
-                    "http://169.239.251.102:3341/~daisy.tsenesa/Backend/Read/inbox.php",
+                    "/api/Backend/Read/inbox.php",
                     {
                         params: { user_id: userId },
                         withCredentials: true,

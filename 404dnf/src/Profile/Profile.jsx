@@ -59,7 +59,7 @@ const Profile = () => {
 
         try {
             const response = await axios.put(
-                `http://169.239.251.102:3341/~daisy.tsenesa/Backend/Create/update_user_profile.php?user_id=${userId}`,
+                `/api/Backend/Create/update_user_profile.php?user_id=${userId}`,
                 jsonData,
                 {
                     headers: {
@@ -85,7 +85,7 @@ const Profile = () => {
                     if(response.data.updates.profile_pic_update.success){
                         sessionStorage.setItem("profile_pic", response.data.updates.profile_pic_update.profile_pic);
                         // full url of image
-                        let image_url = `http://169.239.251.102:3341/~daisy.tsenesa/Backend/Create${response.data.updates.profile_pic_update.profile_pic}`;
+                        let image_url = `/api/Backend/Create${response.data.updates.profile_pic_update.profile_pic}`;
                         // console.log("Image URL:", image_url);
                         setCurrentProfilePic(image_url);
                     }
