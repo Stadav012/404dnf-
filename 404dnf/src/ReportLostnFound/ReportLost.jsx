@@ -24,6 +24,7 @@ const ReportLost = () => {
         size: "",
         location: "",
         file: null,
+        photo_url: "",
     });
 
     const [locations, setLocations] = useState([]);
@@ -86,7 +87,7 @@ const ReportLost = () => {
                     "File uploaded successfully:",
                     response.data.file_url
                 );
-                setFormData((prevData) => ({ ...prevData, file: file }));
+                setFormData((prevData) => ({ ...prevData, file: file , photo_url: response.data.file_url}));
             } else {
                 console.error("File upload failed:", response.data.message);
             }
@@ -110,7 +111,7 @@ const ReportLost = () => {
             category: formData.category,
             item_description: formData.description,
             location_id: formData.location,
-            photo_url: formData.file ? formData.file.name : "",
+            photo_url: formData.file ? formData.photo_url : "",
         };
 
         try {

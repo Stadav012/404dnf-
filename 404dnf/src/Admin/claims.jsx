@@ -91,8 +91,8 @@ const ClaimsManagement = () => {
                 
                 <td>{claim.item_description}</td>
                 <td>{claim.submission_description}</td>
-                <td>{claim.report_photo_url}</td>
-                <td>{claim.submission_photo_url}</td>
+                <td><img src={`/api/uploads/reports/${claim.report_photo_url}`} alt="Report" /></td>
+                <td><img src={`/api/uploads/submit/${claim.submission_photo_url}`} alt="Submission" /></td>
                 <td>{claim.location_name || "N/A"}</td>
                 <td>{claim.username}</td>
                 <td>

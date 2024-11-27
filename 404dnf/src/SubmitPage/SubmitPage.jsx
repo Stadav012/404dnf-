@@ -19,6 +19,7 @@ const SubmitFound = () => {
         location: "",
         file: null,
         name: "",
+        photo_url: "",
     });
 
     const [locations, setLocations] = useState([]);
@@ -117,7 +118,7 @@ const SubmitFound = () => {
                     "File uploaded successfully:",
                     response.data.file_url
                 );
-                setFormData((prevData) => ({ ...prevData, file: file }));
+                setFormData((prevData) => ({ ...prevData, file: file , photo_url: response.data.file_url}));
             } else {
                 console.error("File upload failed:", response.data.message);
             }
@@ -142,7 +143,7 @@ const SubmitFound = () => {
             category: formData.category,
             description: formData.description,
             location_id: formData.location,
-            photo_url: formData.file ? formData.file.name : "",
+            photo_url: formData.file ? formData.photo_url : "",
             name: formData.name,
         };
 
