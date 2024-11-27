@@ -75,6 +75,7 @@ const ReportLost = () => {
                 {
                     params: {
                         id: sessionStorage.getItem("user_id"),
+                        action : "report"
                     },
                     headers: { "Content-Type": "multipart/form-data" },
                 }

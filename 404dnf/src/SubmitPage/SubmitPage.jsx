@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, act } from "react";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -64,8 +64,13 @@ const SubmitFound = () => {
             axios
                 .post(
                     "/api/Backend/Create/upload_image.php",
+
                     formData,
                     {
+                        params: {
+                            user_id : sessionStorage.getItem("user_id"),
+                            action: "submit",
+                        },
                         headers: { "Content-Type": "multipart/form-data" },
                     }
                 )
