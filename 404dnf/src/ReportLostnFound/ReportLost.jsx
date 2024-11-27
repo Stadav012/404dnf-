@@ -205,16 +205,16 @@ const ReportLost = () => {
                                         {formData.category || "Select Category"}
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="clothing">
+                                        <SelectItem value="Clothing">
                                             Clothing
                                         </SelectItem>
-                                        <SelectItem value="electronics">
+                                        <SelectItem value="Electronics">
                                             Electronics
                                         </SelectItem>
-                                        <SelectItem value="stationery">
+                                        <SelectItem value="Stationery">
                                             Stationery
                                         </SelectItem>
-                                        <SelectItem value="accessories">
+                                        <SelectItem value="Accessories">
                                             Accessories
                                         </SelectItem>
                                     </SelectContent>

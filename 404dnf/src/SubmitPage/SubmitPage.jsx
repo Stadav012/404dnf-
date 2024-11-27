@@ -222,10 +222,10 @@ const SubmitFound = () => {
                             className="border p-2 rounded w-full"
                         >
                             <option value="">Select</option>
-                            <option value="electronics">Electronics</option>
-                            <option value="clothing">Clothing</option>
-                            <option value="stationery">Stationery</option>
-                            <option value="accessories">Accessories</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Clothing">Clothing</option>
+                            <option value="Stationery">Stationery</option>
+                            <option value="Accessories">Accessories</option>
                         </select>
                     </div>
 
