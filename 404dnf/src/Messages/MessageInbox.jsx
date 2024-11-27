@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge"; // For statuses
 import { Avatar } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import clsx from "clsx";
+import axios from "axios";
 
 const MessageInbox = () => {
     // State to store messages
@@ -12,12 +13,14 @@ const MessageInbox = () => {
     // State to store any error that might occur during fetching
     const [error, setError] = useState(null);
 
+    const user_id = sessionStorage.getItem("user_id");
+
     // Fetch messages from the backend when the component mounts
     useEffect(() => {
         // Fetch messages from the PHP backend
         const fetchMessages = async () => {
             try {
-                const response = await fetch("http://localhost/Backend/Create/messages.php"); // Update this with your actual endpoint
+                const response = await fetch(`http://localhost/Backend/Create/messages.php?user_id=${user_id}`); // Update this with your actual endpoint
                 const data = await response.json();
 
                 if (response.ok) {
@@ -43,19 +46,19 @@ const MessageInbox = () => {
         return <div>{error}</div>; // Show error if something goes wrong
     }
     // Function to dynamically generate the message body content
-    const generateMessageBody = (message) => {
+    // const generateMessageBody = (message) => {
 
-        if (message.status === "approved") {
-            return `Hi ${message.username}, your claim for some  "${message.category}" has been Approved. You can collect it.`;
-        } else if(message.status === "rejected")
-         {
-            return `Hi ${message.username}, your claim for some  "${message.category}" has been Rejected.`;
-        }
+    //     if (message.status === "approved") {
+    //         return `Hi ${message.username}, your claim for some  "${message.category}" has been Approved. You can collect it.`;
+    //     } else if(message.status === "rejected")
+    //      {
+    //         return `Hi ${message.username}, your claim for some  "${message.category}" has been Rejected.`;
+    //     }
          
-        else {
-            return `Hi ${message.username}, your claim for some  "${message.category}" is still Pending. Please check back later.`;
-        }
-    };
+    //     else {
+    //         return `Hi ${message.username}, your claim for some  "${message.category}" is still Pending. Please check back later.`;
+    //     }
+    // };
 
        
 
@@ -84,18 +87,18 @@ const MessageInbox = () => {
                             )}
                         >
                             <div className="flex items-center gap-3">
-                                <Avatar
+                                {/* <Avatar
                                     src={message.avatar}
                                     alt="Admin"
                                     size="sm"
                                     className="rounded-full"
-                                />
+                                /> */}
                                 <div className="flex-1">
                                     <h3 className="font-semibold text-gray-800 truncate">
-                                        {message.subject}
+                                        {message.category}
                                     </h3>
                                     <p className="text-sm text-gray-600 truncate">
-                                        {generateMessageBody(message)} {/* Dynamically generated content */}
+                                        {message.message} {/* Dynamically generated content */}
                                     </p>
                                 </div>
                                 <div className="text-right">

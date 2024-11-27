@@ -34,6 +34,7 @@ switch ($method) {
     r.item_description, 
     s.description AS submission_description, 
     r.photo_url AS report_photo_url, 
+    s.location_id as location_name,
     s.photo_url AS submission_photo_url
 FROM 
     claims AS c
@@ -65,6 +66,7 @@ INNER JOIN
     u.username, 
     r.item_description, 
     s.description AS submission_description, 
+    s.location_id as location_name,
     r.photo_url AS report_photo_url, 
     s.photo_url AS submission_photo_url
 FROM 
@@ -136,6 +138,7 @@ INNER JOIN
                 c.claim_id, 
                 u.username, 
                 u.user_id, 
+                c.submission_id,
                 r.item_description AS category
             FROM 
                 claims AS c
@@ -161,6 +164,7 @@ INNER JOIN
         $user_id = $row['user_id'];
         $category = $row['category'];
         $claim_id = $row['claim_id'];
+        $submission_id = $row['submission_id'];
 
         // Handle different statuses
         if ($data['status'] === 'rejected') {
@@ -173,7 +177,7 @@ INNER JOIN
                 $title = "$category Rejected";
 
                 $insertMessageStmt = $conn->prepare("
-                    INSERT INTO messages (user_id, title, message, status, timestamp) 
+                    INSERT INTO messages (user_id, title, message, status, created_at) 
                     VALUES (?, ?, ?, ?, NOW())
                 ");
                 $insertMessageStmt->bind_param('isss', $user_id, $title, $message, $data['status']);
@@ -189,18 +193,26 @@ INNER JOIN
             $deleteReportStmt = $conn->prepare("DELETE FROM reports WHERE report_id = ?");
             $deleteReportStmt->bind_param('i', $row['report_id']);
             if ($deleteReportStmt->execute()) {
+                $deleteStmt = $conn->prepare("DELETE FROM claims WHERE claim_id = ?");
+                $deleteStmt->bind_param('i', $claim_id);
+                if ($deleteStmt->execute()) {
                 // Insert an approval message into the messages table
                 $message = "Congratulations $username, your claim for the item '$category' has been approved. You will be notified about further proceedings.";
                 $title = "$category Approved";
 
                 $insertMessageStmt = $conn->prepare("
-                    INSERT INTO messages (user_id, title, message, status, timestamp) 
+                    INSERT INTO messages (user_id, title, message, status, created_at) 
                     VALUES (?, ?, ?, ?, NOW())
                 ");
                 $insertMessageStmt->bind_param('isss', $user_id, $title, $message, $data['status']);
                 $insertMessageStmt->execute();
+                echo $submission_id;
 
-                echo json_encode(['message' => 'Claim approved and message sent successfully']);
+                $deleteStmt = $conn->prepare("DELETE FROM submissions WHERE submission_id = ?");
+                $deleteStmt->bind_param('i', $submission_id);
+                $deleteStmt->execute();
+
+                echo json_encode(['message' => 'Claim approved and message sent successfully']);}
             } else {
                 http_response_code(500);
                 echo json_encode(['error' => 'Failed to approve claim']);

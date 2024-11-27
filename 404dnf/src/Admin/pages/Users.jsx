@@ -88,6 +88,10 @@ const Users = () => {
     };
 
     const handleDeleteUser = (userId) => {
+        // alert("Are you sure you want to delete this user?");
+        if(confirm("Are you sure you want to delete this user?")){
+
+
         // Delete user from backend
         axios
             .post(
@@ -107,7 +111,7 @@ const Users = () => {
             })
             .catch((error) => {
                 console.error("Error deleting user:", error);
-            });
+            });}
     };
 
     if (loading) return <p>Loading users...</p>;

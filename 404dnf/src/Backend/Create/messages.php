@@ -1,10 +1,13 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 header("Access-Control-Allow-Origin: http://localhost:3000");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true");
 
-include("db/config.php");
+include("../db/config.php");
 
 // Handle different HTTP methods
 $method = $_SERVER['REQUEST_METHOD'];
@@ -31,23 +34,24 @@ switch ($method) {
         break;
 
     case 'GET': // Fetch messages
+
+        $userId = $_GET['user_id'];
+        // echo $userId;
         
         // Fetch and render messages dynamically
         $sql = "SELECT 
-    c.status,
-    s.category, 
-    u.username,
-    DATE_FORMAT(c.created_at, '%h:%i %p') AS time
-FROM claims c 
-INNER JOIN users u ON c.user_id = u.user_id
-INNER JOIN messages m ON c.user_id = m.user_id
-INNER JOIN submissions s ON c.submission_id=s.submission_id
-ORDER BY c.created_at DESC
-;
-";
+        m.id,
+        m.status,
+        m.title as category, 
+        m.created_at as time,
+        m.message
+        FROM messages m
+        WHERE m.user_id = ?
+        ORDER BY m.created_at DESC;";
 
 
         $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $userId);
         $stmt->execute();
         $result = $stmt->get_result();
         $messages = $result->fetch_all(MYSQLI_ASSOC);
