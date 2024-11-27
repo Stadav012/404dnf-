@@ -24,7 +24,13 @@ const MessageInbox = () => {
                 const data = await response.json();
 
                 if (response.ok) {
-                    setMessages(data); // Set the data received from the backend
+
+                    if (data.length === 0) {
+                        setError("No messages found.");
+                    }
+                    else {
+                        setMessages(data); // Set the data received from the backend
+                    }
                 } else {
                     setError("Failed to fetch messages.");
                 }

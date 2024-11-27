@@ -23,7 +23,7 @@ function logoutUser() {
             if (response.data.status === "success") {
                 console.log("Session ended on server");
                 // Redirect to the login page
-                window.location.href = "/auth";
+                window.location.href = "/";
             } else {
                 console.error(
                     "Failed to logout on server:",
