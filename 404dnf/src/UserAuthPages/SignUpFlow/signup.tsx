@@ -67,7 +67,7 @@ export function AuthForm() {
 
         const endpoint = isLogin
             ? "/api/Backend/login.php"
-            : "/api/Backend/create/signup.php";
+            : "/api/Backend/Create/signup.php";
 
         const payload = isLogin
             ? {
