@@ -127,7 +127,7 @@ const Inbox = () => {
             <Card className="shadow-lg hover:shadow-xl transition duration-300">
               <CardHeader>
                 <img
-                  src={`http://169.239.251.102:3341/~daisy.tsenesa/${itme.image}`}
+                  src={`/api/${itme.image}`}
                   alt={item.name}
                   className="h-32 w-full object-cover rounded-t-md"
                 />
