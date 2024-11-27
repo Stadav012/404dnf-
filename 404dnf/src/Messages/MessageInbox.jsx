@@ -25,7 +25,7 @@ const MessageInbox = () => {
 
                 if (response.ok) {
 
-                    if (data.length === 0) {
+                    if (data.message === "No messages found.") {
                         setError("No messages found.");
                     }
                     else {
