@@ -26,7 +26,9 @@ const ClaimsManagement = () => {
   };
 
   const handleStatusChange = async (id, newStatus) => {
-    const previousStatus = claims.find((claim) => claim.claim_id === id)?.status;
+    const previousStatus = claims.find(
+      (claim) => claim.claim_id === id,
+    )?.status;
 
     try {
       await axios.put(
@@ -39,14 +41,14 @@ const ClaimsManagement = () => {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       // Update the status in the UI after a successful request
       setClaims((prevClaims) =>
         prevClaims.map((claim) =>
-          claim.claim_id === id ? { ...claim, status: newStatus } : claim
-        )
+          claim.claim_id === id ? { ...claim, status: newStatus } : claim,
+        ),
       );
     } catch (err) {
       console.error("Error updating claim status:", err);
@@ -55,8 +57,8 @@ const ClaimsManagement = () => {
       // Revert the status to the previous value in case of error
       setClaims((prevClaims) =>
         prevClaims.map((claim) =>
-          claim.claim_id === id ? { ...claim, status: previousStatus } : claim
-        )
+          claim.claim_id === id ? { ...claim, status: previousStatus } : claim,
+        ),
       );
     }
   };
@@ -76,7 +78,7 @@ const ClaimsManagement = () => {
             <th>Submission_Description</th>
             <th>Reports_Photo</th>
             <th>Submissions_Photo</th>
-             <th>Location</th>
+            <th>Location</th>
             <th>Username</th>
             <th>Status</th>
             <th>Action</th>
@@ -88,16 +90,27 @@ const ClaimsManagement = () => {
               <tr key={claim.claim_id}>
                 {console.log(claim)}
                 <td>{claim.claim_id}</td>
-                
+
                 <td>{claim.item_description}</td>
                 <td>{claim.submission_description}</td>
-                <td><img src={`/api/uploads/reports/${claim.report_photo_url}`} alt="Report" /></td>
-                <td><img src={`/api/uploads/submit/${claim.submission_photo_url}`} alt="Submission" /></td>
+                <td>
+                  <img
+                    src={`http://169.239.251.102:3341/~daisy.tsenesa/uploads/reports/${claim.report_photo_url}`}
+                    alt="Report"
+                  />
+                </td>
+                <td>
+                  <img
+                    src={`http://169.239.251.102:3341/~daisy.tsenesa/uploads/submit/${claim.submission_photo_url}`}
+                    alt="Submission"
+                  />
+                </td>
                 <td>{claim.location_name || "N/A"}</td>
                 <td>{claim.username}</td>
                 <td>
                   <span className={`status-label ${claim.status}`}>
-                    {claim.status.charAt(0).toUpperCase() + claim.status.slice(1)}
+                    {claim.status.charAt(0).toUpperCase() +
+                      claim.status.slice(1)}
                   </span>
                 </td>
                 <td>
